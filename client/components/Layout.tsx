@@ -1,12 +1,12 @@
 import { Navigation } from "./Navigation";
-import { useMediaQuery } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export function Layout({ children }: LayoutProps) {
-  const isMobile = !useMediaQuery("(min-width: 1024px)");
+  const isMobile = useIsMobile();
 
   return (
     <div className="flex flex-col h-screen bg-background">
