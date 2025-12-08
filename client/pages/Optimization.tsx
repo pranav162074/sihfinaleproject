@@ -367,3 +367,5 @@ export default function Optimization() {
     </Layout>
   );
 }
+
+export default Optimization;
