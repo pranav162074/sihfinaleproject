@@ -16,7 +16,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 export function Navigation() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const isMobile = !useMediaQuery("(min-width: 1024px)");
+  const isMobile = useIsMobile();
 
   const navItems = [
     { path: "/", label: "Dashboard", icon: BarChart3 },
