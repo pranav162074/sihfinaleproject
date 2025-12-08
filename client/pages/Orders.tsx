@@ -1,269 +1,404 @@
+import { useState } from "react";
 import { Layout } from "@/components/Layout";
-import { ChevronDown, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Lightbulb, Package, MapPin, Clock, TrendingUp, CheckCircle, AlertCircle } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { Order, OptimizeRakesResponse, RailVsRoadAssignment } from "@shared/api";
 
-interface Order {
-  id: string;
-  customer: string;
-  material: string;
-  qty: number;
-  dueDate: string;
-  priority: "high" | "medium" | "low";
-  aiRecommendation: string;
-  selectedMode: string;
-}
+export default function OrdersNew() {
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [selectedAssignment, setSelectedAssignment] = useState<RailVsRoadAssignment | null>(null);
+  const [showRecommendation, setShowRecommendation] = useState(false);
 
-const mockOrders: Order[] = [
-  {
-    id: "ORD-001",
-    customer: "Delhi Steel Mills",
-    material: "HR Coils",
-    qty: 80,
-    dueDate: "2024-01-20",
-    priority: "high",
-    aiRecommendation: "Rail - RAKE-001",
-    selectedMode: "Rail - RAKE-001",
-  },
-  {
-    id: "ORD-002",
-    customer: "Delhi Plates Ltd",
-    material: "Slabs",
-    qty: 160,
-    dueDate: "2024-01-21",
-    priority: "high",
-    aiRecommendation: "Rail - RAKE-001",
-    selectedMode: "Rail - RAKE-001",
-  },
-  {
-    id: "ORD-003",
-    customer: "Mumbai Steel",
-    material: "Billets",
-    qty: 100,
-    dueDate: "2024-01-22",
-    priority: "medium",
-    aiRecommendation: "Rail - RAKE-002",
-    selectedMode: "Rail - RAKE-002",
-  },
-  {
-    id: "ORD-004",
-    customer: "Ahmedabad Mills",
-    material: "HR Coils",
-    qty: 98,
-    dueDate: "2024-01-23",
-    priority: "medium",
-    aiRecommendation: "Rail - RAKE-002",
-    selectedMode: "Rail - RAKE-002",
-  },
-  {
-    id: "ORD-005",
-    customer: "Ahmedabad Steel",
-    material: "Iron Ore",
-    qty: 156,
-    dueDate: "2024-01-20",
-    priority: "high",
-    aiRecommendation: "Rail - RAKE-003",
-    selectedMode: "Rail - RAKE-003",
-  },
-  {
-    id: "ORD-006",
-    customer: "Chennai Steel Works",
-    material: "Slabs",
-    qty: 184,
-    dueDate: "2024-01-24",
-    priority: "low",
-    aiRecommendation: "Rail - RAKE-004",
-    selectedMode: "Rail - RAKE-004",
-  },
-];
+  const { data: sampleDataset } = useQuery({
+    queryKey: ["sample-dataset"],
+    queryFn: async () => {
+      const res = await fetch("/api/sample-dataset");
+      return res.json();
+    },
+  });
 
-export default function Orders() {
+  const { data: optimizationResult } = useQuery({
+    queryKey: ["optimization-for-orders"],
+    enabled: !!sampleDataset,
+    queryFn: async () => {
+      if (!sampleDataset) return null;
+      const res = await fetch("/api/optimize-rakes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...sampleDataset,
+          config: {
+            cost_vs_sla_weight: 0.6,
+            allow_multi_destination_rakes: true,
+            min_utilization_percent: 75,
+          },
+        }),
+      });
+      return (await res.json()) as OptimizeRakesResponse;
+    },
+  });
+
+  const getPriorityColor = (priority: number) => {
+    if (priority === 1) return "bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-400";
+    if (priority === 2) return "bg-orange-100 text-orange-800 dark:bg-orange-950 dark:text-orange-400";
+    if (priority <= 3) return "bg-yellow-100 text-yellow-800 dark:bg-yellow-950 dark:text-yellow-400";
+    return "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-400";
+  };
+
+  const getModeColor = (mode?: string) => {
+    if (mode === "rail") return "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-400";
+    if (mode === "road") return "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-400";
+    return "bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-400";
+  };
+
+  const getPriorityLabel = (priority: number) => {
+    if (priority === 1) return "🚨 CRITICAL";
+    if (priority === 2) return "🔴 HIGH";
+    if (priority === 3) return "🟡 MEDIUM";
+    if (priority === 4) return "🔵 LOW";
+    return "⚪ MINIMAL";
+  };
+
+  const orders = sampleDataset?.orders || [];
+
+  if (!sampleDataset || !optimizationResult) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center h-screen">
+          <Card>
+            <CardContent className="pt-6 text-center">
+              <p className="text-muted-foreground">Loading orders...</p>
+            </CardContent>
+          </Card>
+        </div>
+      </Layout>
+    );
+  }
+
+  const getAssignmentForOrder = (orderId: string) => {
+    return optimizationResult.rail_vs_road_assignment.find(
+      (a) => a.order_id === orderId
+    );
+  };
+
+  const getRakeForOrder = (orderId: string) => {
+    const assignment = getAssignmentForOrder(orderId);
+    if (!assignment || !assignment.assigned_rake_id) return null;
+    return optimizationResult.planned_rakes.find(
+      (r) => r.planned_rake_id === assignment.assigned_rake_id
+    );
+  };
+
+  const handleShowRecommendation = (order: Order) => {
+    const assignment = getAssignmentForOrder(order.order_id);
+    setSelectedOrder(order);
+    setSelectedAssignment(assignment || null);
+    setShowRecommendation(true);
+  };
+
   return (
     <Layout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold text-foreground">Orders</h1>
-            <p className="text-muted-foreground mt-2">
-              Pending customer orders with AI allocation recommendations
-            </p>
-          </div>
-          <button className="px-6 py-3 bg-gradient-to-r from-primary to-secondary text-primary-foreground rounded-lg hover:opacity-90 font-semibold transition-all flex items-center gap-2">
-            <Plus className="w-5 h-5" />
-            Add Order
-          </button>
-        </div>
+      <div className="flex-1 overflow-auto">
+        <div className="min-h-full bg-gradient-to-b from-background to-secondary/20">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {/* Header */}
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-foreground mb-2">
+                📦 Customer Orders
+              </h1>
+              <p className="text-muted-foreground">
+                {orders.length} pending orders · Click any order to see the best way to ship it
+              </p>
+            </div>
 
-        {/* Filters */}
-        <div className="flex items-center gap-4 flex-wrap">
-          <select className="px-4 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary">
-            <option>All Priorities</option>
-            <option>High Priority</option>
-            <option>Medium Priority</option>
-            <option>Low Priority</option>
-          </select>
-          <select className="px-4 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary">
-            <option>All Customers</option>
-            <option>Delhi Steel Mills</option>
-            <option>Mumbai Steel</option>
-            <option>Ahmedabad Mills</option>
-            <option>Chennai Steel Works</option>
-          </select>
-          <select className="px-4 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary">
-            <option>All Materials</option>
-            <option>HR Coils</option>
-            <option>Slabs</option>
-            <option>Billets</option>
-            <option>Iron Ore</option>
-          </select>
-        </div>
+            {/* Filter Summary */}
+            <Card className="mb-6 bg-blue-50/50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+              <CardContent className="pt-4">
+                <div className="flex flex-wrap gap-2">
+                  <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-400">
+                    All Orders
+                  </Badge>
+                  <Badge variant="outline">
+                    Priority-1: {orders.filter((o) => o.priority === 1).length}
+                  </Badge>
+                  <Badge variant="outline">
+                    Prefer Rail: {orders.filter((o) => o.preferred_mode === "rail").length}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
 
-        {/* Orders Table */}
-        <div className="bg-card border border-border rounded-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-border bg-background/50">
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
-                    Order ID
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
-                    Customer
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
-                    Material
-                  </th>
-                  <th className="px-6 py-4 text-right text-sm font-semibold text-foreground">
-                    Qty (T)
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
-                    Due Date
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
-                    Priority
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
-                    AI Recommendation
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
-                    Your Selection
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {mockOrders.map((order) => (
-                  <tr
-                    key={order.id}
-                    className="border-b border-border hover:bg-background/30 transition-colors"
+            {/* Orders Grid */}
+            <div className="space-y-3 mb-8">
+              {orders.map((order, idx) => {
+                const assignment = getAssignmentForOrder(order.order_id);
+                const rake = getRakeForOrder(order.order_id);
+                const dueDate = new Date(order.due_date);
+                const now = new Date();
+                const hoursUntilDue = (dueDate.getTime() - now.getTime()) / 3600000;
+
+                return (
+                  <Card
+                    key={order.order_id}
+                    className="hover:shadow-md transition-all cursor-pointer"
+                    onClick={() => handleShowRecommendation(order)}
                   >
-                    <td className="px-6 py-4">
-                      <span className="font-bold text-primary">{order.id}</span>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-foreground">
-                      {order.customer}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-foreground">
-                      {order.material}
-                    </td>
-                    <td className="px-6 py-4 text-right text-sm font-medium text-foreground">
-                      {order.qty}T
-                    </td>
-                    <td className="px-6 py-4 text-sm text-foreground">
-                      {order.dueDate}
-                    </td>
-                    <td className="px-6 py-4">
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium ${
-                          order.priority === "high"
-                            ? "bg-red-500/20 text-red-400"
-                            : order.priority === "medium"
-                              ? "bg-yellow-500/20 text-yellow-400"
-                              : "bg-blue-500/20 text-blue-400"
-                        }`}
-                      >
-                        {order.priority.charAt(0).toUpperCase() +
-                          order.priority.slice(1)}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm text-primary font-semibold">
-                          {order.aiRecommendation}
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                          (AI)
-                        </span>
+                    <CardContent className="pt-6">
+                      <div className="flex items-start justify-between gap-4">
+                        {/* Left: Order Info */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-3 mb-3">
+                            <Package className="w-5 h-5 text-primary flex-shrink-0" />
+                            <h3 className="text-lg font-semibold">{order.order_id}</h3>
+                            <Badge className={getPriorityColor(order.priority)}>
+                              {getPriorityLabel(order.priority)}
+                            </Badge>
+                          </div>
+
+                          <div className="text-sm text-muted-foreground space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium">{order.customer_id}</span>
+                              <span>•</span>
+                              <span>{order.material_id}</span>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <MapPin className="w-4 h-4 flex-shrink-0" />
+                              <span>{order.destination}</span>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <Clock className="w-4 h-4 flex-shrink-0" />
+                              <span>
+                                Due: {dueDate.toLocaleDateString()} at{" "}
+                                {dueDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                              </span>
+                              {hoursUntilDue < 72 && (
+                                <Badge
+                                  className={
+                                    hoursUntilDue < 24
+                                      ? "bg-red-100 text-red-800"
+                                      : "bg-yellow-100 text-yellow-800"
+                                  }
+                                >
+                                  {hoursUntilDue < 24 ? "🚨 URGENT" : "⚠️ SOON"}
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Middle: Quantity */}
+                        <div className="text-center">
+                          <div className="text-3xl font-bold text-primary">
+                            {order.quantity_tonnes}
+                          </div>
+                          <div className="text-xs text-muted-foreground">tonnes</div>
+                        </div>
+
+                        {/* Right: Mode & CTA */}
+                        <div className="flex flex-col items-end gap-3">
+                          <Badge className={getModeColor(order.preferred_mode)}>
+                            {order.preferred_mode === "rail"
+                              ? "🚂 Rail Preferred"
+                              : order.preferred_mode === "road"
+                                ? "🚚 Road Preferred"
+                                : "↔️ Either Mode"}
+                          </Badge>
+
+                          {assignment && (
+                            <div className="text-right">
+                              <div className="text-sm font-medium text-green-600 dark:text-green-400">
+                                {assignment.assigned_mode === "rail" ? "🚂 Rail" : "🚚 Road"}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {assignment.assigned_rake_id
+                                  ? `${assignment.assigned_rake_id}`
+                                  : "Multiple trucks"}
+                              </div>
+                            </div>
+                          )}
+
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleShowRecommendation(order);
+                            }}
+                            className="gap-1"
+                          >
+                            <Lightbulb className="w-4 h-4" />
+                            See Best Fit
+                          </Button>
+                        </div>
                       </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <select
-                        defaultValue={order.selectedMode}
-                        className="px-3 py-1.5 bg-background border border-border rounded text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                      >
-                        <option>Rail - RAKE-001</option>
-                        <option>Rail - RAKE-002</option>
-                        <option>Rail - RAKE-003</option>
-                        <option>Rail - RAKE-004</option>
-                        <option>Road - Transport A</option>
-                        <option>Road - Transport B</option>
-                      </select>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
           </div>
-        </div>
-
-        {/* Summary Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <StatCard
-            label="Total Orders"
-            value={mockOrders.length}
-            subtext={`${mockOrders.reduce((sum, o) => sum + o.qty, 0)}T material`}
-          />
-          <StatCard
-            label="High Priority"
-            value={mockOrders.filter((o) => o.priority === "high").length}
-            subtext="Require immediate dispatch"
-          />
-          <StatCard
-            label="Rail Allocation"
-            value={mockOrders.filter((o) => o.selectedMode.startsWith("Rail")).length}
-            subtext="orders on rails"
-          />
-          <StatCard
-            label="Road Allocation"
-            value={mockOrders.filter((o) => o.selectedMode.startsWith("Road")).length}
-            subtext="orders by road"
-          />
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex gap-4">
-          <button className="flex-1 px-6 py-3 bg-gradient-to-r from-primary to-secondary text-primary-foreground rounded-lg hover:opacity-90 font-bold transition-all">
-            Finalize Order Allocations
-          </button>
-          <button className="px-6 py-3 border border-border text-foreground rounded-lg hover:bg-background font-semibold transition-colors">
-            Reset to AI Recommendations
-          </button>
         </div>
       </div>
+
+      {/* Recommendation Panel */}
+      {selectedOrder && selectedAssignment && (
+        <Sheet open={showRecommendation} onOpenChange={setShowRecommendation}>
+          <SheetContent className="w-full max-w-2xl overflow-y-auto">
+            <SheetHeader className="mb-6">
+              <SheetTitle className="text-2xl">{selectedOrder.order_id}</SheetTitle>
+              <SheetDescription className="text-base">
+                {selectedOrder.customer_id} · {selectedOrder.quantity_tonnes} tonnes of{" "}
+                {selectedOrder.material_id}
+              </SheetDescription>
+            </SheetHeader>
+
+            <div className="space-y-6">
+              {/* Recommendation Alert */}
+              <Alert className="bg-green-50/50 dark:bg-green-950/20 border-green-200 dark:border-green-800">
+                <Lightbulb className="w-4 h-4 text-green-600" />
+                <AlertDescription className="text-green-800 dark:text-green-400">
+                  <strong>Best Fit:</strong> This order will be shipped via{" "}
+                  <strong>{selectedAssignment.assigned_mode === "rail" ? "RAIL" : "ROAD"}</strong>.
+                </AlertDescription>
+              </Alert>
+
+              {/* Main Explanation */}
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 rounded-lg p-4 border border-blue-200/50 dark:border-blue-800/30">
+                <p className="text-base leading-relaxed">
+                  {selectedAssignment.assigned_mode === "rail" ? (
+                    <>
+                      <strong>Your order will fit best in{" "}
+                      {getRakeForOrder(selectedOrder.order_id)?.planned_rake_id}.</strong> This rake is
+                      already heading to <strong>{getRakeForOrder(selectedOrder.order_id)?.primary_destination}</strong> and can
+                      accommodate your {selectedOrder.quantity_tonnes} tonnes at{" "}
+                      <strong>{getRakeForOrder(selectedOrder.order_id)?.utilization_percent.toFixed(0)}% utilization</strong>, which
+                      is highly efficient. Your order will reach{" "}
+                      <strong>{selectedOrder.destination}</strong> on{" "}
+                      <strong>
+                        {new Date(selectedAssignment.expected_arrival_date).toLocaleDateString()}
+                      </strong>
+                      , which is <strong>1.2 days before</strong> your due date. This saves you from
+                      any late penalties.
+                    </>
+                  ) : (
+                    <>
+                      <strong>Road transport is the optimal choice</strong> for your order. We've
+                      reserved <strong>{selectedAssignment.planned_truck_batches} truck batch(es)</strong> for
+                      your {selectedOrder.quantity_tonnes} tonnes of {selectedOrder.material_id}. Your order
+                      will be picked up and headed to <strong>{selectedOrder.destination}</strong>, arriving
+                      on <strong>{new Date(selectedAssignment.expected_arrival_date).toLocaleDateString()}</strong>,
+                      which is <strong>2+ days early</strong> of your deadline.
+                    </>
+                  )}
+                </p>
+              </div>
+
+              {/* Why This Option */}
+              <div>
+                <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  Why This Option
+                </h3>
+                <ul className="space-y-2 text-sm">
+                  {selectedAssignment.assigned_mode === "rail" ? (
+                    <>
+                      <li className="flex gap-2">
+                        <span className="text-green-600">✓</span>
+                        <span>
+                          <strong>Cost efficient:</strong> Rail is ₹30-50/tonne cheaper than road for
+                          this distance
+                        </span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-green-600">✓</span>
+                        <span>
+                          <strong>On-time guaranteed:</strong> Arrives before your SLA deadline with
+                          safety buffer
+                        </span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-green-600">✓</span>
+                        <span>
+                          <strong>Consolidated:</strong> Grouped with other orders to same destination,
+                          maximizing efficiency
+                        </span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-green-600">✓</span>
+                        <span>
+                          <strong>Environmentally better:</strong> Rail has lower carbon footprint per
+                          tonne
+                        </span>
+                      </li>
+                    </>
+                  ) : (
+                    <>
+                      <li className="flex gap-2">
+                        <span className="text-green-600">✓</span>
+                        <span>
+                          <strong>Speed:</strong> Direct point-to-point, arrives in ~{Math.round(selectedAssignment.expected_arrival_date ? (new Date(selectedAssignment.expected_arrival_date).getTime() - new Date().getTime()) / 3600000 : 24)} hours
+                        </span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-green-600">✓</span>
+                        <span>
+                          <strong>Flexibility:</strong> Can depart anytime, no rail schedule constraints
+                        </span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-green-600">✓</span>
+                        <span>
+                          <strong>Your preference:</strong> Matches your preferred shipping mode
+                        </span>
+                      </li>
+                    </>
+                  )}
+                </ul>
+              </div>
+
+              {/* Key Metrics */}
+              <div className="grid grid-cols-2 gap-3 bg-secondary/30 rounded-lg p-4">
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Expected Arrival</p>
+                  <p className="font-semibold text-sm">
+                    {new Date(selectedAssignment.expected_arrival_date).toLocaleDateString()}
+                  </p>
+                  <p className="text-xs text-green-600 dark:text-green-400">
+                    {Math.round((new Date(selectedOrder.due_date).getTime() - new Date(selectedAssignment.expected_arrival_date).getTime()) / (24 * 3600000))} days early
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Confidence</p>
+                  <p className="font-semibold text-sm">
+                    {selectedAssignment.confidence_percent}%
+                  </p>
+                  <p className="text-xs text-muted-foreground">Likelihood of success</p>
+                </div>
+              </div>
+
+              {/* Approve CTA */}
+              <Button size="lg" className="w-full h-12 text-base gap-2">
+                <CheckCircle className="w-5 h-5" />
+                Approve This Assignment
+              </Button>
+            </div>
+          </SheetContent>
+        </Sheet>
+      )}
     </Layout>
-  );
-}
-
-interface StatCardProps {
-  label: string;
-  value: number | string;
-  subtext: string;
-}
-
-function StatCard({ label, value, subtext }: StatCardProps) {
-  return (
-    <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/50 transition-colors">
-      <p className="text-sm text-muted-foreground mb-2">{label}</p>
-      <p className="text-3xl font-bold text-foreground mb-1">{value}</p>
-      <p className="text-xs text-muted-foreground">{subtext}</p>
-    </div>
   );
 }
