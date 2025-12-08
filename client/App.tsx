@@ -6,10 +6,12 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import RakeDashboard from "./pages/RakeDashboard";
-import DataImport from "./pages/DataImport";
-import Placeholder from "./pages/Placeholder";
+import Dashboard from "./pages/Dashboard";
+import RakePlanner from "./pages/RakePlanner";
+import Orders from "./pages/Orders";
+import Stockyards from "./pages/Stockyards";
+import Reports from "./pages/Reports";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,12 +23,12 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/rake-dashboard" element={<RakeDashboard />} />
-          <Route path="/import" element={<DataImport />} />
-          <Route path="/forecast" element={<Placeholder />} />
-          <Route path="/analytics" element={<Placeholder />} />
-          <Route path="/admin" element={<Placeholder />} />
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/rake-planner" element={<RakePlanner />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/stockyards" element={<Stockyards />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
