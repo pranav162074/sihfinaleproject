@@ -7,98 +7,84 @@
 
 @layer base {
   /**
-   * Tailwind CSS theme for Rake Optimization DSS
-   * Modern, professional color scheme optimized for logistics/industrial optimization
+   * SAIL RakeOpt: Dark enterprise theme with neon mint + violet accents
    * All colors are expressed as HSL values.
+   * Neon Mint: #00E5B8 (167 100% 45%)
+   * Neon Violet: #D946EF (269 97% 56%)
   */
   :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71% 10%;
+    --background: 217 19% 8%;
+    --foreground: 210 17% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 224 71% 10%;
+    --card: 217 16% 12%;
+    --card-foreground: 210 17% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71% 10%;
+    --popover: 217 16% 12%;
+    --popover-foreground: 210 17% 98%;
 
-    --primary: 217 92% 47%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 167 100% 45%;
+    --primary-foreground: 217 19% 8%;
 
-    --secondary: 39 93% 52%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 269 97% 56%;
+    --secondary-foreground: 217 19% 8%;
 
-    --muted: 220 13% 91%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 217 16% 28%;
+    --muted-foreground: 210 9% 61%;
 
-    --accent: 217 92% 47%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 167 100% 45%;
+    --accent-foreground: 217 19% 8%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 217 19% 8%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 95%;
-    --ring: 217 92% 47%;
+    --border: 217 16% 22%;
+    --input: 217 16% 18%;
+    --ring: 167 100% 45%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 224 71% 10%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 217 92% 47%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 39 93% 52%;
-    --sidebar-accent-foreground: 224 71% 10%;
-    --sidebar-border: 224 29% 25%;
-    --sidebar-ring: 217 92% 47%;
-
-    /* Additional colors for the DSS system */
-    --success: 142 76% 36%;
-    --warning: 39 93% 52%;
-    --info: 217 92% 47%;
+    /* Additional semantic colors */
+    --success: 142 72% 50%;
+    --warning: 38 92% 50%;
+    --info: 167 100% 45%;
     --error: 0 84% 60%;
+
+    /* Subtle gradients */
+    --gradient-mint-violet: linear-gradient(135deg, hsl(167 100% 45%) 0%, hsl(269 97% 56%) 100%);
   }
 
   .dark {
-    --background: 224 71% 6%;
-    --foreground: 0 0% 100%;
+    --background: 217 19% 8%;
+    --foreground: 210 17% 98%;
 
-    --card: 224 29% 15%;
-    --card-foreground: 0 0% 100%;
+    --card: 217 16% 12%;
+    --card-foreground: 210 17% 98%;
 
-    --popover: 224 29% 15%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 217 16% 12%;
+    --popover-foreground: 210 17% 98%;
 
-    --primary: 217 92% 57%;
-    --primary-foreground: 224 71% 10%;
+    --primary: 167 100% 45%;
+    --primary-foreground: 217 19% 8%;
 
-    --secondary: 39 93% 57%;
-    --secondary-foreground: 224 71% 10%;
+    --secondary: 269 97% 56%;
+    --secondary-foreground: 217 19% 8%;
 
-    --muted: 220 13% 35%;
-    --muted-foreground: 220 10% 70%;
+    --muted: 217 16% 28%;
+    --muted-foreground: 210 9% 61%;
 
-    --accent: 217 92% 57%;
-    --accent-foreground: 224 71% 10%;
+    --accent: 167 100% 45%;
+    --accent-foreground: 217 19% 8%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 224 71% 6%;
+    --destructive-foreground: 217 19% 8%;
 
-    --border: 224 29% 25%;
-    --input: 224 29% 20%;
-    --ring: 217 92% 57%;
+    --border: 217 16% 22%;
+    --input: 217 16% 18%;
+    --ring: 167 100% 45%;
 
-    --sidebar-background: 224 29% 12%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 217 92% 57%;
-    --sidebar-primary-foreground: 224 71% 10%;
-    --sidebar-accent: 39 93% 57%;
-    --sidebar-accent-foreground: 224 71% 10%;
-    --sidebar-border: 224 29% 20%;
-    --sidebar-ring: 217 92% 57%;
-
-    --success: 142 76% 46%;
-    --warning: 39 93% 57%;
-    --info: 217 92% 57%;
+    --success: 142 72% 50%;
+    --warning: 38 92% 50%;
+    --info: 167 100% 45%;
     --error: 0 84% 60%;
   }
 }
