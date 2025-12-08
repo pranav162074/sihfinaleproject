@@ -1,282 +1,279 @@
-import { Layout } from "@/components/Layout";
 import { useState } from "react";
+import { Layout } from "@/components/Layout";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Settings, AlertCircle, CheckCircle, Lock } from "lucide-react";
 
-export default function Settings() {
-  const [multiDestination, setMultiDestination] = useState(true);
-  const [minUtilization, setMinUtilization] = useState(80);
-  const [maxRakesPerDay, setMaxRakesPerDay] = useState(9);
-  const [optimizationFocus, setOptimizationFocus] = useState("cost");
+export default function SettingsNew() {
+  const [minUtilization, setMinUtilization] = useState(75);
+  const [enableRailBias, setEnableRailBias] = useState(true);
+  const [allowMultiDest, setAllowMultiDest] = useState(true);
+  const [riskTolerance, setRiskTolerance] = useState(50);
+  const [autoDispatch, setAutoDispatch] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = () => {
+    setSaved(true);
+    setTimeout(() => setSaved(false), 3000);
+  };
 
   return (
     <Layout>
-      <div className="max-w-3xl space-y-8">
-        {/* Header */}
-        <div>
-          <h1 className="text-4xl font-bold text-foreground">Settings</h1>
-          <p className="text-muted-foreground mt-2">
-            Configure business rules and optimization constraints
-          </p>
-        </div>
+      <div className="flex-1 overflow-auto">
+        <div className="min-h-full bg-gradient-to-b from-background to-secondary/20">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {/* Header */}
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-foreground mb-2 flex items-center gap-2">
+                <Settings className="w-8 h-8 text-primary" />
+                Optimization Settings
+              </h1>
+              <p className="text-muted-foreground">
+                Customize OptiRake behavior to match your business needs
+              </p>
+            </div>
 
-        {/* Optimization Focus */}
-        <SettingSection
-          title="Optimization Focus"
-          description="Choose the primary objective for dispatch optimization"
-        >
-          <div className="space-y-4">
-            {[
-              {
-                value: "cost",
-                label: "Minimize Cost",
-                description:
-                  "Prioritize reducing freight and operational costs",
-              },
-              {
-                value: "sla",
-                label: "Maximize SLA Compliance",
-                description: "Prioritize on-time delivery and customer satisfaction",
-              },
-              {
-                value: "utilization",
-                label: "Maximize Utilization",
-                description: "Prioritize maximizing rake and wagon utilization",
-              },
-            ].map((option) => (
-              <label
-                key={option.value}
-                className="flex items-start gap-4 p-4 border border-border rounded-lg cursor-pointer hover:bg-background/50 transition-colors"
-              >
-                <input
-                  type="radio"
-                  name="optimization"
-                  value={option.value}
-                  checked={optimizationFocus === option.value}
-                  onChange={(e) => setOptimizationFocus(e.target.value)}
-                  className="mt-1 w-4 h-4 accent-primary"
-                />
-                <div>
-                  <p className="font-semibold text-foreground">{option.label}</p>
+            {/* Save Alert */}
+            {saved && (
+              <Alert className="mb-6 bg-green-50/50 dark:bg-green-950/20 border-green-200 dark:border-green-800">
+                <CheckCircle className="w-4 h-4 text-green-600" />
+                <AlertDescription className="text-green-800 dark:text-green-400">
+                  Settings saved successfully!
+                </AlertDescription>
+              </Alert>
+            )}
+
+            {/* Settings Sections */}
+            <div className="space-y-6 mb-8">
+              {/* Utilization Settings */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">🎯 Rake Utilization Rules</CardTitle>
+                  <CardDescription>
+                    Control how full rakes need to be before approval
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <label className="text-sm font-semibold">Minimum Utilization %</label>
+                      <Badge variant="outline">{minUtilization}%</Badge>
+                    </div>
+
+                    <Slider
+                      value={[minUtilization]}
+                      onValueChange={([val]) => setMinUtilization(val)}
+                      min={40}
+                      max={95}
+                      step={5}
+                      className="w-full"
+                    />
+
+                    <div className="bg-blue-50/50 dark:bg-blue-950/20 rounded-lg p-3 border border-blue-200/50 dark:border-blue-800/30">
+                      <p className="text-sm text-muted-foreground">
+                        <strong>What it does:</strong> Higher values mean rakes must be fuller before
+                        approval. This reduces the number of rakes but may delay dispatch.
+                      </p>
+                      <div className="mt-2 space-y-1 text-xs">
+                        <p>
+                          • <strong>40%:</strong> Very flexible—approves partially loaded rakes quickly
+                        </p>
+                        <p>
+                          • <strong>75%:</strong> Standard—good balance between speed and efficiency
+                        </p>
+                        <p>
+                          • <strong>95%:</strong> Strict—maximizes efficiency but takes longer
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Separator />
+
+              {/* Mode Preferences */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">🚂 Rail vs Road Preferences</CardTitle>
+                  <CardDescription>
+                    Guide the system toward your preferred shipping modes
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium text-sm">Prefer Rail Transport</p>
+                      <p className="text-xs text-muted-foreground">
+                        System will favor rail when costs are comparable
+                      </p>
+                    </div>
+                    <Switch checked={enableRailBias} onCheckedChange={setEnableRailBias} />
+                  </div>
+
+                  {enableRailBias && (
+                    <div className="bg-green-50/50 dark:bg-green-950/20 rounded-lg p-3 border border-green-200/50 dark:border-green-800/30 text-sm text-muted-foreground">
+                      ✅ Rail preference enabled. This reduces carbon footprint and is often cheaper at
+                      scale.
+                    </div>
+                  )}
+
+                  <Separator className="my-3" />
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium text-sm">Allow Multi-Destination Rakes</p>
+                      <p className="text-xs text-muted-foreground">
+                        One rake can serve multiple cities in sequence
+                      </p>
+                    </div>
+                    <Switch checked={allowMultiDest} onCheckedChange={setAllowMultiDest} />
+                  </div>
+
+                  {allowMultiDest && (
+                    <div className="bg-green-50/50 dark:bg-green-950/20 rounded-lg p-3 border border-green-200/50 dark:border-green-800/30 text-sm text-muted-foreground">
+                      ✅ Multi-destination enabled. Improves consolidation but may add routing complexity.
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              <Separator />
+
+              {/* Risk Settings */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">⚡ Risk Tolerance</CardTitle>
+                  <CardDescription>
+                    How aggressively should OptiRake push for cost savings?
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <label className="text-sm font-semibold">Risk Tolerance</label>
+                      <div className="flex items-center gap-2">
+                        <Badge
+                          variant="outline"
+                          className={
+                            riskTolerance < 30
+                              ? "bg-green-100 text-green-800"
+                              : riskTolerance < 70
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-red-100 text-red-800"
+                          }
+                        >
+                          {riskTolerance < 30
+                            ? "Conservative"
+                            : riskTolerance < 70
+                              ? "Moderate"
+                              : "Aggressive"}
+                        </Badge>
+                      </div>
+                    </div>
+
+                    <Slider
+                      value={[riskTolerance]}
+                      onValueChange={([val]) => setRiskTolerance(val)}
+                      min={0}
+                      max={100}
+                      step={10}
+                      className="w-full"
+                    />
+
+                    <div className="grid grid-cols-3 gap-2 text-xs text-muted-foreground">
+                      <div className="text-center">
+                        <p className="font-semibold">Conservative</p>
+                        <p>Minimize delays</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="font-semibold">Moderate</p>
+                        <p>Balanced</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="font-semibold">Aggressive</p>
+                        <p>Maximize savings</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-blue-50/50 dark:bg-blue-950/20 rounded-lg p-3 border border-blue-200/50 dark:border-blue-800/30">
+                    <p className="text-sm text-muted-foreground">
+                      <strong>What it means:</strong> Higher risk tolerance allows OptiRake to accept
+                      orders with slightly higher delay probability if they significantly reduce cost. Lower
+                      tolerance prioritizes SLA compliance.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Separator />
+
+              {/* Advanced Settings */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">🔧 Advanced Options</CardTitle>
+                  <CardDescription>
+                    For experienced users only
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium text-sm flex items-center gap-2">
+                        <Lock className="w-4 h-4" />
+                        Auto-Dispatch Approved Rakes
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Automatically dispatch rakes without manual confirmation
+                      </p>
+                    </div>
+                    <Switch checked={autoDispatch} onCheckedChange={setAutoDispatch} />
+                  </div>
+
+                  {autoDispatch && (
+                    <Alert className="bg-orange-50/50 dark:bg-orange-950/20 border-orange-200 dark:border-orange-800">
+                      <AlertCircle className="w-4 h-4 text-orange-600" />
+                      <AlertDescription className="text-orange-800 dark:text-orange-400">
+                        ⚠️ Auto-dispatch is enabled. Rakes will be dispatched immediately after
+                        optimization. Disable if you need manual approval.
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                </CardContent>
+              </Card>
+
+              <Separator />
+
+              {/* Info Box */}
+              <Card className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 border-indigo-200 dark:border-indigo-800">
+                <CardContent className="pt-6">
                   <p className="text-sm text-muted-foreground">
-                    {option.description}
+                    💡 <strong>Tip:</strong> Start with the default settings (75% utilization, rail preference,
+                    conservative risk). Monitor results for a week, then adjust based on your KPIs.
                   </p>
-                </div>
-              </label>
-            ))}
-          </div>
-        </SettingSection>
-
-        {/* Rake Configuration */}
-        <SettingSection
-          title="Rake Configuration"
-          description="Define how rakes are formed and dispatched"
-        >
-          <div className="space-y-6">
-            {/* Multi-Destination Toggle */}
-            <div className="flex items-center justify-between p-4 bg-background rounded-lg border border-border">
-              <div>
-                <p className="font-semibold text-foreground">
-                  Allow Multi-Destination Rakes
-                </p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Allow a single rake to serve multiple customer destinations
-                </p>
-              </div>
-              <button
-                onClick={() => setMultiDestination(!multiDestination)}
-                className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
-                  multiDestination
-                    ? "bg-primary"
-                    : "bg-muted"
-                }`}
-              >
-                <span
-                  className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform ${
-                    multiDestination ? "translate-x-7" : "translate-x-1"
-                  }`}
-                />
-              </button>
+                </CardContent>
+              </Card>
             </div>
 
-            {/* Minimum Utilization Slider */}
-            <div className="p-4 bg-background rounded-lg border border-border">
-              <div className="flex items-center justify-between mb-4">
-                <p className="font-semibold text-foreground">
-                  Minimum Rake Utilization
-                </p>
-                <span className="text-2xl font-bold text-primary">
-                  {minUtilization}%
-                </span>
-              </div>
-              <p className="text-sm text-muted-foreground mb-4">
-                Do not dispatch rakes below this utilization threshold
-              </p>
-              <input
-                type="range"
-                min="60"
-                max="95"
-                step="5"
-                value={minUtilization}
-                onChange={(e) => setMinUtilization(parseInt(e.target.value))}
-                className="w-full accent-primary"
-              />
-              <div className="flex justify-between text-xs text-muted-foreground mt-2">
-                <span>60%</span>
-                <span>95%</span>
-              </div>
-            </div>
-
-            {/* Max Rakes Per Day */}
-            <div className="p-4 bg-background rounded-lg border border-border">
-              <div className="flex items-center justify-between mb-4">
-                <p className="font-semibold text-foreground">
-                  Max Rakes Dispatched Per Day
-                </p>
-                <span className="text-2xl font-bold text-primary">
-                  {maxRakesPerDay}
-                </span>
-              </div>
-              <p className="text-sm text-muted-foreground mb-4">
-                Maximum number of rakes the plant can dispatch daily
-              </p>
-              <input
-                type="range"
-                min="3"
-                max="15"
-                step="1"
-                value={maxRakesPerDay}
-                onChange={(e) => setMaxRakesPerDay(parseInt(e.target.value))}
-                className="w-full accent-primary"
-              />
-              <div className="flex justify-between text-xs text-muted-foreground mt-2">
-                <span>3</span>
-                <span>15</span>
-              </div>
+            {/* Action Buttons */}
+            <div className="flex gap-3">
+              <Button size="lg" onClick={handleSave} className="flex-1">
+                <CheckCircle className="w-4 h-4 mr-2" />
+                Save Settings
+              </Button>
+              <Button size="lg" variant="outline" className="flex-1">
+                Reset to Defaults
+              </Button>
             </div>
           </div>
-        </SettingSection>
-
-        {/* Soft Constraints */}
-        <SettingSection
-          title="Soft Constraints"
-          description="Configure optimization preferences and penalty weights"
-        >
-          <div className="space-y-4">
-            {[
-              {
-                name: "Minimize Partial Loads",
-                weight: 85,
-                description:
-                  "Penalize incomplete wagon utilization in rakes",
-              },
-              {
-                name: "Reduce Demurrage Risk",
-                weight: 92,
-                description:
-                  "Prioritize orders with higher demurrage penalty rates",
-              },
-              {
-                name: "Prioritize High-Value Orders",
-                weight: 78,
-                description:
-                  "Weight orders by revenue and customer importance",
-              },
-              {
-                name: "Balance Stockyard Load",
-                weight: 65,
-                description:
-                  "Distribute load evenly across all stockyards",
-              },
-            ].map((constraint) => (
-              <div
-                key={constraint.name}
-                className="p-4 bg-background rounded-lg border border-border"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <p className="font-semibold text-foreground">
-                    {constraint.name}
-                  </p>
-                  <span className="text-sm font-bold text-primary">
-                    {constraint.weight}%
-                  </span>
-                </div>
-                <p className="text-xs text-muted-foreground mb-3">
-                  {constraint.description}
-                </p>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  step="5"
-                  defaultValue={constraint.weight}
-                  className="w-full accent-primary"
-                />
-              </div>
-            ))}
-          </div>
-        </SettingSection>
-
-        {/* Material Compatibility */}
-        <SettingSection
-          title="Material Compatibility Rules"
-          description="Define which materials can be mixed in the same rake"
-        >
-          <div className="p-4 bg-background rounded-lg border border-border space-y-3">
-            {[
-              { a: "HR Coils", b: "Slabs", compatible: true },
-              { a: "Billets", b: "Iron Ore", compatible: false },
-              { a: "HR Coils", b: "Billets", compatible: true },
-              { a: "Iron Ore", b: "Slabs", compatible: false },
-            ].map((rule, idx) => (
-              <div key={idx} className="flex items-center justify-between">
-                <span className="text-sm text-foreground">
-                  {rule.a} + {rule.b}
-                </span>
-                <span
-                  className={`px-3 py-1 rounded text-xs font-medium ${
-                    rule.compatible
-                      ? "bg-green-500/20 text-green-400"
-                      : "bg-red-500/20 text-red-400"
-                  }`}
-                >
-                  {rule.compatible ? "Compatible" : "Not Compatible"}
-                </span>
-              </div>
-            ))}
-          </div>
-        </SettingSection>
-
-        {/* Action Buttons */}
-        <div className="flex gap-4 pt-6">
-          <button className="flex-1 px-6 py-3 bg-gradient-to-r from-primary to-secondary text-primary-foreground rounded-lg hover:opacity-90 font-bold transition-all">
-            Save Settings
-          </button>
-          <button className="px-6 py-3 border border-border text-foreground rounded-lg hover:bg-background font-semibold transition-colors">
-            Reset to Defaults
-          </button>
         </div>
       </div>
     </Layout>
-  );
-}
-
-interface SettingSectionProps {
-  title: string;
-  description: string;
-  children: React.ReactNode;
-}
-
-function SettingSection({
-  title,
-  description,
-  children,
-}: SettingSectionProps) {
-  return (
-    <div className="border-b border-border pb-8">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-foreground">{title}</h2>
-        <p className="text-muted-foreground mt-1">{description}</p>
-      </div>
-      {children}
-    </div>
   );
 }
