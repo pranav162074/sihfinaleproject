@@ -167,6 +167,12 @@
     box-shadow: 0 0 16px rgba(0, 252, 232, 0.12);
   }
 
+  /* Gradient Card */
+  .card-gradient {
+    @apply rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 to-secondary/5 overflow-hidden;
+    box-shadow: 0 0 20px rgba(0, 252, 232, 0.08);
+  }
+
   /* Gradient Button */
   .btn-gradient {
     @apply bg-gradient-to-r from-primary via-primary to-secondary hover:shadow-lg transition-all duration-300;
