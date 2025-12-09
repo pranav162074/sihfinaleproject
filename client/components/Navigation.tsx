@@ -108,7 +108,7 @@ export function Navigation() {
     <nav className="h-16 bg-card/30 backdrop-blur-xl border-b border-border/30 flex items-center px-8 sticky top-0 z-40">
       <div className="flex items-center gap-8 w-full">
         {/* Logo - Premium Branding */}
-        <Link to="/dashboard" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+        <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary via-secondary to-primary flex items-center justify-center shadow-lg" style={{
             boxShadow: "0 0 12px rgba(0, 252, 232, 0.3)"
           }}>
