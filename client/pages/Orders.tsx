@@ -27,6 +27,7 @@ import { Order, OptimizeRakesResponse } from "@shared/api";
 export default function Orders() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
+  const [hoveredRow, setHoveredRow] = useState<string | null>(null);
 
   const { data: sampleDataset } = useQuery({
     queryKey: ["sample-dataset"],
