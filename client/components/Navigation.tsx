@@ -1,13 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import {
-  BarChart3,
+  Home,
   Upload,
   Zap,
   Truck,
   TrendingUp,
   FileText,
-  Settings as SettingsIcon,
-  MessageCircle,
+  HelpCircle,
   Menu,
   X,
 } from "lucide-react";
@@ -21,14 +20,13 @@ export function Navigation() {
   const isMobile = useIsMobile();
 
   const navItems = [
-    { path: "/dashboard", label: "Dashboard", icon: BarChart3 },
+    { path: "/", label: "Home", icon: Home },
     { path: "/upload", label: "Data Upload", icon: Upload },
-    { path: "/optimize", label: "Optimization Run", icon: Zap },
-    { path: "/rake-plan", label: "Rake Plan & Dispatch", icon: Truck },
-    { path: "/rail-road", label: "Rail vs Road Split", icon: TrendingUp },
+    { path: "/optimize", label: "Run Optimization", icon: Zap },
+    { path: "/rake-plan", label: "Rake Planning", icon: Truck },
+    { path: "/rail-road", label: "Rail vs Road", icon: TrendingUp },
     { path: "/reports", label: "Reports", icon: FileText },
-    { path: "/settings", label: "Settings", icon: SettingsIcon },
-    { path: "/assistant", label: "AI Assistant", icon: MessageCircle },
+    { path: "/about", label: "About", icon: HelpCircle },
   ];
 
   const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + "/");
