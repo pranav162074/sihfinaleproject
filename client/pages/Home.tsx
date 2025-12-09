@@ -24,7 +24,6 @@ export default function Home() {
             {/* Problem Section */}
             <div className="card-glow p-8 space-y-4 border-red-500/20">
               <div className="flex items-start gap-3">
-                <div className="text-3xl">🔴</div>
                 <div className="flex-1">
                   <h2 className="text-2xl font-bold text-foreground">Current Problem</h2>
                 </div>
@@ -60,7 +59,6 @@ export default function Home() {
             {/* Solution Section */}
             <div className="card-glow p-8 space-y-4 border-primary/40">
               <div className="flex items-start gap-3">
-                <div className="text-3xl">🔵</div>
                 <div className="flex-1">
                   <h2 className="text-2xl font-bold text-foreground">What OptiRake DSS Does</h2>
                 </div>
@@ -104,7 +102,6 @@ export default function Home() {
             {/* Outcome Section */}
             <div className="card-glow p-8 space-y-4 border-green-500/20">
               <div className="flex items-start gap-3">
-                <div className="text-3xl">🟢</div>
                 <div className="flex-1">
                   <h2 className="text-2xl font-bold text-foreground">What You Get</h2>
                 </div>
@@ -149,7 +146,7 @@ export default function Home() {
           {/* Call to Action */}
           <div className="card-glow p-8 space-y-4 text-center border-primary/40">
             <p className="text-lg font-semibold text-foreground">
-              ➡ Upload real SAIL data → Click Optimize → Get the best transportation plan
+              Upload real SAIL data → Click Optimize → Get the best transportation plan
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <Link to="/data-input">
