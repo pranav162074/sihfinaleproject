@@ -143,12 +143,48 @@ export function validateCSVData(
 
 /**
  * Convert parsed CSV data to the expected data format
+ * Converts string values to appropriate types based on the schema
  */
 export function convertParsedDataToFormat(
   parsedData: ParsedCSVData,
   fileType: string
 ): unknown[] {
-  // For now, just return the rows as-is
-  // The backend validation will check for required fields
-  return parsedData.rows;
+  const numericFields: Record<string, string[]> = {
+    stockyards: ["available_tonnage", "safety_stock"],
+    orders: ["quantity_tonnes", "priority", "penalty_rate_per_day"],
+    rakes: ["num_wagons", "per_wagon_capacity_tonnes", "total_capacity_tonnes"],
+    product_wagon_matrix: ["max_load_per_wagon_tonnes"],
+    loading_points: ["max_rakes_per_day", "loading_rate_tonnes_per_hour", "operating_hours_start", "operating_hours_end", "siding_capacity_rakes"],
+    routes_costs: ["distance_km", "transit_time_hours", "cost_per_tonne", "idle_freight_cost_per_hour"],
+  };
+
+  const booleanFields: Record<string, string[]> = {
+    product_wagon_matrix: ["allowed"],
+    orders: ["partial_allowed"],
+  };
+
+  const fieldsToConvert = numericFields[fileType] || [];
+  const boolToConvert = booleanFields[fileType] || [];
+
+  return parsedData.rows.map(row => {
+    const converted: Record<string, any> = { ...row };
+
+    // Convert numeric fields
+    fieldsToConvert.forEach(field => {
+      if (field in converted && converted[field] !== '' && converted[field] !== null) {
+        const num = Number(converted[field]);
+        converted[field] = !isNaN(num) ? num : converted[field];
+      }
+    });
+
+    // Convert boolean fields
+    boolToConvert.forEach(field => {
+      if (field in converted) {
+        const val = String(converted[field]).toLowerCase();
+        converted[field] = val === 'true' || val === 'yes' || val === '1';
+      }
+    });
+
+    return converted;
+  });
 }
