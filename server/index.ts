@@ -8,6 +8,7 @@ import {
   handleSampleDataset,
   handleUploadData,
 } from "./routes/optimize";
+import { handlePlanRakes, handlePlanRakesDemo } from "./routes/rake-planner";
 
 export function createServer() {
   const app = express();
@@ -25,7 +26,11 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
-  // SAIL Rake Formation DSS routes
+  // OptiRake DSS - Rake Planning routes
+  app.post("/api/plan-rakes", handlePlanRakes);
+  app.get("/api/plan-rakes/demo", handlePlanRakesDemo);
+
+  // SAIL Rake Formation DSS routes (legacy)
   app.post("/api/optimize-rakes", handleOptimizeRakes);
   app.get("/api/explain-plan/:order_id", handleExplainPlan);
   app.get("/api/sample-dataset", handleSampleDataset);
