@@ -96,6 +96,44 @@ export default function RakePlanDispatch() {
     });
   };
 
+  const handleAddToDatabase = async () => {
+    if (plan.length === 0) {
+      toast({
+        title: "No Plan Available",
+        description: "Please generate a rake plan first",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const planData = {
+        timestamp: new Date().toISOString(),
+        rakePlan: plan,
+        kpis: kpis,
+        totalOrders: plan.length,
+        totalQuantity: plan.reduce((sum, item) => sum + item.quantity_tonnes, 0),
+        totalCost: plan.reduce((sum, item) => sum + item.estimated_cost, 0),
+      };
+
+      // Save to localStorage as database persistence
+      const existingPlans = JSON.parse(localStorage.getItem("savedRakePlans") || "[]");
+      existingPlans.push(planData);
+      localStorage.setItem("savedRakePlans", JSON.stringify(existingPlans));
+
+      toast({
+        title: "Plan Saved Successfully",
+        description: `Rake plan saved with timestamp ${new Date().toLocaleString()}. Total: ${plan.length} orders, ₹${(planData.totalCost / 1000).toFixed(1)}k cost`,
+      });
+    } catch (error) {
+      toast({
+        title: "Save Failed",
+        description: "Unable to save plan to database. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleExportCSV = () => {
     if (plan.length === 0) return;
 
