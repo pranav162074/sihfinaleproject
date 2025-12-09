@@ -12,58 +12,58 @@
    * Inspired by: Notion + Framer + Palantir/Locus
    */
   :root {
-    /* Core palette - midnight blue base */
+    /* Core palette - dark enterprise background */
     --background: 217 22% 6%;
     --foreground: 210 17% 98%;
-    
+
     /* Cards with subtle depth */
     --card: 217 20% 10%;
     --card-foreground: 210 17% 98%;
-    
+
     --popover: 217 20% 10%;
     --popover-foreground: 210 17% 98%;
-    
-    /* Primary: neon teal/aqua */
-    --primary: 175 100% 42%;
-    --primary-foreground: 217 22% 6%;
-    
-    /* Secondary: purple glow */
-    --secondary: 268 95% 55%;
-    --secondary-foreground: 217 22% 6%;
-    
-    /* Accents */
-    --accent: 175 100% 42%;
+
+    /* Primary: Steel Blue (#0B4F89) */
+    --primary: 217 85% 29%;
+    --primary-foreground: 210 17% 98%;
+
+    /* Secondary: Teal (#19A6A1) */
+    --secondary: 173 74% 37%;
+    --secondary-foreground: 210 17% 98%;
+
+    /* Accents - neon teal for highlights */
+    --accent: 173 74% 37%;
     --accent-foreground: 217 22% 6%;
-    
+
     --muted: 217 16% 28%;
     --muted-foreground: 210 9% 61%;
-    
+
     --destructive: 0 84% 60%;
     --destructive-foreground: 217 22% 6%;
-    
+
     --border: 217 16% 18%;
     --input: 217 16% 14%;
-    --ring: 175 100% 42%;
-    
+    --ring: 173 74% 37%;
+
     --radius: 0.5rem;
-    
+
     /* Semantic colors */
     --success: 142 72% 50%;
     --warning: 38 92% 50%;
-    --info: 175 100% 42%;
+    --info: 173 74% 37%;
     --error: 0 84% 60%;
-    
+
     /* Gradients */
-    --gradient-teal-aqua: linear-gradient(135deg, hsl(175 100% 42%) 0%, hsl(186 100% 45%) 100%);
-    --gradient-blue-purple: linear-gradient(135deg, hsl(217 80% 35%) 0%, hsl(268 95% 55%) 100%);
-    --gradient-subtle: linear-gradient(135deg, hsl(217 20% 10%) 0%, hsl(268 30% 15%) 100%);
-    
+    --gradient-steel-teal: linear-gradient(135deg, hsl(217 85% 29%) 0%, hsl(173 74% 37%) 100%);
+    --gradient-blue-light: linear-gradient(135deg, hsl(217 85% 29%) 0%, hsl(217 80% 40%) 100%);
+    --gradient-subtle: linear-gradient(135deg, hsl(217 20% 10%) 0%, hsl(217 30% 15%) 100%);
+
     /* Glow colors */
-    --glow-teal: 0 0 20px rgba(0, 229, 184, 0.3), 0 0 40px rgba(0, 229, 184, 0.15);
-    --glow-purple: 0 0 20px rgba(217, 70, 239, 0.3), 0 0 40px rgba(217, 70, 239, 0.15);
-    --glow-strong: 0 0 30px rgba(0, 229, 184, 0.4), inset 0 1px 0 rgba(0, 229, 184, 0.2);
+    --glow-steel: 0 0 20px rgba(11, 79, 137, 0.3), 0 0 40px rgba(11, 79, 137, 0.15);
+    --glow-teal: 0 0 20px rgba(25, 166, 161, 0.3), 0 0 40px rgba(25, 166, 161, 0.15);
+    --glow-strong: 0 0 30px rgba(25, 166, 161, 0.4), inset 0 1px 0 rgba(25, 166, 161, 0.2);
   }
-  
+
   .dark {
     --background: 217 22% 6%;
     --foreground: 210 17% 98%;
@@ -71,11 +71,11 @@
     --card-foreground: 210 17% 98%;
     --popover: 217 20% 10%;
     --popover-foreground: 210 17% 98%;
-    --primary: 175 100% 42%;
-    --primary-foreground: 217 22% 6%;
-    --secondary: 268 95% 55%;
-    --secondary-foreground: 217 22% 6%;
-    --accent: 175 100% 42%;
+    --primary: 217 85% 29%;
+    --primary-foreground: 210 17% 98%;
+    --secondary: 173 74% 37%;
+    --secondary-foreground: 210 17% 98%;
+    --accent: 173 74% 37%;
     --accent-foreground: 217 22% 6%;
     --muted: 217 16% 28%;
     --muted-foreground: 210 9% 61%;
