@@ -1,329 +1,203 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  BarChart,
-  Bar,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
-import {
-  Download,
-  TrendingUp,
-  Clock,
-  DollarSign,
-  Package,
-  Zap,
-} from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { OptimizeRakesResponse } from "@shared/api";
+import { Download, TrendingUp, BarChart3, Calendar } from "lucide-react";
 
 export default function Reports() {
-  const { data: sampleDataset } = useQuery({
-    queryKey: ["sample-dataset"],
-    queryFn: async () => {
-      const res = await fetch("/api/sample-dataset");
-      return res.json();
-    },
-  });
-
-  const { data: optimizationResult } = useQuery({
-    queryKey: ["optimization-for-reports"],
-    enabled: !!sampleDataset,
-    queryFn: async () => {
-      if (!sampleDataset) return null;
-      const res = await fetch("/api/optimize-rakes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...sampleDataset,
-          config: {
-            cost_vs_sla_weight: 0.6,
-            allow_multi_destination_rakes: true,
-            min_utilization_percent: 75,
-          },
-        }),
-      });
-      return (await res.json()) as OptimizeRakesResponse;
-    },
-  });
-
-  if (!optimizationResult) {
-    return (
-      <Layout>
-        <div className="flex items-center justify-center h-full">
-          <div className="text-center">
-            <p className="text-muted-foreground">Loading reports...</p>
-          </div>
-        </div>
-      </Layout>
-    );
-  }
-
-  const kpi = optimizationResult.kpi_summary;
-
-  // Mock trend data for visualization
-  const costTrendData = [
-    { day: "Mon", baseline: 52000, optimized: 48500 },
-    { day: "Tue", baseline: 48000, optimized: 45200 },
-    { day: "Wed", baseline: 55000, optimized: 49800 },
-    { day: "Thu", baseline: 60000, optimized: 52500 },
-    { day: "Fri", baseline: 58000, optimized: 50200 },
-    { day: "Today", baseline: 44930, optimized: kpi.total_cost_optimized },
-  ];
-
-  const utilizationTrendData = [
-    { day: "Mon", utilization: 65 },
-    { day: "Tue", utilization: 68 },
-    { day: "Wed", utilization: 72 },
-    { day: "Thu", utilization: 70 },
-    { day: "Fri", utilization: 75 },
-    { day: "Today", utilization: kpi.average_rake_utilization_percent },
-  ];
-
-  const handleExportCSV = () => {
-    let csv = "Rake Plan Report\n";
-    csv += `Generated: ${new Date().toISOString()}\n\n`;
-    csv += "Summary\n";
-    csv += `Total Cost,${summary.total_cost}\n`;
-    csv += `Average Utilization %,${summary.avg_utilization.toFixed(1)}\n`;
-    csv += `On-Time Delivery %,${summary.on_time_percent.toFixed(1)}\n`;
-    csv += `Demurrage Saved,${summary.demurrage_avoided}\n`;
-
-    const element = document.createElement("a");
-    element.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
-    element.setAttribute("download", `rake-plan-report-${new Date().toISOString().split("T")[0]}.csv`);
-    element.style.display = "none";
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-  };
-
   return (
     <Layout>
       <div className="flex-1 overflow-auto bg-gradient-to-b from-background via-background to-secondary/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-          {/* Page Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 animate-fade-in">
-            <div className="space-y-2">
-              <h1 className="text-title-lg flex items-center gap-2">
-                <span className="text-2xl">📊</span> Performance Reports
-              </h1>
-              <p className="text-subtitle">
-                Today's optimization results and key metrics
-              </p>
-            </div>
-            <Button
-              onClick={handleExportCSV}
-              className="btn-gradient whitespace-nowrap"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Export (CSV)
-            </Button>
+          {/* Header */}
+          <div className="space-y-4 animate-fade-in">
+            <h1 className="text-4xl font-bold text-foreground">Reports & Analytics</h1>
+            <p className="text-lg text-muted-foreground">Performance tracking and historical analysis</p>
           </div>
 
-          {/* Main KPI Cards - Prominent Glow */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-scale-in">
-            {/* Cost Saved */}
-            <div className="kpi-card group border-primary/40">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs text-muted-foreground font-medium mb-2">💰 Total Cost</p>
-                  <p className="text-3xl font-bold text-primary">
-                    ₹{(kpi.total_cost_optimized / 1000).toFixed(1)}k
-                  </p>
-                  <p className="text-xs text-green-400 mt-2">✨ Optimized for efficiency</p>
-                </div>
-              </div>
+          {/* Key Metrics */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="card-glow p-6 space-y-2 border-l-4 border-primary">
+              <p className="text-sm text-muted-foreground font-medium">TOTAL RAKES (30D)</p>
+              <p className="text-3xl font-bold text-primary">48</p>
+              <p className="text-xs text-green-400">+12% vs last month</p>
             </div>
 
-            {/* Utilization */}
-            <div className="kpi-card group border-primary/40">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs text-muted-foreground font-medium mb-2">🚆 Avg Utilization</p>
-                  <p className="text-3xl font-bold text-primary">
-                    {Math.round(kpi.average_rake_utilization_percent)}%
-                  </p>
-                  <p className="text-xs text-green-400 mt-2">Good wagon efficiency</p>
-                </div>
-              </div>
+            <div className="card-glow p-6 space-y-2 border-l-4 border-secondary">
+              <p className="text-sm text-muted-foreground font-medium">AVG UTILIZATION</p>
+              <p className="text-3xl font-bold text-secondary">86.2%</p>
+              <p className="text-xs text-green-400">+3.1% improvement</p>
             </div>
 
-            {/* On-Time */}
-            <div className="kpi-card group border-primary/40">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs text-muted-foreground font-medium mb-2">⏱️ On-Time Delivery</p>
-                  <p className="text-3xl font-bold text-green-400">
-                    {Math.round(kpi.on_time_delivery_percent)}%
-                  </p>
-                  <p className="text-xs text-green-400 mt-2">All deadlines met</p>
-                </div>
-              </div>
+            <div className="card-glow p-6 space-y-2 border-l-4 border-accent">
+              <p className="text-sm text-muted-foreground font-medium">SLA COMPLIANCE</p>
+              <p className="text-3xl font-bold text-accent">97.5%</p>
+              <p className="text-xs text-green-400">24 on-time deliveries</p>
             </div>
 
-            {/* Demurrage Avoided */}
-            <div className="kpi-card group border-primary/40">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs text-muted-foreground font-medium mb-2">🚨 Demurrage Avoided</p>
-                  <p className="text-3xl font-bold text-primary">
-                    ₹{(kpi.demurrage_savings / 1000).toFixed(1)}k
-                  </p>
-                  <p className="text-xs text-green-400 mt-2">No late penalties</p>
-                </div>
-              </div>
+            <div className="card-glow p-6 space-y-2 border-l-4 border-green-400">
+              <p className="text-sm text-muted-foreground font-medium">COST SAVINGS</p>
+              <p className="text-3xl font-bold text-green-400">₹2.4M</p>
+              <p className="text-xs text-green-400">vs. baseline transport</p>
             </div>
           </div>
 
-          {/* Charts Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-slide-in-right">
-            {/* Cost Trend Chart */}
-            <div className="card-glow p-6 space-y-4">
-              <div>
-                <h3 className="font-bold text-lg">📈 Cost Optimization Trend</h3>
-                <p className="text-sm text-muted-foreground">Last 6 days: optimized vs baseline</p>
+          {/* Reports Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Daily Performance */}
+            <div className="card-glow p-8 space-y-6 border-primary/20">
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <h2 className="text-2xl font-bold text-foreground">Daily Performance</h2>
+                  <p className="text-sm text-muted-foreground">Last 30 days aggregate</p>
+                </div>
+                <BarChart3 className="w-8 h-8 text-muted-foreground" />
               </div>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={costTrendData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(217 16% 18%)" />
-                  <XAxis dataKey="day" stroke="hsl(210 9% 61%)" style={{ fontSize: "12px" }} />
-                  <YAxis stroke="hsl(210 9% 61%)" style={{ fontSize: "12px" }} />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "hsl(217 20% 10%)",
-                      border: "1px solid hsl(217 16% 22%)",
-                      borderRadius: "8px",
-                    }}
-                    labelStyle={{ color: "hsl(210 17% 98%)" }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="baseline"
-                    stroke="#ef4444"
-                    strokeWidth={2}
-                    name="Baseline"
-                    dot={false}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="optimized"
-                    stroke="hsl(175 100% 42%)"
-                    strokeWidth={2}
-                    name="Optimized"
-                    dot={false}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-foreground">Avg Rakes/Day</span>
+                    <span className="font-bold text-primary">1.6</span>
+                  </div>
+                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-primary to-primary/60 w-4/5" />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-foreground">Median Orders/Rake</span>
+                    <span className="font-bold text-secondary">4.2</span>
+                  </div>
+                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-secondary to-secondary/60 w-3/5" />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-foreground">On-Time Delivery</span>
+                    <span className="font-bold text-accent">97.5%</span>
+                  </div>
+                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-accent to-accent/60 w-11/12" />
+                  </div>
+                </div>
+              </div>
+
+              <Button className="w-full h-10 bg-primary/20 hover:bg-primary/30 text-primary gap-2">
+                <Download className="w-4 h-4" />
+                Export Full Report
+              </Button>
             </div>
 
-            {/* Utilization Trend Chart */}
-            <div className="card-glow p-6 space-y-4">
-              <div>
-                <h3 className="font-bold text-lg">📊 Utilization Trend</h3>
-                <p className="text-sm text-muted-foreground">Wagon capacity usage over time</p>
+            {/* Cost Analysis */}
+            <div className="card-glow p-8 space-y-6 border-green-400/20 bg-green-400/5">
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <h2 className="text-2xl font-bold text-foreground">Cost Analysis</h2>
+                  <p className="text-sm text-muted-foreground">Transport cost breakdown</p>
+                </div>
+                <TrendingUp className="w-8 h-8 text-green-400" />
               </div>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={utilizationTrendData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(217 16% 18%)" />
-                  <XAxis dataKey="day" stroke="hsl(210 9% 61%)" style={{ fontSize: "12px" }} />
-                  <YAxis stroke="hsl(210 9% 61%)" style={{ fontSize: "12px" }} />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "hsl(217 20% 10%)",
-                      border: "1px solid hsl(217 16% 22%)",
-                      borderRadius: "8px",
-                    }}
-                    labelStyle={{ color: "hsl(210 17% 98%)" }}
-                  />
-                  <Bar dataKey="utilization" fill="hsl(175 100% 42%)" radius={[8, 8, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-foreground">Avg Cost/MT (Rail)</span>
+                    <span className="font-bold text-green-400">₹350</span>
+                  </div>
+                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="h-full bg-green-400 w-3/5" />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-foreground">Avg Cost/MT (Road)</span>
+                    <span className="font-bold text-orange-400">₹765</span>
+                  </div>
+                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="h-full bg-orange-400 w-full" />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-foreground">Total Monthly Cost</span>
+                    <span className="font-bold text-foreground">₹18.7M</span>
+                  </div>
+                </div>
+
+                <p className="text-xs text-green-400 font-semibold pt-4">
+                  🎯 Savings vs. baseline: ₹2.4M (12.7% reduction)
+                </p>
+              </div>
+
+              <Button className="w-full h-10 bg-green-400/20 hover:bg-green-400/30 text-green-400 gap-2">
+                <Download className="w-4 h-4" />
+                Export Cost Analysis
+              </Button>
             </div>
           </div>
 
-          {/* Key Insights */}
-          <div className="card-glow p-6 space-y-4 border-primary/30">
-            <h3 className="font-bold text-lg">💡 Key Insights</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="frosted-glass p-4 space-y-2">
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-primary" />
-                  <p className="font-semibold">Cost Efficiency</p>
+          {/* Trend Analysis */}
+          <div className="card-glow p-8 space-y-6 border-primary/20">
+            <h2 className="text-2xl font-bold text-foreground">30-Day Trend</h2>
+
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-semibold text-foreground">Utilization Trend</span>
+                  <span className="text-xs text-green-400 font-bold">↑ 3.1%</span>
                 </div>
-                <p className="text-sm text-foreground/80">
-                  Today's optimization saves approximately ₹{(kpi.demurrage_savings / 1000).toFixed(1)}k by consolidating orders and reducing demurrage penalties.
-                </p>
+                <div className="h-32 bg-muted/30 rounded-lg flex items-end justify-around p-4 gap-1">
+                  {[45, 52, 48, 61, 75, 82, 85, 84, 86, 87].map((val, i) => (
+                    <div
+                      key={i}
+                      className="flex-1 bg-gradient-to-t from-primary to-primary/60 rounded-t"
+                      style={{ height: `${val}%` }}
+                    />
+                  ))}
+                </div>
               </div>
 
-              <div className="frosted-glass p-4 space-y-2">
-                <div className="flex items-center gap-2">
-                  <Package className="w-5 h-5 text-primary" />
-                  <p className="font-semibold">Wagon Utilization</p>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-semibold text-foreground">Orders by Mode</span>
+                  <span className="text-xs text-green-400 font-bold">94% Rail</span>
                 </div>
-                <p className="text-sm text-foreground/80">
-                  {kpi.average_rake_utilization_percent >= 80
-                    ? "Excellent wagon usage—minimal empty capacity."
-                    : kpi.average_rake_utilization_percent >= 70
-                      ? "Good utilization—room for slight improvement."
-                      : "Moderate usage—consider consolidation strategies."}
-                </p>
-              </div>
-
-              <div className="frosted-glass p-4 space-y-2">
-                <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-primary" />
-                  <p className="font-semibold">On-Time Performance</p>
+                <div className="flex gap-2">
+                  <div className="flex-1 h-8 bg-primary rounded-lg flex items-center justify-center text-xs font-bold text-primary-foreground">
+                    Rail: 565
+                  </div>
+                  <div className="flex-1 h-8 bg-secondary rounded-lg flex items-center justify-center text-xs font-bold text-secondary-foreground">
+                    Road: 35
+                  </div>
                 </div>
-                <p className="text-sm text-foreground/80">
-                  {kpi.on_time_delivery_percent === 100
-                    ? "All deliveries meet SLA deadlines—perfect compliance."
-                    : "Most deliveries on time with minimal delays."}
-                </p>
-              </div>
-
-              <div className="frosted-glass p-4 space-y-2">
-                <div className="flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-primary" />
-                  <p className="font-semibold">Penalty Avoidance</p>
-                </div>
-                <p className="text-sm text-foreground/80">
-                  Smart scheduling avoids late-delivery demurrage charges. This is a key cost driver in rail logistics.
-                </p>
               </div>
             </div>
           </div>
 
-          {/* Summary Stats */}
-          <div className="card-glow p-6 space-y-4">
-            <h3 className="font-bold text-lg">📋 Daily Summary</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              <div className="frosted-glass p-4 text-center">
-                <p className="text-xs text-muted-foreground mb-2">Total Rakes</p>
-                <p className="text-2xl font-bold text-primary">
-                  {kpi.number_of_rakes_planned}
-                </p>
+          {/* Recommendations */}
+          <div className="card-glow p-8 space-y-4 border-accent/20 bg-accent/5">
+            <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+              <Calendar className="w-5 h-5" />
+              Upcoming Optimizations
+            </h2>
+            <div className="space-y-3 text-sm">
+              <div className="flex gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2" />
+                <div>
+                  <p className="font-semibold text-foreground">Bulk order expected (250 MT)</p>
+                  <p className="text-xs text-muted-foreground">Dec 28 - Consider adding 1 dedicated rake</p>
+                </div>
               </div>
-              <div className="frosted-glass p-4 text-center">
-                <p className="text-xs text-muted-foreground mb-2">Orders Shipped</p>
-                <p className="text-2xl font-bold text-primary">
-                  {optimizationResult.planned_rakes.reduce(
-                    (sum, r) => sum + r.orders_allocated.length,
-                    0
-                  )}
-                </p>
-              </div>
-              <div className="frosted-glass p-4 text-center">
-                <p className="text-xs text-muted-foreground mb-2">Total Tonnage</p>
-                <p className="text-2xl font-bold text-primary">
-                  {optimizationResult.planned_rakes.reduce((sum, r) => sum + r.total_tonnage_assigned, 0).toFixed(0)}t
-                </p>
+              <div className="flex gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-secondary mt-2" />
+                <div>
+                  <p className="font-semibold text-foreground">Crane maintenance scheduled</p>
+                  <p className="text-xs text-muted-foreground">Jan 2-5 - Road transport will be primary mode</p>
+                </div>
               </div>
             </div>
           </div>
