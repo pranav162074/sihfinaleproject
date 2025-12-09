@@ -71,7 +71,7 @@ export default function DataUpload() {
       errors: [],
     });
 
-    const reader = new FileFile();
+    const reader = new FileReader();
     reader.onload = (e) => {
       try {
         const csvContent = e.target?.result as string;
