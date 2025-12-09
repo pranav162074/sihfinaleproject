@@ -1,10 +1,10 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Upload, Loader, AlertCircle, FileUp, Trash2, Eye } from "lucide-react";
+import { CheckCircle, Upload, Loader, AlertCircle, Trash2, Eye, Download } from "lucide-react";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { parseCSV, validateCSVData, convertParsedDataToFormat } from "@/lib/csv-parser";
-import { DATA_SCHEMAS } from "@shared/api";
+import { downloadCSVTemplate } from "@/lib/csv-templates";
 import { useToast } from "@/components/ui/use-toast";
 import {
   Dialog,
