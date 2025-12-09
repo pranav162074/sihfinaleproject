@@ -7,6 +7,7 @@ import { useState } from "react";
 interface LayoutProps {
   children: React.ReactNode;
   showAIAssistant?: boolean;
+  planData?: any;
 }
 
 export function Layout({ children, showAIAssistant = true }: LayoutProps) {
