@@ -24,6 +24,11 @@ interface FileUploadState {
   data?: Record<string, unknown>[];
 }
 
+interface PreviewState {
+  currentPage: number;
+  rowsPerPage: number;
+}
+
 export default function DataUpload() {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
