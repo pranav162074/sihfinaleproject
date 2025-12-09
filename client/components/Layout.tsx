@@ -42,7 +42,7 @@ export function Layout({ children, showAIAssistant = true }: LayoutProps) {
       </div>
 
       {/* AI Assistant Drawer */}
-      {showAIAssistant && <AIAssistantDrawer isOpen={isAssistantOpen} onClose={() => setIsAssistantOpen(false)} />}
+      {showAIAssistant && <AIAssistantDrawer isOpen={isAssistantOpen} onClose={() => setIsAssistantOpen(false)} planData={planData} />}
 
       {/* Floating AI Assistant Button */}
       {showAIAssistant && !isAssistantOpen && (
