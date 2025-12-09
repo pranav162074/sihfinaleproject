@@ -667,3 +667,60 @@ export const DATA_SCHEMAS: Record<string, DataSchemaDefinition> = {
     },
   },
 };
+
+// ============================================================================
+// OptiRake DSS Rake Planning Output Types
+// ============================================================================
+
+export interface RakePlanItem {
+  order_id: string;
+  customer_name: string;
+  customer_id: string;
+  material_id: string;
+  material_name: string;
+  product_type: string;
+  assigned_mode: string;
+  rake_id: string;
+  wagon_id: string;
+  wagon_index: number;
+  platform_id: string;
+  platform_name: string;
+  crane_id: string;
+  crane_capacity_tonnes: number;
+  allocated_quantity_tonnes: number;
+  origin: string;
+  destination: string;
+  priority: string;
+  due_date: string;
+  expected_departure_time: string;
+  expected_arrival_time: string;
+  utilization_percent_for_wagon: number;
+  utilization_percent_for_rake: number;
+  transport_cost: number;
+  loading_cost: number;
+  expected_penalty_cost: number;
+  idle_freight_cost: number;
+  total_estimated_cost: number;
+  sla_status: "On-time" | "At-Risk" | "Late";
+  reason: string;
+}
+
+export interface KPISummary {
+  total_orders: number;
+  orders_served_by_rail: number;
+  orders_served_by_road: number;
+  rakes_used: number;
+  average_rake_utilization_percent: number;
+  total_estimated_cost: number;
+  estimated_cost_savings_vs_baseline: number;
+  estimated_demurrage_savings: number;
+}
+
+export interface RakePlanOutput {
+  rake_plan: RakePlanItem[];
+  kpi_summary: KPISummary;
+  natural_language_plan: Array<{
+    sentence: string;
+    reason: string;
+  }>;
+}
