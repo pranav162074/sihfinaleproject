@@ -142,12 +142,9 @@ export default function About() {
           {/* Bottom summary */}
           <div className="text-center space-y-4 pb-8">
             <p className="text-foreground/80 max-w-2xl mx-auto">
-              OptiRake DSS makes a complex logistics problem simple. It's not just software—it's a smart assistant 
+              OptiRake DSS makes a complex logistics problem simple. It's not just software—it's a smart assistant
               that helps planners make better, faster decisions every day.
             </p>
-            <Badge className="inline-flex gap-2 px-4 py-2 text-base bg-primary/20 text-primary border border-primary/40">
-              Built with AI. Explained in plain English. Ready to deploy.
-            </Badge>
           </div>
         </div>
       </div>
