@@ -199,7 +199,7 @@ export default function DataUpload() {
           </div>
 
           {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Upload Area - 2 Columns */}
             <div className="lg:col-span-2 space-y-8">
               {/* Drag-Drop Zone - Premium */}
