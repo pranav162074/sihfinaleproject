@@ -83,46 +83,89 @@ function calculateOrderCost(quantity: number, mode: "rail" | "road"): number {
 }
 
 /**
- * SIMPLE AND RELIABLE packing algorithm:
- * 1. Group by destination
- * 2. For each destination, sort orders by quantity (largest first)
- * 3. Greedily pack into rakes, creating new rake only when necessary
+ * Map destinations to geographic regions for intelligent consolidation
+ */
+function getRegionForDestination(destination: string): string {
+  const dest = destination.toUpperCase().trim();
+
+  // Northern Region
+  if (
+    ["DELHI", "NOIDA", "FARIDABAD", "GURGAON", "GURUGRAM", "AGRA", "KANPUR", "BAREILLY", "HARIDWAR", "MEERUT"].includes(
+      dest
+    )
+  ) {
+    return "NORTH";
+  }
+
+  // Western Region
+  if (["MUMBAI", "PUNE", "NASHIK", "SURAT", "AHMEDABAD", "JAIPUR", "AJMER", "INDORE", "RATLAM", "BIKANER"].includes(dest)) {
+    return "WEST";
+  }
+
+  // Southern Region
+  if (
+    ["BANGALORE", "HYDERABAD", "CHENNAI", "MADURAI", "TRICHY", "MANGALORE", "COCHIN", "TIRUPATI", "VELLORE", "KURNOOL"].includes(
+      dest
+    )
+  ) {
+    return "SOUTH";
+  }
+
+  // Eastern Region
+  if (
+    ["KOLKATA", "VARANASI", "PATNA", "JAMSHEDPUR", "RANCHI", "LUCKNOW", "GORAKHPUR", "REWA", "SILCHAR", "GUWAHATI"].includes(
+      dest
+    )
+  ) {
+    return "EAST";
+  }
+
+  // Central Region
+  if (["RAIPUR", "BHILAI", "BHUBANESWAR", "GWALIOR", "UDAIPUR", "JALGAON", "AURANGABAD", "DHARMAPURI", "HISAR"].includes(dest)) {
+    return "CENTRAL";
+  }
+
+  // Default
+  return "OTHER";
+}
+
+/**
+ * Intelligent packing: Group by region first, then pack greedily
+ * This allows multiple destinations to be in same rake if they're in same region
  */
 export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
   if (!orders || orders.length === 0) return [];
 
-  // Group orders by destination STRICTLY
-  const groupsByDest: { [dest: string]: OrderData[] } = {};
+  // Group orders by geographic region first
+  const groupsByRegion: { [region: string]: OrderData[] } = {};
   orders.forEach((order) => {
-    if (!groupsByDest[order.destination]) {
-      groupsByDest[order.destination] = [];
+    const region = getRegionForDestination(order.destination);
+    if (!groupsByRegion[region]) {
+      groupsByRegion[region] = [];
     }
-    groupsByDest[order.destination].push(order);
+    groupsByRegion[region].push(order);
   });
 
   const result: RakePlanItem[] = [];
-  const rakesByDest: { [dest: string]: RakeInfo[] } = {};
   let globalRakeCounter = 1;
+  const allRakes: RakeInfo[] = [];
 
-  // For each destination group, pack orders greedily
-  Object.entries(groupsByDest).forEach(([destination, destOrders]) => {
+  // For each region, pack orders greedily
+  Object.entries(groupsByRegion).forEach(([region, regionOrders]) => {
     // Sort by quantity descending (largest first = better packing)
-    const sorted = [...destOrders].sort((a, b) => b.quantity_tonnes - a.quantity_tonnes);
-
-    // Initialize rakes array for this destination
-    rakesByDest[destination] = [];
+    const sorted = [...regionOrders].sort((a, b) => b.quantity_tonnes - a.quantity_tonnes);
 
     // Pack orders into rakes
     sorted.forEach((order) => {
       let placed = false;
 
-      // Try to fit into existing rake for this destination
-      for (const rake of rakesByDest[destination]) {
+      // Try to fit into existing rake (any rake, not just same destination)
+      for (const rake of allRakes) {
         // Check hard constraints
         const newQuantity = rake.totalQuantity + order.quantity_tonnes;
         const newOrders = rake.totalOrders + 1;
 
-        // Constraint checks
+        // Constraint checks: capacity and order count
         if (newQuantity <= RAKE_CAPACITY_TONNES && newOrders <= MAX_ORDERS_PER_RAKE) {
           // This order fits in this rake!
           const transportMode = determineTransportMode(
@@ -146,8 +189,8 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
             crane_capacity_tonnes: CRANE_CAPACITY_TONNES,
             utilization_percent: Math.min((order.quantity_tonnes / CRANE_CAPACITY_TONNES) * 100, 100),
             estimated_cost: cost,
-            explanation: `Order #${order.order_id} (${order.quantity_tonnes} MT) → ${rake.rake_id}`,
-            reason: `Consolidation: ${destination}-bound. Rake now ${Math.round((newQuantity / RAKE_CAPACITY_TONNES) * 100)}% utilized.`,
+            explanation: `Order #${order.order_id} (${order.quantity_tonnes} MT from ${order.customer_name}) → ${rake.rake_id}`,
+            reason: `Regional consolidation: ${region} region. Rake now ${Math.round((newQuantity / RAKE_CAPACITY_TONNES) * 100)}% utilized.`,
             transport_mode: transportMode,
             origin: "Bokaro Steel Plant",
             status: "pending",
@@ -159,13 +202,14 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
           rake.totalOrders = newOrders;
           rake.totalCost += cost;
           rake.utilization = (newQuantity / RAKE_CAPACITY_TONNES) * 100;
+          rake.destination = `${rake.destination}, ${order.destination}`; // Add destination
 
           placed = true;
-          break; // Placed successfully
+          break;
         }
       }
 
-      // If not placed, create new rake for this destination
+      // If not placed, create new rake
       if (!placed) {
         const transportMode = determineTransportMode(
           order.quantity_tonnes,
@@ -177,7 +221,7 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
 
         const newRake: RakeInfo = {
           rake_id: `R${globalRakeCounter}`,
-          destination: destination,
+          destination: order.destination,
           orders: [],
           totalQuantity: order.quantity_tonnes,
           totalOrders: 1,
@@ -198,8 +242,8 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
           crane_capacity_tonnes: CRANE_CAPACITY_TONNES,
           utilization_percent: Math.min((order.quantity_tonnes / CRANE_CAPACITY_TONNES) * 100, 100),
           estimated_cost: cost,
-          explanation: `Order #${order.order_id} (${order.quantity_tonnes} MT) → new ${newRake.rake_id}`,
-          reason: `New rake created for ${destination}-bound freight.`,
+          explanation: `Order #${order.order_id} (${order.quantity_tonnes} MT from ${order.customer_name}) → ${newRake.rake_id}`,
+          reason: `New rake for ${region} region: ${order.destination}-bound freight.`,
           transport_mode: transportMode,
           origin: "Bokaro Steel Plant",
           status: "pending",
@@ -207,7 +251,7 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
 
         result.push(item);
         newRake.orders.push(item);
-        rakesByDest[destination].push(newRake);
+        allRakes.push(newRake);
         globalRakeCounter++;
       }
     });
