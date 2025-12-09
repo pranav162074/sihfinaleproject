@@ -167,7 +167,8 @@ export default function RakePlanner() {
               </Card>
             ) : (
               rakes.map((rake) => {
-                const isApproved = approvedRakes.has(rake.rake_id);
+                const rakeId = rake.planned_rake_id || rake.rake_id;
+                const isApproved = approvedRakes.has(rakeId);
                 const utilization = rake.utilization_percent || 0;
 
                 return (
