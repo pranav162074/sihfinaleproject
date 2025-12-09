@@ -411,9 +411,12 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
     sorted.forEach((order) => {
       let assigned = false;
 
-      // Try to fit into any existing rake
+      // Try to fit into any existing rake with SAME destination
       for (const rake of rakes) {
-        const check = canAddOrderToRake(rake, order, true); // Allow multi-destination as fallback
+        if (!rake.destinations.has(order.destination)) {
+          continue; // Only match destinations
+        }
+        const check = canAddOrderToRake(rake, order, true);
         if (check.canAdd) {
           const transportMode = determineTransportMode(
             order.quantity_tonnes,
