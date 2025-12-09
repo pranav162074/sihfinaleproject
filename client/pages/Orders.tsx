@@ -224,30 +224,30 @@ export default function Orders() {
 
               {/* Why This Works */}
               <div className="space-y-3">
-                <p className="font-semibold text-foreground text-sm">Why This is the Best Option</p>
+                <p className="font-semibold text-foreground text-sm">Why This Allocation</p>
                 <div className="space-y-2">
                   <div className="flex items-start gap-3">
                     <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                     <p className="text-sm text-foreground/80">
-                      <strong>Cost Savings:</strong> Saves ₹15,200 by grouping with other orders
+                      <strong>Destination Matching:</strong> Grouped with other {selectedOrder.destination}-bound orders
                     </p>
                   </div>
                   <div className="flex items-start gap-3">
                     <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                     <p className="text-sm text-foreground/80">
-                      <strong>Efficient Loading:</strong> Improves rake utilization to 92%
+                      <strong>Material Compatibility:</strong> {selectedOrder.material_id} fits in assigned wagon type
                     </p>
                   </div>
                   <div className="flex items-start gap-3">
                     <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                     <p className="text-sm text-foreground/80">
-                      <strong>On-Time Delivery:</strong> Arrives 20 hours before your deadline
+                      <strong>Priority Handling:</strong> {selectedOrder.priority === 1 ? "High-priority order planned first" : "Scheduled efficiently with other orders"}
                     </p>
                   </div>
                   <div className="flex items-start gap-3">
                     <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                     <p className="text-sm text-foreground/80">
-                      <strong>Reliable Transport:</strong> 100% rail (faster than mixed modes)
+                      <strong>SLA Compliance:</strong> Scheduled to arrive before your due date
                     </p>
                   </div>
                 </div>
