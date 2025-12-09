@@ -83,11 +83,13 @@ export default function RakePlanner() {
   };
 
   const rakes = optimizationResult?.planned_rakes || [];
-  const summary = optimizationResult?.summary || {
-    total_cost: 0,
-    avg_utilization: 0,
-    on_time_percent: 0,
-    demurrage_avoided: 0,
+  const kpi = optimizationResult?.kpi_summary || {
+    total_cost_optimized: 0,
+    average_rake_utilization_percent: 0,
+    on_time_delivery_percent: 0,
+    demurrage_savings: 0,
+    cost_savings_vs_baseline: 0,
+    number_of_rakes_planned: 0,
   };
 
   return (
