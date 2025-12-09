@@ -146,7 +146,7 @@ export const handleExplainPlan: RequestHandler = (req, res) => {
  */
 export const handleSampleDataset: RequestHandler = (req, res) => {
   try {
-    const dataset = getSampleDataset();
+    const dataset = generateSimpleSampleData();
     const response: SampleDatasetResponse = dataset;
     res.json(response);
   } catch (error) {
