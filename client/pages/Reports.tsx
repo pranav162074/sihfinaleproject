@@ -1,6 +1,12 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Download, TrendingUp, BarChart3, FileText, Printer } from "lucide-react";
+import {
+  Download,
+  TrendingUp,
+  BarChart3,
+  FileText,
+  Printer,
+} from "lucide-react";
 import { useRef, useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -38,12 +44,17 @@ export default function Reports() {
       try {
         const orders = JSON.parse(uploadedOrdersStr);
         if (orders.length > 0) {
-          const totalQty = orders.reduce((sum: number, o: any) => sum + (o.quantity_tonnes || 0), 0);
+          const totalQty = orders.reduce(
+            (sum: number, o: any) => sum + (o.quantity_tonnes || 0),
+            0,
+          );
           const baselineCost = totalQty * reportData.roadCostPerMT;
           const railQty = Math.round(totalQty * 0.85);
           const roadQty = totalQty - railQty;
-          const optimizedCost = railQty * reportData.railCostPerMT + roadQty * reportData.roadCostPerMT;
-          
+          const optimizedCost =
+            railQty * reportData.railCostPerMT +
+            roadQty * reportData.roadCostPerMT;
+
           setReportData({
             ...reportData,
             totalQuantity: Math.round(totalQty),
@@ -59,18 +70,18 @@ export default function Reports() {
   }, []);
 
   const handleExportCSV = () => {
-    const headers = [
-      "Metric",
-      "Value",
-      "Unit",
-    ];
+    const headers = ["Metric", "Value", "Unit"];
 
     const rows = [
       ["Total Rakes (30D)", reportData.totalRakes.toString(), "rakes"],
       ["Average Utilization", reportData.avgUtilization.toString(), "%"],
       ["SLA Compliance", reportData.slaCompliance.toString(), "%"],
       ["Total Quantity Processed", reportData.totalQuantity.toString(), "MT"],
-      ["Baseline Cost (100% Road)", (reportData.baselineCost / 1000).toString(), "₹k"],
+      [
+        "Baseline Cost (100% Road)",
+        (reportData.baselineCost / 1000).toString(),
+        "₹k",
+      ],
       ["Optimized Cost", (reportData.optimizedCost / 1000).toString(), "₹k"],
       ["Total Cost Savings", (reportData.costSavings / 1000).toString(), "₹k"],
       ["Rail Cost per MT", reportData.railCostPerMT.toString(), "₹"],
@@ -85,7 +96,10 @@ export default function Reports() {
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
-    link.setAttribute("download", `optirake-report-${new Date().toISOString().split("T")[0]}.csv`);
+    link.setAttribute(
+      "download",
+      `optirake-report-${new Date().toISOString().split("T")[0]}.csv`,
+    );
     link.click();
 
     toast({
@@ -100,7 +114,8 @@ export default function Reports() {
     if (!printWindow) {
       toast({
         title: "Error",
-        description: "Could not open print window. Please check popup settings.",
+        description:
+          "Could not open print window. Please check popup settings.",
         variant: "destructive",
       });
       return;
@@ -325,10 +340,7 @@ export default function Reports() {
 
           {/* Export Buttons */}
           <div className="flex flex-wrap gap-3">
-            <Button
-              onClick={handleExportCSV}
-              className="btn-gradient gap-2"
-            >
+            <Button onClick={handleExportCSV} className="btn-gradient gap-2">
               <Download className="w-4 h-4" />
               Export CSV
             </Button>
@@ -372,7 +384,9 @@ export default function Reports() {
 
             <div className="card-glow p-6 space-y-2 border-emerald-500/30">
               <p className="kpi-label">Cost Savings</p>
-              <p className="kpi-value">₹{(reportData.costSavings / 1000000).toFixed(1)}M</p>
+              <p className="kpi-value">
+                ₹{(reportData.costSavings / 1000000).toFixed(1)}M
+              </p>
               <p className="text-xs text-emerald-400">vs baseline</p>
             </div>
           </div>
@@ -382,7 +396,9 @@ export default function Reports() {
             {/* Daily Performance */}
             <div className="card-glow p-8 space-y-6 border-primary/20">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-foreground">Performance Metrics</h2>
+                <h2 className="text-2xl font-bold text-foreground">
+                  Performance Metrics
+                </h2>
                 <BarChart3 className="w-6 h-6 text-muted-foreground" />
               </div>
 
@@ -390,7 +406,9 @@ export default function Reports() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-foreground">Average Utilization</span>
-                    <span className="font-bold text-primary">{reportData.avgUtilization}%</span>
+                    <span className="font-bold text-primary">
+                      {reportData.avgUtilization}%
+                    </span>
                   </div>
                   <div className="w-full h-2 bg-muted/30 rounded-full overflow-hidden">
                     <div className="h-full bg-gradient-to-r from-primary to-secondary w-4/5" />
@@ -400,7 +418,9 @@ export default function Reports() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-foreground">SLA Compliance Rate</span>
-                    <span className="font-bold text-secondary">{reportData.slaCompliance}%</span>
+                    <span className="font-bold text-secondary">
+                      {reportData.slaCompliance}%
+                    </span>
                   </div>
                   <div className="w-full h-2 bg-muted/30 rounded-full overflow-hidden">
                     <div className="h-full bg-gradient-to-r from-secondary to-primary w-11/12" />
@@ -410,7 +430,9 @@ export default function Reports() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-foreground">Quantity Processed</span>
-                    <span className="font-bold text-emerald-400">{reportData.totalQuantity} MT</span>
+                    <span className="font-bold text-emerald-400">
+                      {reportData.totalQuantity} MT
+                    </span>
                   </div>
                   <div className="w-full h-2 bg-muted/30 rounded-full overflow-hidden">
                     <div className="h-full bg-gradient-to-r from-emerald-400 to-emerald-500 w-full" />
@@ -422,7 +444,9 @@ export default function Reports() {
             {/* Cost Analysis */}
             <div className="card-glow p-8 space-y-6 border-emerald-500/20 bg-gradient-to-br from-emerald-500/5 to-emerald-500/2">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-foreground">Cost Analysis</h2>
+                <h2 className="text-2xl font-bold text-foreground">
+                  Cost Analysis
+                </h2>
                 <TrendingUp className="w-6 h-6 text-emerald-400" />
               </div>
 
@@ -430,7 +454,9 @@ export default function Reports() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-foreground">Rail Cost/MT</span>
-                    <span className="font-bold text-emerald-400">₹{reportData.railCostPerMT}</span>
+                    <span className="font-bold text-emerald-400">
+                      ₹{reportData.railCostPerMT}
+                    </span>
                   </div>
                   <div className="w-full h-2 bg-muted/30 rounded-full overflow-hidden">
                     <div className="h-full bg-emerald-400 w-3/5" />
@@ -440,7 +466,9 @@ export default function Reports() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-foreground">Road Cost/MT</span>
-                    <span className="font-bold text-amber-400">₹{reportData.roadCostPerMT}</span>
+                    <span className="font-bold text-amber-400">
+                      ₹{reportData.roadCostPerMT}
+                    </span>
                   </div>
                   <div className="w-full h-2 bg-muted/30 rounded-full overflow-hidden">
                     <div className="h-full bg-amber-400 w-full" />
@@ -451,15 +479,21 @@ export default function Reports() {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-foreground">Baseline Cost</span>
-                      <span>₹{(reportData.baselineCost / 1000).toFixed(0)}k</span>
+                      <span>
+                        ₹{(reportData.baselineCost / 1000).toFixed(0)}k
+                      </span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-foreground">Optimized Cost</span>
-                      <span>₹{(reportData.optimizedCost / 1000).toFixed(0)}k</span>
+                      <span>
+                        ₹{(reportData.optimizedCost / 1000).toFixed(0)}k
+                      </span>
                     </div>
                     <div className="flex justify-between text-sm font-semibold text-emerald-400 pt-2 border-t border-border/30">
                       <span>Total Savings</span>
-                      <span>₹{(reportData.costSavings / 1000).toFixed(0)}k</span>
+                      <span>
+                        ₹{(reportData.costSavings / 1000).toFixed(0)}k
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -471,7 +505,19 @@ export default function Reports() {
           <div className="card-glass p-8 space-y-4 border-primary/20">
             <h2 className="text-2xl font-bold text-foreground">Summary</h2>
             <p className="text-muted-foreground">
-              The OptiRake DSS has successfully optimized logistics operations by consolidating orders into {reportData.totalRakes} rakes with an average utilization of {reportData.avgUtilization}%. The mixed rail-road transport strategy achieves ₹{(reportData.costSavings / 1000000).toFixed(1)}M in cost savings ({Math.round(((reportData.baselineCost - reportData.optimizedCost) / reportData.baselineCost) * 100)}% reduction) while maintaining {reportData.slaCompliance}% SLA compliance. This demonstrates significant operational efficiency and customer satisfaction improvements.
+              The OptiRake DSS has successfully optimized logistics operations
+              by consolidating orders into {reportData.totalRakes} rakes with an
+              average utilization of {reportData.avgUtilization}%. The mixed
+              rail-road transport strategy achieves ₹
+              {(reportData.costSavings / 1000000).toFixed(1)}M in cost savings (
+              {Math.round(
+                ((reportData.baselineCost - reportData.optimizedCost) /
+                  reportData.baselineCost) *
+                  100,
+              )}
+              % reduction) while maintaining {reportData.slaCompliance}% SLA
+              compliance. This demonstrates significant operational efficiency
+              and customer satisfaction improvements.
             </p>
           </div>
         </div>

@@ -24,7 +24,10 @@ const SAMPLE_QUESTIONS = [
   "How can I override an allocation?",
 ];
 
-const generateAssistantResponse = (question: string, planData?: any): string => {
+const generateAssistantResponse = (
+  question: string,
+  planData?: any,
+): string => {
   const lowerQ = question.toLowerCase();
 
   // Extract data from planData if available
@@ -42,11 +45,27 @@ const generateAssistantResponse = (question: string, planData?: any): string => 
     totalOrders = planData.length;
     const uniqueRakes = new Set(planData.map((item: any) => item.rake_id));
     rakeCount = uniqueRakes.size;
-    totalQuantity = Math.round(planData.reduce((sum: number, item: any) => sum + item.quantity_tonnes, 0));
-    totalCost = Math.round(planData.reduce((sum: number, item: any) => sum + item.estimated_cost, 0));
-    railOrders = planData.filter((item: any) => item.transport_mode === "rail").length;
-    roadOrders = planData.filter((item: any) => item.transport_mode === "road").length;
-    avgUtilization = Math.round(planData.reduce((sum: number, item: any) => sum + item.utilization_percent, 0) / planData.length);
+    totalQuantity = Math.round(
+      planData.reduce(
+        (sum: number, item: any) => sum + item.quantity_tonnes,
+        0,
+      ),
+    );
+    totalCost = Math.round(
+      planData.reduce((sum: number, item: any) => sum + item.estimated_cost, 0),
+    );
+    railOrders = planData.filter(
+      (item: any) => item.transport_mode === "rail",
+    ).length;
+    roadOrders = planData.filter(
+      (item: any) => item.transport_mode === "road",
+    ).length;
+    avgUtilization = Math.round(
+      planData.reduce(
+        (sum: number, item: any) => sum + item.utilization_percent,
+        0,
+      ) / planData.length,
+    );
     const baselineCost = totalQuantity * 765;
     costSavings = Math.round(baselineCost - totalCost);
     costSavingsPercent = ((costSavings / baselineCost) * 100).toFixed(1);
@@ -74,7 +93,7 @@ const generateAssistantResponse = (question: string, planData?: any): string => 
   }
 
   if (lowerQ.includes("total cost")) {
-    return `The estimated total cost for this plan is ₹${(totalCost / 1000).toFixed(1)}k for ${totalQuantity} MT across ${rakeCount} rakes. This achieves ${costSavingsPercent}% savings versus baseline all-road transport at ₹${(totalQuantity * 765 / 1000).toFixed(1)}k.`;
+    return `The estimated total cost for this plan is ₹${(totalCost / 1000).toFixed(1)}k for ${totalQuantity} MT across ${rakeCount} rakes. This achieves ${costSavingsPercent}% savings versus baseline all-road transport at ₹${((totalQuantity * 765) / 1000).toFixed(1)}k.`;
   }
 
   if (lowerQ.includes("utilization")) {
@@ -106,7 +125,11 @@ const generateAssistantResponse = (question: string, planData?: any): string => 
   return `The OptiRake DSS optimized your ${totalOrders} orders into ${rakeCount} rakes with ${costSavingsPercent}% cost savings and ${avgUtilization}% average utilization. I can answer questions about specific orders, rake formations, costs, SLA compliance, or transport mode selection. What would you like to know?`;
 };
 
-export function AIAssistantDrawer({ isOpen, onClose, planData }: AIAssistantDrawerProps) {
+export function AIAssistantDrawer({
+  isOpen,
+  onClose,
+  planData,
+}: AIAssistantDrawerProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -170,7 +193,7 @@ export function AIAssistantDrawer({ isOpen, onClose, planData }: AIAssistantDraw
       <div
         className={cn(
           "fixed right-0 top-0 h-full w-full md:w-96 bg-background border-l border-border/30 shadow-2xl flex flex-col transition-transform duration-300 z-50",
-          isOpen ? "translate-x-0" : "translate-x-full"
+          isOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
         {/* Header */}
@@ -181,7 +204,9 @@ export function AIAssistantDrawer({ isOpen, onClose, planData }: AIAssistantDraw
             </div>
             <div>
               <h2 className="font-bold text-foreground">OptiRake Assistant</h2>
-              <p className="text-xs text-muted-foreground">Plan & optimization Q&A</p>
+              <p className="text-xs text-muted-foreground">
+                Plan & optimization Q&A
+              </p>
             </div>
           </div>
           <button
@@ -199,7 +224,7 @@ export function AIAssistantDrawer({ isOpen, onClose, planData }: AIAssistantDraw
               key={message.id}
               className={cn(
                 "flex gap-3 animate-fade-in",
-                message.type === "user" ? "justify-end" : "justify-start"
+                message.type === "user" ? "justify-end" : "justify-start",
               )}
             >
               {message.type === "assistant" && (
@@ -212,7 +237,7 @@ export function AIAssistantDrawer({ isOpen, onClose, planData }: AIAssistantDraw
                   "max-w-xs px-4 py-3 rounded-lg",
                   message.type === "user"
                     ? "bg-primary/20 text-foreground rounded-br-none"
-                    : "bg-muted/30 text-foreground/90 rounded-bl-none border border-border/20"
+                    : "bg-muted/30 text-foreground/90 rounded-bl-none border border-border/20",
                 )}
               >
                 <p className="text-sm leading-relaxed">{message.content}</p>
@@ -228,8 +253,14 @@ export function AIAssistantDrawer({ isOpen, onClose, planData }: AIAssistantDraw
               <div className="bg-muted/30 px-4 py-3 rounded-lg border border-border/20 rounded-bl-none">
                 <div className="flex gap-1">
                   <div className="w-2 h-2 rounded-full bg-muted-foreground/50 animate-bounce" />
-                  <div className="w-2 h-2 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: "0.1s" }} />
-                  <div className="w-2 h-2 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: "0.2s" }} />
+                  <div
+                    className="w-2 h-2 rounded-full bg-muted-foreground/50 animate-bounce"
+                    style={{ animationDelay: "0.1s" }}
+                  />
+                  <div
+                    className="w-2 h-2 rounded-full bg-muted-foreground/50 animate-bounce"
+                    style={{ animationDelay: "0.2s" }}
+                  />
                 </div>
               </div>
             </div>
@@ -240,7 +271,9 @@ export function AIAssistantDrawer({ isOpen, onClose, planData }: AIAssistantDraw
         {/* Quick Questions */}
         {messages.length <= 1 && (
           <div className="px-6 py-4 border-t border-border/30 space-y-2">
-            <p className="text-xs font-semibold text-muted-foreground uppercase">Quick Questions</p>
+            <p className="text-xs font-semibold text-muted-foreground uppercase">
+              Quick Questions
+            </p>
             <div className="space-y-2">
               {SAMPLE_QUESTIONS.slice(0, 3).map((question) => (
                 <button
@@ -282,7 +315,8 @@ export function AIAssistantDrawer({ isOpen, onClose, planData }: AIAssistantDraw
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
-            Ask me anything about rake formations, costs, SLA compliance, or optimization decisions.
+            Ask me anything about rake formations, costs, SLA compliance, or
+            optimization decisions.
           </p>
         </div>
       </div>

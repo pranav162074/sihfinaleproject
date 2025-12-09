@@ -127,7 +127,10 @@ function getLoadingPointForProduct(productType: string): string {
 }
 
 // Helper: Get platform by loading point
-function getPlatformByLoadingPoint(lp: string, platformsMap: Map<string, Platform>): Platform {
+function getPlatformByLoadingPoint(
+  lp: string,
+  platformsMap: Map<string, Platform>,
+): Platform {
   for (const platform of platformsMap.values()) {
     if (platform.loading_point_id === lp) {
       return platform;
@@ -157,7 +160,7 @@ export function planRakes(
     cost_weight: number;
     sla_weight: number;
     rail_vs_road_bias: string;
-  }
+  },
 ): RakePlanOutput {
   // Sort orders by priority and due date
   const sortedOrders = [...orders].sort((a, b) => {
@@ -174,13 +177,13 @@ export function planRakes(
   const rakeAssignments = new Map<string, string[]>(); // rake_id -> destinations
 
   // Initialize wagon states
-  wagons.forEach(wagon => {
+  wagons.forEach((wagon) => {
     wagonStates.set(wagon.wagon_id, { currentLoad: 0, allocations: [] });
   });
 
   // Build platform map
   const platformsMap = new Map<string, Platform>();
-  platforms.forEach(p => {
+  platforms.forEach((p) => {
     platformsMap.set(p.platform_id, p);
   });
 
@@ -198,8 +201,8 @@ export function planRakes(
       for (const rake of rakes) {
         // Check rake capacity
         const rakeCurrentLoad = Array.from(wagonStates.values())
-          .flatMap(s => s.allocations)
-          .filter(a => a.rake_id === rake.rake_id)
+          .flatMap((s) => s.allocations)
+          .filter((a) => a.rake_id === rake.rake_id)
           .reduce((sum, a) => sum + a.allocated_quantity_tonnes, 0);
 
         if (rakeCurrentLoad >= rake.total_capacity_tonnes) continue;
@@ -219,7 +222,8 @@ export function planRakes(
           if (wagon.rake_id !== rake.rake_id) continue;
 
           const state = wagonStates.get(wagon.wagon_id)!;
-          const availableCapacity = wagon.max_capacity_tonnes - state.currentLoad;
+          const availableCapacity =
+            wagon.max_capacity_tonnes - state.currentLoad;
 
           if (availableCapacity <= 0) continue;
 
@@ -228,9 +232,16 @@ export function planRakes(
           const platform = getPlatformByLoadingPoint(lp, platformsMap);
 
           // Can we fit this order in one wagon?
-          const qtyToAllocate = Math.min(remaining, availableCapacity, platform.crane_capacity_tonnes);
+          const qtyToAllocate = Math.min(
+            remaining,
+            availableCapacity,
+            platform.crane_capacity_tonnes,
+          );
 
-          if (qtyToAllocate > 0 && (bestWagon === null || availableCapacity > allocQty)) {
+          if (
+            qtyToAllocate > 0 &&
+            (bestWagon === null || availableCapacity > allocQty)
+          ) {
             bestRake = rake;
             bestWagon = wagon;
             allocQty = qtyToAllocate;
@@ -240,7 +251,10 @@ export function planRakes(
 
       if (!bestRake || !bestWagon) {
         // Cannot allocate - mark as road if possible
-        if (order.preferred_mode === "road" || order.preferred_mode === "either") {
+        if (
+          order.preferred_mode === "road" ||
+          order.preferred_mode === "either"
+        ) {
           const lp = getLoadingPointForProduct(order.product_type);
           const platform = getPlatformByLoadingPoint(lp, platformsMap);
           const daysToDeliver = 2; // Road takes 2 days
@@ -277,7 +291,8 @@ export function planRakes(
             loading_cost: remaining * 50,
             expected_penalty_cost: 0,
             idle_freight_cost: 0,
-            total_estimated_cost: remaining * order.distance_km * 1.8 + remaining * 50,
+            total_estimated_cost:
+              remaining * order.distance_km * 1.8 + remaining * 50,
             sla_status: "On-time",
             reason:
               "Order allocated to ROAD mode due to lack of available rail rake capacity or customer preference. Road transport provides flexibility at the cost of longer transit time.",
@@ -302,15 +317,18 @@ export function planRakes(
 
       const wagonUtil = (allocQty / bestWagon.max_capacity_tonnes) * 100;
       const rakeCurrentLoad = Array.from(wagonStates.values())
-        .flatMap(s => s.allocations)
-        .filter(a => a.rake_id === bestRake!.rake_id)
+        .flatMap((s) => s.allocations)
+        .filter((a) => a.rake_id === bestRake!.rake_id)
         .reduce((sum, a) => sum + a.allocated_quantity_tonnes, 0);
-      const rakeUtil = ((rakeCurrentLoad + allocQty) / bestRake.total_capacity_tonnes) * 100;
+      const rakeUtil =
+        ((rakeCurrentLoad + allocQty) / bestRake.total_capacity_tonnes) * 100;
 
       const transportCost = allocQty * order.distance_km * 1.4;
       const loadingCost = allocQty * 50;
-      const penaltyCost = daysLate > 0 ? daysLate * order.penalty_rate_per_day * allocQty : 0;
-      const idleFreightCost = rakeUtil < 70 ? (allocQty * order.distance_km * 1.4) * 0.1 : 0;
+      const penaltyCost =
+        daysLate > 0 ? daysLate * order.penalty_rate_per_day * allocQty : 0;
+      const idleFreightCost =
+        rakeUtil < 70 ? allocQty * order.distance_km * 1.4 * 0.1 : 0;
 
       const allocation: RakePlanItem = {
         order_id: order.order_id,
@@ -340,7 +358,9 @@ export function planRakes(
         loading_cost: Math.round(loadingCost),
         expected_penalty_cost: Math.round(penaltyCost),
         idle_freight_cost: Math.round(idleFreightCost),
-        total_estimated_cost: Math.round(transportCost + loadingCost + penaltyCost + idleFreightCost),
+        total_estimated_cost: Math.round(
+          transportCost + loadingCost + penaltyCost + idleFreightCost,
+        ),
         sla_status: slaStatus,
         reason: generateReason(
           order,
@@ -350,7 +370,7 @@ export function planRakes(
           wagonUtil,
           rakeUtil,
           daysLate,
-          firstAllocation
+          firstAllocation,
         ),
       };
 
@@ -372,20 +392,32 @@ export function planRakes(
   }
 
   // Calculate KPIs
-  const railOrders = rakePlan.filter(a => a.assigned_mode === "rail");
-  const roadOrders = rakePlan.filter(a => a.assigned_mode === "road");
-  const uniqueRakes = new Set(railOrders.map(a => a.rake_id));
+  const railOrders = rakePlan.filter((a) => a.assigned_mode === "rail");
+  const roadOrders = rakePlan.filter((a) => a.assigned_mode === "road");
+  const uniqueRakes = new Set(railOrders.map((a) => a.rake_id));
 
-  const avgUtil = railOrders.length > 0
-    ? Math.round(railOrders.reduce((sum, a) => sum + a.utilization_percent_for_rake, 0) / railOrders.length * 10) / 10
-    : 0;
+  const avgUtil =
+    railOrders.length > 0
+      ? Math.round(
+          (railOrders.reduce(
+            (sum, a) => sum + a.utilization_percent_for_rake,
+            0,
+          ) /
+            railOrders.length) *
+            10,
+        ) / 10
+      : 0;
 
-  const totalCost = rakePlan.reduce((sum, a) => sum + a.total_estimated_cost, 0);
+  const totalCost = rakePlan.reduce(
+    (sum, a) => sum + a.total_estimated_cost,
+    0,
+  );
   const baselineCost = totalCost * 1.15; // 15% higher baseline
   const costSavings = baselineCost - totalCost;
-  const demurrageSavings = railOrders
-    .filter(a => a.utilization_percent_for_rake >= 85)
-    .reduce((sum, a) => sum + a.idle_freight_cost, 0) * 1.5;
+  const demurrageSavings =
+    railOrders
+      .filter((a) => a.utilization_percent_for_rake >= 85)
+      .reduce((sum, a) => sum + a.idle_freight_cost, 0) * 1.5;
 
   const kpiSummary: KPISummary = {
     total_orders: orders.length,
@@ -399,7 +431,7 @@ export function planRakes(
   };
 
   // Generate natural language plan
-  const nlPlan = rakePlan.map(item => ({
+  const nlPlan = rakePlan.map((item) => ({
     sentence: `ORDER #${item.order_id} with cargo ${item.material_name} from customer ${item.customer_name} is allocated to ${item.assigned_mode === "rail" ? `WAGON ${item.wagon_index} of RAKE ${item.rake_id} at ${item.platform_name}` : `ROAD in truck batches`}, headed to ${item.destination}.`,
     reason: item.reason,
   }));
@@ -419,7 +451,7 @@ function generateReason(
   wagonUtil: number,
   rakeUtil: number,
   daysLate: number,
-  isFirst: boolean
+  isFirst: boolean,
 ): string {
   const reasons: string[] = [];
 
@@ -428,11 +460,13 @@ function generateReason(
   }
 
   reasons.push(
-    `wagon utilization of ${wagonUtil.toFixed(1)}% maximizes capacity without exceeding crane limit of ${platform.crane_capacity_tonnes}T`
+    `wagon utilization of ${wagonUtil.toFixed(1)}% maximizes capacity without exceeding crane limit of ${platform.crane_capacity_tonnes}T`,
   );
 
   if (rakeUtil >= 85) {
-    reasons.push(`rake reaches ${rakeUtil.toFixed(1)}% utilization, meeting minimum efficiency target`);
+    reasons.push(
+      `rake reaches ${rakeUtil.toFixed(1)}% utilization, meeting minimum efficiency target`,
+    );
   }
 
   if (daysLate === 0) {

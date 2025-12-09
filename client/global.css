@@ -15,60 +15,78 @@
     /* Core palette - True Pitch Black */
     --background: 0 0% 0%;
     --foreground: 210 11% 96%;
-    
+
     /* Surface layers */
     --card: 210 6% 4%;
     --card-foreground: 210 11% 96%;
-    
+
     --popover: 210 6% 4%;
     --popover-foreground: 210 11% 96%;
-    
+
     /* Primary: Electric Teal (#00FCE8) */
     --primary: 176 100% 50%;
     --primary-foreground: 0 0% 0%;
-    
+
     /* Secondary: Soft Royal Blue (#3D7CFF) */
     --secondary: 217 100% 61%;
     --secondary-foreground: 210 11% 96%;
-    
+
     /* Accents */
     --accent: 176 100% 50%;
     --accent-foreground: 0 0% 0%;
-    
+
     --muted: 210 8% 20%;
     --muted-foreground: 210 6% 60%;
-    
+
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    
+
     --border: 210 6% 12%;
     --input: 210 6% 8%;
     --ring: 176 100% 50%;
-    
+
     --radius: 0.5rem;
-    
+
     /* Semantic colors */
     --success: 165 90% 51%;
     --warning: 41 96% 56%;
     --info: 176 100% 50%;
     --error: 0 84% 60%;
-    
+
     /* Premium gradients */
-    --gradient-teal-blue: linear-gradient(135deg, hsl(176 100% 50%) 0%, hsl(217 100% 61%) 100%);
-    --gradient-teal-dark: linear-gradient(135deg, hsl(176 100% 50%) 0%, hsl(176 85% 35%) 100%);
-    --gradient-blue-dark: linear-gradient(135deg, hsl(217 100% 61%) 0%, hsl(217 80% 40%) 100%);
-    --gradient-subtle: linear-gradient(135deg, hsl(210 6% 8%) 0%, hsl(210 6% 12%) 100%);
-    
+    --gradient-teal-blue: linear-gradient(
+      135deg,
+      hsl(176 100% 50%) 0%,
+      hsl(217 100% 61%) 100%
+    );
+    --gradient-teal-dark: linear-gradient(
+      135deg,
+      hsl(176 100% 50%) 0%,
+      hsl(176 85% 35%) 100%
+    );
+    --gradient-blue-dark: linear-gradient(
+      135deg,
+      hsl(217 100% 61%) 0%,
+      hsl(217 80% 40%) 100%
+    );
+    --gradient-subtle: linear-gradient(
+      135deg,
+      hsl(210 6% 8%) 0%,
+      hsl(210 6% 12%) 100%
+    );
+
     /* Premium glows - subtle, 8-14px spread, reduced 50% for calm professional look */
-    --glow-teal: 0 0 12px rgba(0, 252, 232, 0.12), 0 0 24px rgba(0, 252, 232, 0.06);
-    --glow-blue: 0 0 12px rgba(61, 124, 255, 0.12), 0 0 24px rgba(61, 124, 255, 0.06);
+    --glow-teal:
+      0 0 12px rgba(0, 252, 232, 0.12), 0 0 24px rgba(0, 252, 232, 0.06);
+    --glow-blue:
+      0 0 12px rgba(61, 124, 255, 0.12), 0 0 24px rgba(61, 124, 255, 0.06);
     --glow-strong: 0 0 16px rgba(0, 252, 232, 0.16);
-    
+
     /* Glass morphism */
     --glass-bg: rgba(255, 255, 255, 0.05);
     --glass-blur: blur(20px);
   }
-  
+
   .dark {
     --background: 0 0% 0%;
     --foreground: 210 11% 96%;
@@ -107,7 +125,12 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
     line-height: 1.6;
   }
 
@@ -148,12 +171,16 @@
   .card-glass {
     @apply relative rounded-lg border border-border/30 bg-card/40 backdrop-blur-xl overflow-hidden;
     background-color: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 0 12px rgba(0, 252, 232, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    box-shadow:
+      0 0 12px rgba(0, 252, 232, 0.04),
+      inset 0 1px 1px rgba(255, 255, 255, 0.05);
   }
 
   .card-glass:hover {
     @apply border-border/60 transition-all duration-300;
-    box-shadow: 0 0 16px rgba(0, 252, 232, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    box-shadow:
+      0 0 16px rgba(0, 252, 232, 0.08),
+      inset 0 1px 1px rgba(255, 255, 255, 0.05);
   }
 
   /* Premium Glow Card */
@@ -356,12 +383,24 @@
     animation: stagger 0.3s ease-out backwards;
   }
 
-  .stagger-item:nth-child(1) { animation-delay: 0.05s; }
-  .stagger-item:nth-child(2) { animation-delay: 0.1s; }
-  .stagger-item:nth-child(3) { animation-delay: 0.15s; }
-  .stagger-item:nth-child(4) { animation-delay: 0.2s; }
-  .stagger-item:nth-child(5) { animation-delay: 0.25s; }
-  .stagger-item:nth-child(n+6) { animation-delay: 0.3s; }
+  .stagger-item:nth-child(1) {
+    animation-delay: 0.05s;
+  }
+  .stagger-item:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  .stagger-item:nth-child(3) {
+    animation-delay: 0.15s;
+  }
+  .stagger-item:nth-child(4) {
+    animation-delay: 0.2s;
+  }
+  .stagger-item:nth-child(5) {
+    animation-delay: 0.25s;
+  }
+  .stagger-item:nth-child(n + 6) {
+    animation-delay: 0.3s;
+  }
 
   /* Responsive Typography */
   @media (max-width: 768px) {

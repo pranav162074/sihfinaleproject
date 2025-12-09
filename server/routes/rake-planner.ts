@@ -4,7 +4,12 @@
 
 import { RequestHandler } from "express";
 import { planRakes, type RakePlanOutput } from "../lib/rake-planner";
-import { buildInternalModel, validateInternalModel, generateSyntheticData, type CSVOrder } from "../lib/rake-planner-utils";
+import {
+  buildInternalModel,
+  validateInternalModel,
+  generateSyntheticData,
+  type CSVOrder,
+} from "../lib/rake-planner-utils";
 
 /**
  * POST /api/plan-rakes
@@ -21,7 +26,8 @@ export const handlePlanRakes: RequestHandler = (req, res) => {
         status: "error",
         error: "Invalid input format",
         message: "Request must include 'orders' as an array",
-        suggestion: "Provide orders: [{order_id, customer_name, destination, ...}]",
+        suggestion:
+          "Provide orders: [{order_id, customer_name, destination, ...}]",
       });
     }
 
@@ -35,11 +41,18 @@ export const handlePlanRakes: RequestHandler = (req, res) => {
     }
 
     // Check for minimum required fields
-    const requiredFields = ["order_id", "customer_name", "destination", "quantity_tonnes"];
+    const requiredFields = [
+      "order_id",
+      "customer_name",
+      "destination",
+      "quantity_tonnes",
+    ];
     const missingFieldsMap = new Map<string, string[]>();
 
     orders.forEach((order, idx) => {
-      const missing = requiredFields.filter(field => !order[field as keyof CSVOrder]);
+      const missing = requiredFields.filter(
+        (field) => !order[field as keyof CSVOrder],
+      );
       if (missing.length > 0) {
         missingFieldsMap.set(`Row ${idx}`, missing);
       }
@@ -56,7 +69,8 @@ export const handlePlanRakes: RequestHandler = (req, res) => {
         message: "Some orders are missing required columns",
         missing_fields: requiredFields,
         sample_issues: details,
-        suggestion: "Ensure all orders have: order_id, customer_name, destination, quantity_tonnes",
+        suggestion:
+          "Ensure all orders have: order_id, customer_name, destination, quantity_tonnes",
       });
     }
 
@@ -68,8 +82,12 @@ export const handlePlanRakes: RequestHandler = (req, res) => {
       return res.status(400).json({
         status: "error",
         error: "Model building failed",
-        message: buildError instanceof Error ? buildError.message : "Failed to process order data",
-        suggestion: "Check that quantity_tonnes and distance_km are valid numbers",
+        message:
+          buildError instanceof Error
+            ? buildError.message
+            : "Failed to process order data",
+        suggestion:
+          "Check that quantity_tonnes and distance_km are valid numbers",
       });
     }
 
@@ -93,7 +111,7 @@ export const handlePlanRakes: RequestHandler = (req, res) => {
         model.rakes,
         model.wagons,
         model.platforms,
-        model.constraints
+        model.constraints,
       );
 
       // Ensure we have a valid result
@@ -121,7 +139,9 @@ export const handlePlanRakes: RequestHandler = (req, res) => {
             priority: order.priority,
             due_date: order.due_date,
             expected_departure_time: new Date().toISOString(),
-            expected_arrival_time: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+            expected_arrival_time: new Date(
+              Date.now() + 2 * 24 * 60 * 60 * 1000,
+            ).toISOString(),
             utilization_percent_for_wagon: 100,
             utilization_percent_for_rake: 100,
             transport_cost: order.quantity_tonnes * 765,
@@ -138,13 +158,17 @@ export const handlePlanRakes: RequestHandler = (req, res) => {
             orders_served_by_road: model.orders.length,
             rakes_used: 0,
             average_rake_utilization_percent: 0,
-            total_estimated_cost: model.orders.reduce((sum, o) => sum + o.quantity_tonnes * 815, 0),
+            total_estimated_cost: model.orders.reduce(
+              (sum, o) => sum + o.quantity_tonnes * 815,
+              0,
+            ),
             estimated_cost_savings_vs_baseline: 0,
             estimated_demurrage_savings: 0,
           },
           natural_language_plan: model.orders.map((order) => ({
             sentence: `ORDER #${order.order_id} with cargo ${order.material_name} from ${order.customer_name} is allocated to road transport to ${order.destination}.`,
-            reason: "Rail capacity unavailable. Road transport selected as fallback with 2-day transit time.",
+            reason:
+              "Rail capacity unavailable. Road transport selected as fallback with 2-day transit time.",
           })),
         };
         return res.json(roadPlan);
@@ -154,7 +178,10 @@ export const handlePlanRakes: RequestHandler = (req, res) => {
       return res.status(500).json({
         status: "error",
         error: "Optimization planning failed",
-        message: planError instanceof Error ? planError.message : "An unexpected error occurred during planning",
+        message:
+          planError instanceof Error
+            ? planError.message
+            : "An unexpected error occurred during planning",
         suggestion: "Try with a smaller dataset or different parameters",
       });
     }
@@ -186,7 +213,7 @@ export const handlePlanRakesDemo: RequestHandler = (req, res) => {
       model.rakes,
       model.wagons,
       model.platforms,
-      model.constraints
+      model.constraints,
     );
 
     res.json(rakePlan);

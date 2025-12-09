@@ -51,7 +51,11 @@ export default function Help() {
           {/* Quick Links */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { emoji: "📚", title: "Getting Started", desc: "Learn the basics" },
+              {
+                emoji: "📚",
+                title: "Getting Started",
+                desc: "Learn the basics",
+              },
               { emoji: "📤", title: "Data Upload", desc: "Format & schema" },
               { emoji: "⚡", title: "Optimization", desc: "How it works" },
               { emoji: "📊", title: "Results", desc: "Understanding output" },
@@ -62,7 +66,9 @@ export default function Help() {
               >
                 <div className="text-3xl">{item.emoji}</div>
                 <div className="text-left">
-                  <p className="font-semibold text-foreground text-sm">{item.title}</p>
+                  <p className="font-semibold text-foreground text-sm">
+                    {item.title}
+                  </p>
                   <p className="text-xs text-muted-foreground">{item.desc}</p>
                 </div>
               </button>
@@ -88,10 +94,14 @@ export default function Help() {
                   className="card-glow border border-border/30 rounded-lg overflow-hidden transition-all"
                 >
                   <button
-                    onClick={() => setExpandedIdx(expandedIdx === idx ? null : idx)}
+                    onClick={() =>
+                      setExpandedIdx(expandedIdx === idx ? null : idx)
+                    }
                     className="w-full px-6 py-4 flex items-center justify-between hover:bg-muted/20 transition-colors text-left"
                   >
-                    <span className="font-semibold text-foreground">{faq.question}</span>
+                    <span className="font-semibold text-foreground">
+                      {faq.question}
+                    </span>
                     <ChevronDown
                       className={`w-5 h-5 text-muted-foreground transition-transform ${
                         expandedIdx === idx ? "rotate-180" : ""
@@ -101,7 +111,9 @@ export default function Help() {
 
                   {expandedIdx === idx && (
                     <div className="px-6 pb-4 pt-0 border-t border-border/30 bg-muted/5">
-                      <p className="text-sm text-foreground/90 leading-relaxed">{faq.answer}</p>
+                      <p className="text-sm text-foreground/90 leading-relaxed">
+                        {faq.answer}
+                      </p>
                     </div>
                   )}
                 </div>
@@ -116,7 +128,9 @@ export default function Help() {
                 <MessageCircle className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-foreground">AI Assistant</h2>
+                <h2 className="text-2xl font-bold text-foreground">
+                  AI Assistant
+                </h2>
                 <p className="text-sm text-muted-foreground">
                   Available on all pages for instant help
                 </p>
@@ -124,8 +138,8 @@ export default function Help() {
             </div>
 
             <p className="text-foreground/90">
-              Our AI Assistant is available 24/7 in the collapsible right sidebar on every page. Ask
-              questions like:
+              Our AI Assistant is available 24/7 in the collapsible right
+              sidebar on every page. Ask questions like:
             </p>
 
             <ul className="space-y-2 text-sm text-foreground/80">
@@ -136,16 +150,20 @@ export default function Help() {
             </ul>
 
             <p className="text-xs text-muted-foreground pt-4 border-t border-border/30">
-              The assistant provides context-aware responses based on your current optimization and data.
+              The assistant provides context-aware responses based on your
+              current optimization and data.
             </p>
           </div>
 
           {/* Contact Support */}
           <div className="card-glass p-8 space-y-6 border-secondary/20">
-            <h2 className="text-2xl font-bold text-foreground">Need More Help?</h2>
+            <h2 className="text-2xl font-bold text-foreground">
+              Need More Help?
+            </h2>
 
             <p className="text-foreground/90">
-              Can't find what you're looking for? Our support team is here to help.
+              Can't find what you're looking for? Our support team is here to
+              help.
             </p>
 
             <div className="space-y-3 text-sm text-muted-foreground">

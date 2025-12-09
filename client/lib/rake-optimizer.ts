@@ -63,7 +63,7 @@ const FIXED_RAKE_COST = 2500;
 function determineTransportMode(
   quantity: number,
   distance: number,
-  priority: number
+  priority: number,
 ): "rail" | "road" {
   if (quantity >= 80 && distance > 1000 && priority >= 2) {
     return "rail";
@@ -78,7 +78,8 @@ function determineTransportMode(
  * Calculate cost for an order
  */
 function calculateOrderCost(quantity: number, mode: "rail" | "road"): number {
-  const perTonneCost = mode === "rail" ? COST_PER_TONNE_RAIL : COST_PER_TONNE_ROAD;
+  const perTonneCost =
+    mode === "rail" ? COST_PER_TONNE_RAIL : COST_PER_TONNE_ROAD;
   return Math.round(quantity * perTonneCost);
 }
 
@@ -90,38 +91,90 @@ function getRegionForDestination(destination: string): string {
 
   // Northern Region
   if (
-    ["DELHI", "NOIDA", "FARIDABAD", "GURGAON", "GURUGRAM", "AGRA", "KANPUR", "BAREILLY", "HARIDWAR", "MEERUT"].includes(
-      dest
-    )
+    [
+      "DELHI",
+      "NOIDA",
+      "FARIDABAD",
+      "GURGAON",
+      "GURUGRAM",
+      "AGRA",
+      "KANPUR",
+      "BAREILLY",
+      "HARIDWAR",
+      "MEERUT",
+    ].includes(dest)
   ) {
     return "NORTH";
   }
 
   // Western Region
-  if (["MUMBAI", "PUNE", "NASHIK", "SURAT", "AHMEDABAD", "JAIPUR", "AJMER", "INDORE", "RATLAM", "BIKANER"].includes(dest)) {
+  if (
+    [
+      "MUMBAI",
+      "PUNE",
+      "NASHIK",
+      "SURAT",
+      "AHMEDABAD",
+      "JAIPUR",
+      "AJMER",
+      "INDORE",
+      "RATLAM",
+      "BIKANER",
+    ].includes(dest)
+  ) {
     return "WEST";
   }
 
   // Southern Region
   if (
-    ["BANGALORE", "HYDERABAD", "CHENNAI", "MADURAI", "TRICHY", "MANGALORE", "COCHIN", "TIRUPATI", "VELLORE", "KURNOOL"].includes(
-      dest
-    )
+    [
+      "BANGALORE",
+      "HYDERABAD",
+      "CHENNAI",
+      "MADURAI",
+      "TRICHY",
+      "MANGALORE",
+      "COCHIN",
+      "TIRUPATI",
+      "VELLORE",
+      "KURNOOL",
+    ].includes(dest)
   ) {
     return "SOUTH";
   }
 
   // Eastern Region
   if (
-    ["KOLKATA", "VARANASI", "PATNA", "JAMSHEDPUR", "RANCHI", "LUCKNOW", "GORAKHPUR", "REWA", "SILCHAR", "GUWAHATI"].includes(
-      dest
-    )
+    [
+      "KOLKATA",
+      "VARANASI",
+      "PATNA",
+      "JAMSHEDPUR",
+      "RANCHI",
+      "LUCKNOW",
+      "GORAKHPUR",
+      "REWA",
+      "SILCHAR",
+      "GUWAHATI",
+    ].includes(dest)
   ) {
     return "EAST";
   }
 
   // Central Region
-  if (["RAIPUR", "BHILAI", "BHUBANESWAR", "GWALIOR", "UDAIPUR", "JALGAON", "AURANGABAD", "DHARMAPURI", "HISAR"].includes(dest)) {
+  if (
+    [
+      "RAIPUR",
+      "BHILAI",
+      "BHUBANESWAR",
+      "GWALIOR",
+      "UDAIPUR",
+      "JALGAON",
+      "AURANGABAD",
+      "DHARMAPURI",
+      "HISAR",
+    ].includes(dest)
+  ) {
     return "CENTRAL";
   }
 
@@ -153,7 +206,9 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
   // For each region, pack orders greedily
   Object.entries(groupsByRegion).forEach(([region, regionOrders]) => {
     // Sort by quantity descending (largest first = better packing)
-    const sorted = [...regionOrders].sort((a, b) => b.quantity_tonnes - a.quantity_tonnes);
+    const sorted = [...regionOrders].sort(
+      (a, b) => b.quantity_tonnes - a.quantity_tonnes,
+    );
 
     // Pack orders into rakes
     sorted.forEach((order) => {
@@ -166,12 +221,15 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
         const newOrders = rake.totalOrders + 1;
 
         // Constraint checks: capacity and order count
-        if (newQuantity <= RAKE_CAPACITY_TONNES && newOrders <= MAX_ORDERS_PER_RAKE) {
+        if (
+          newQuantity <= RAKE_CAPACITY_TONNES &&
+          newOrders <= MAX_ORDERS_PER_RAKE
+        ) {
           // This order fits in this rake!
           const transportMode = determineTransportMode(
             order.quantity_tonnes,
             order.distance_km || 800,
-            order.priority || 3
+            order.priority || 3,
           );
 
           const cost = calculateOrderCost(order.quantity_tonnes, transportMode);
@@ -185,9 +243,12 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
             rake_id: rake.rake_id,
             wagon_id: `W${rake.rake_id}-${rake.totalOrders + 1}`,
             wagon_index: rake.totalOrders + 1,
-            platform_id: `P${Math.min(rake.orders.length % 3 + 1, 3)}`,
+            platform_id: `P${Math.min((rake.orders.length % 3) + 1, 3)}`,
             crane_capacity_tonnes: CRANE_CAPACITY_TONNES,
-            utilization_percent: Math.min((order.quantity_tonnes / CRANE_CAPACITY_TONNES) * 100, 100),
+            utilization_percent: Math.min(
+              (order.quantity_tonnes / CRANE_CAPACITY_TONNES) * 100,
+              100,
+            ),
             estimated_cost: cost,
             explanation: `Order #${order.order_id} (${order.quantity_tonnes} MT from ${order.customer_name}) → ${rake.rake_id}`,
             reason: `Regional consolidation: ${region} region. Rake now ${Math.round((newQuantity / RAKE_CAPACITY_TONNES) * 100)}% utilized.`,
@@ -214,7 +275,7 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
         const transportMode = determineTransportMode(
           order.quantity_tonnes,
           order.distance_km || 800,
-          order.priority || 3
+          order.priority || 3,
         );
 
         const cost = calculateOrderCost(order.quantity_tonnes, transportMode);
@@ -240,7 +301,10 @@ export function optimizeRakeAllocation(orders: OrderData[]): RakePlanItem[] {
           wagon_index: 1,
           platform_id: "P1",
           crane_capacity_tonnes: CRANE_CAPACITY_TONNES,
-          utilization_percent: Math.min((order.quantity_tonnes / CRANE_CAPACITY_TONNES) * 100, 100),
+          utilization_percent: Math.min(
+            (order.quantity_tonnes / CRANE_CAPACITY_TONNES) * 100,
+            100,
+          ),
           estimated_cost: cost,
           explanation: `Order #${order.order_id} (${order.quantity_tonnes} MT from ${order.customer_name}) → ${newRake.rake_id}`,
           reason: `New rake for ${region} region: ${order.destination}-bound freight.`,
@@ -279,17 +343,26 @@ export function validateRakeFormations(rakePlan: RakePlanItem[]): {
 
   rakeMap.forEach((rakeItems, rakeId) => {
     if (rakeItems.length > MAX_ORDERS_PER_RAKE) {
-      violations.push(`${rakeId}: ${rakeItems.length} orders exceeds max ${MAX_ORDERS_PER_RAKE}`);
+      violations.push(
+        `${rakeId}: ${rakeItems.length} orders exceeds max ${MAX_ORDERS_PER_RAKE}`,
+      );
     }
 
-    const totalQty = rakeItems.reduce((sum, item) => sum + item.quantity_tonnes, 0);
+    const totalQty = rakeItems.reduce(
+      (sum, item) => sum + item.quantity_tonnes,
+      0,
+    );
     if (totalQty > RAKE_CAPACITY_TONNES) {
-      violations.push(`${rakeId}: ${Math.round(totalQty)} MT exceeds capacity ${RAKE_CAPACITY_TONNES} MT`);
+      violations.push(
+        `${rakeId}: ${Math.round(totalQty)} MT exceeds capacity ${RAKE_CAPACITY_TONNES} MT`,
+      );
     }
 
     const dests = new Set(rakeItems.map((item) => item.destination));
     if (dests.size > MAX_DESTINATIONS_PER_RAKE) {
-      violations.push(`${rakeId}: ${dests.size} destinations exceed max ${MAX_DESTINATIONS_PER_RAKE}`);
+      violations.push(
+        `${rakeId}: ${dests.size} destinations exceed max ${MAX_DESTINATIONS_PER_RAKE}`,
+      );
     }
   });
 
@@ -304,11 +377,21 @@ export function validateRakeFormations(rakePlan: RakePlanItem[]): {
  */
 export function calculateKPISummary(rakePlan: RakePlanItem[]) {
   const totalOrders = rakePlan.length;
-  const railOrders = rakePlan.filter((item) => item.transport_mode === "rail").length;
-  const roadOrders = rakePlan.filter((item) => item.transport_mode === "road").length;
+  const railOrders = rakePlan.filter(
+    (item) => item.transport_mode === "rail",
+  ).length;
+  const roadOrders = rakePlan.filter(
+    (item) => item.transport_mode === "road",
+  ).length;
 
-  const totalQuantity = rakePlan.reduce((sum, item) => sum + item.quantity_tonnes, 0);
-  const totalDirectCost = rakePlan.reduce((sum, item) => sum + item.estimated_cost, 0);
+  const totalQuantity = rakePlan.reduce(
+    (sum, item) => sum + item.quantity_tonnes,
+    0,
+  );
+  const totalDirectCost = rakePlan.reduce(
+    (sum, item) => sum + item.estimated_cost,
+    0,
+  );
 
   const rakeMap = new Map<string, RakePlanItem[]>();
   rakePlan.forEach((item) => {
@@ -329,12 +412,17 @@ export function calculateKPISummary(rakePlan: RakePlanItem[]) {
 
   const avgUtilization =
     rakeUtilizations.length > 0
-      ? Math.round((rakeUtilizations.reduce((a, b) => a + b, 0) / rakeUtilizations.length) * 10) / 10
+      ? Math.round(
+          (rakeUtilizations.reduce((a, b) => a + b, 0) /
+            rakeUtilizations.length) *
+            10,
+        ) / 10
       : 0;
 
   const baselineCost = totalQuantity * COST_PER_TONNE_ROAD;
   const savings = baselineCost - totalCost;
-  const savingsPercent = totalQuantity > 0 ? ((savings / baselineCost) * 100).toFixed(1) : "0";
+  const savingsPercent =
+    totalQuantity > 0 ? ((savings / baselineCost) * 100).toFixed(1) : "0";
 
   return {
     totalOrders,

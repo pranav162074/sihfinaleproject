@@ -20,16 +20,20 @@ export default function Home() {
     <Layout>
       <div className="flex-1 overflow-auto bg-gradient-to-b from-background via-background to-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
-          
           {/* Hero Section */}
           <div className="space-y-6 animate-fade-in">
             <div className="space-y-4">
               <h1 className="text-6xl md:text-7xl font-bold text-foreground leading-tight">
                 Steel Logistics
-                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"> Optimized</span>
+                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  {" "}
+                  Optimized
+                </span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
-                OptiRake DSS uses advanced AI algorithms to optimize rake formations and transport allocation for SAIL steel distribution, cutting costs by up to 63% while maintaining SLA compliance.
+                OptiRake DSS uses advanced AI algorithms to optimize rake
+                formations and transport allocation for SAIL steel distribution,
+                cutting costs by up to 63% while maintaining SLA compliance.
               </p>
             </div>
 
@@ -55,7 +59,9 @@ export default function Home() {
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-primary" />
-                <h2 className="text-sm font-semibold text-primary uppercase tracking-wide">The Challenge</h2>
+                <h2 className="text-sm font-semibold text-primary uppercase tracking-wide">
+                  The Challenge
+                </h2>
               </div>
               <h3 className="text-4xl md:text-5xl font-bold text-foreground">
                 Manual rake formation leads to inefficiency
@@ -68,9 +74,13 @@ export default function Home() {
                 <div className="w-12 h-12 rounded-lg bg-rose-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <AlertCircle className="w-6 h-6 text-rose-400" />
                 </div>
-                <h4 className="text-lg font-bold text-foreground">Suboptimal Consolidation</h4>
+                <h4 className="text-lg font-bold text-foreground">
+                  Suboptimal Consolidation
+                </h4>
                 <p className="text-muted-foreground leading-relaxed">
-                  Orders are allocated manually without considering optimal rake formations, resulting in incomplete rakes and wasted transportation capacity.
+                  Orders are allocated manually without considering optimal rake
+                  formations, resulting in incomplete rakes and wasted
+                  transportation capacity.
                 </p>
               </div>
 
@@ -79,9 +89,12 @@ export default function Home() {
                 <div className="w-12 h-12 rounded-lg bg-rose-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <DollarSign className="w-6 h-6 text-rose-400" />
                 </div>
-                <h4 className="text-lg font-bold text-foreground">High Operational Costs</h4>
+                <h4 className="text-lg font-bold text-foreground">
+                  High Operational Costs
+                </h4>
                 <p className="text-muted-foreground leading-relaxed">
-                  Suboptimal transport mode decisions (rail vs road) and poor rake utilization inflate logistics costs significantly.
+                  Suboptimal transport mode decisions (rail vs road) and poor
+                  rake utilization inflate logistics costs significantly.
                 </p>
               </div>
 
@@ -90,9 +103,12 @@ export default function Home() {
                 <div className="w-12 h-12 rounded-lg bg-rose-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Clock className="w-6 h-6 text-rose-400" />
                 </div>
-                <h4 className="text-lg font-bold text-foreground">SLA & Demurrage Risks</h4>
+                <h4 className="text-lg font-bold text-foreground">
+                  SLA & Demurrage Risks
+                </h4>
                 <p className="text-muted-foreground leading-relaxed">
-                  Manual processes cause delays, missed SLAs, and unexpected demurrage penalties that erode profitability.
+                  Manual processes cause delays, missed SLAs, and unexpected
+                  demurrage penalties that erode profitability.
                 </p>
               </div>
             </div>
@@ -103,7 +119,9 @@ export default function Home() {
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-primary" />
-                <h2 className="text-sm font-semibold text-primary uppercase tracking-wide">Our Solution</h2>
+                <h2 className="text-sm font-semibold text-primary uppercase tracking-wide">
+                  Our Solution
+                </h2>
               </div>
               <h3 className="text-4xl md:text-5xl font-bold text-foreground">
                 AI-powered optimization for every order
@@ -116,9 +134,13 @@ export default function Home() {
                 <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Zap className="w-6 h-6 text-primary" />
                 </div>
-                <h4 className="text-lg font-bold text-foreground">Smart Consolidation</h4>
+                <h4 className="text-lg font-bold text-foreground">
+                  Smart Consolidation
+                </h4>
                 <p className="text-muted-foreground leading-relaxed">
-                  AI algorithms analyze all orders and destinations to form optimal rakes that maximize utilization while meeting delivery windows.
+                  AI algorithms analyze all orders and destinations to form
+                  optimal rakes that maximize utilization while meeting delivery
+                  windows.
                 </p>
               </div>
 
@@ -127,9 +149,13 @@ export default function Home() {
                 <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <TrendingUp className="w-6 h-6 text-primary" />
                 </div>
-                <h4 className="text-lg font-bold text-foreground">Cost Optimization</h4>
+                <h4 className="text-lg font-bold text-foreground">
+                  Cost Optimization
+                </h4>
                 <p className="text-muted-foreground leading-relaxed">
-                  Automated mode selection between rail and road based on distance, volume, and time constraints minimizes per-unit transport costs.
+                  Automated mode selection between rail and road based on
+                  distance, volume, and time constraints minimizes per-unit
+                  transport costs.
                 </p>
               </div>
 
@@ -138,9 +164,13 @@ export default function Home() {
                 <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <CheckCircle2 className="w-6 h-6 text-primary" />
                 </div>
-                <h4 className="text-lg font-bold text-foreground">SLA Compliance</h4>
+                <h4 className="text-lg font-bold text-foreground">
+                  SLA Compliance
+                </h4>
                 <p className="text-muted-foreground leading-relaxed">
-                  All allocations respect delivery deadlines and minimize demurrage risk through predictive planning and constraint satisfaction.
+                  All allocations respect delivery deadlines and minimize
+                  demurrage risk through predictive planning and constraint
+                  satisfaction.
                 </p>
               </div>
             </div>
@@ -151,7 +181,9 @@ export default function Home() {
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-primary" />
-                <h2 className="text-sm font-semibold text-primary uppercase tracking-wide">Capabilities</h2>
+                <h2 className="text-sm font-semibold text-primary uppercase tracking-wide">
+                  Capabilities
+                </h2>
               </div>
               <h3 className="text-4xl md:text-5xl font-bold text-foreground">
                 What OptiRake DSS delivers
@@ -166,9 +198,14 @@ export default function Home() {
                     <Truck className="w-5 h-5 text-primary" />
                   </div>
                   <div className="space-y-2 flex-1">
-                    <h4 className="text-lg font-bold text-foreground">Rake Formation Planning</h4>
+                    <h4 className="text-lg font-bold text-foreground">
+                      Rake Formation Planning
+                    </h4>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Automatically groups orders into optimal rake configurations with detailed allocation reasoning. Each order gets a dedicated wagon assignment with crane capacity verification.
+                      Automatically groups orders into optimal rake
+                      configurations with detailed allocation reasoning. Each
+                      order gets a dedicated wagon assignment with crane
+                      capacity verification.
                     </p>
                   </div>
                 </div>
@@ -181,9 +218,13 @@ export default function Home() {
                     <TrendingUp className="w-5 h-5 text-primary" />
                   </div>
                   <div className="space-y-2 flex-1">
-                    <h4 className="text-lg font-bold text-foreground">Transport Mode Optimization</h4>
+                    <h4 className="text-lg font-bold text-foreground">
+                      Transport Mode Optimization
+                    </h4>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Intelligently splits orders between rail and road based on cost, distance, and urgency. Typical savings: 60-70% vs baseline all-road transport.
+                      Intelligently splits orders between rail and road based on
+                      cost, distance, and urgency. Typical savings: 60-70% vs
+                      baseline all-road transport.
                     </p>
                   </div>
                 </div>
@@ -196,9 +237,13 @@ export default function Home() {
                     <BarChart3 className="w-5 h-5 text-primary" />
                   </div>
                   <div className="space-y-2 flex-1">
-                    <h4 className="text-lg font-bold text-foreground">Real-time Analytics</h4>
+                    <h4 className="text-lg font-bold text-foreground">
+                      Real-time Analytics
+                    </h4>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Dashboard displays KPIs including rake utilization rates, cost savings, SLA compliance percentage, and order processing metrics.
+                      Dashboard displays KPIs including rake utilization rates,
+                      cost savings, SLA compliance percentage, and order
+                      processing metrics.
                     </p>
                   </div>
                 </div>
@@ -211,9 +256,13 @@ export default function Home() {
                     <CheckCircle2 className="w-5 h-5 text-primary" />
                   </div>
                   <div className="space-y-2 flex-1">
-                    <h4 className="text-lg font-bold text-foreground">Export & Dispatch</h4>
+                    <h4 className="text-lg font-bold text-foreground">
+                      Export & Dispatch
+                    </h4>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Generate detailed reports in CSV and PDF formats ready for operations teams, with override capabilities for human judgment.
+                      Generate detailed reports in CSV and PDF formats ready for
+                      operations teams, with override capabilities for human
+                      judgment.
                     </p>
                   </div>
                 </div>
@@ -224,9 +273,12 @@ export default function Home() {
           {/* CTA Section */}
           <div className="card-gradient p-12 space-y-6 rounded-2xl border border-primary/30 text-center">
             <div className="space-y-4">
-              <h2 className="text-4xl font-bold text-foreground">Ready to optimize?</h2>
+              <h2 className="text-4xl font-bold text-foreground">
+                Ready to optimize?
+              </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Upload your order data and watch OptiRake DSS compute optimal rake formations in real-time
+                Upload your order data and watch OptiRake DSS compute optimal
+                rake formations in real-time
               </p>
             </div>
 

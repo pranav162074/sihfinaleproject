@@ -18,7 +18,6 @@ export default function About() {
     <Layout>
       <div className="flex-1 overflow-auto bg-gradient-to-b from-background via-background to-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
-          
           {/* Header */}
           <div className="space-y-4 animate-fade-in">
             <button
@@ -32,7 +31,8 @@ export default function About() {
               About OptiRake DSS
             </h1>
             <p className="text-lg text-muted-foreground">
-              An AI-powered Decision Support System for SAIL rake formation optimization
+              An AI-powered Decision Support System for SAIL rake formation
+              optimization
             </p>
           </div>
 
@@ -40,38 +40,62 @@ export default function About() {
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <div className="w-3 h-3 rounded-full bg-primary" />
-              <h2 className="text-2xl font-bold text-foreground">Problem Statement</h2>
+              <h2 className="text-2xl font-bold text-foreground">
+                Problem Statement
+              </h2>
             </div>
-            
+
             <div className="card-glass p-8 space-y-6 border border-primary/20">
               <div className="space-y-2">
-                <p className="text-sm text-primary font-semibold uppercase tracking-wide">ID 25208</p>
+                <p className="text-sm text-primary font-semibold uppercase tracking-wide">
+                  ID 25208
+                </p>
                 <p className="text-lg text-foreground leading-relaxed">
-                  SAIL (Steel Authority of India Limited) processes thousands of orders daily for steel distribution across India. The current manual rake formation and transport allocation process is inefficient, leading to high operational costs, underutilized transportation capacity, and frequent SLA violations.
+                  SAIL (Steel Authority of India Limited) processes thousands of
+                  orders daily for steel distribution across India. The current
+                  manual rake formation and transport allocation process is
+                  inefficient, leading to high operational costs, underutilized
+                  transportation capacity, and frequent SLA violations.
                 </p>
               </div>
 
               <div className="space-y-4 pt-4 border-t border-border/30">
                 <h3 className="font-semibold text-foreground">Context</h3>
                 <p className="text-foreground/80 leading-relaxed">
-                  SAIL operates multiple integrated steel plants including Bokaro, Durgapur, and Rourkela. Each plant receives orders from customers across India. Currently, logistics operations rely on manual decision-making for rake formations and transport mode selection. This approach results in:
+                  SAIL operates multiple integrated steel plants including
+                  Bokaro, Durgapur, and Rourkela. Each plant receives orders
+                  from customers across India. Currently, logistics operations
+                  rely on manual decision-making for rake formations and
+                  transport mode selection. This approach results in:
                 </p>
                 <ul className="space-y-2 text-foreground/80">
                   <li className="flex items-start gap-3">
                     <span className="text-primary mt-1">•</span>
-                    <span>Incomplete rake formations with poor wagon utilization (often 40-60%)</span>
+                    <span>
+                      Incomplete rake formations with poor wagon utilization
+                      (often 40-60%)
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-primary mt-1">•</span>
-                    <span>Suboptimal transport mode selection, with 100% reliance on road transport for flexibility</span>
+                    <span>
+                      Suboptimal transport mode selection, with 100% reliance on
+                      road transport for flexibility
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-primary mt-1">•</span>
-                    <span>Missed SLA deadlines leading to demurrage penalties and customer dissatisfaction</span>
+                    <span>
+                      Missed SLA deadlines leading to demurrage penalties and
+                      customer dissatisfaction
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-primary mt-1">•</span>
-                    <span>Lack of real-time visibility into optimization decisions and cost impacts</span>
+                    <span>
+                      Lack of real-time visibility into optimization decisions
+                      and cost impacts
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -79,24 +103,37 @@ export default function About() {
               <div className="space-y-4 pt-4 border-t border-border/30">
                 <h3 className="font-semibold text-foreground">Objective</h3>
                 <p className="text-foreground/80 leading-relaxed">
-                  Develop an intelligent Decision Support System that uses machine learning algorithms to:
+                  Develop an intelligent Decision Support System that uses
+                  machine learning algorithms to:
                 </p>
                 <ul className="space-y-2 text-foreground/80">
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
-                    <span>Automatically form optimal rake configurations by consolidating orders to common destinations</span>
+                    <span>
+                      Automatically form optimal rake configurations by
+                      consolidating orders to common destinations
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
-                    <span>Intelligently allocate transport modes (rail vs road) to minimize costs while meeting SLAs</span>
+                    <span>
+                      Intelligently allocate transport modes (rail vs road) to
+                      minimize costs while meeting SLAs
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
-                    <span>Provide transparent, explainable reasoning for every decision in natural language</span>
+                    <span>
+                      Provide transparent, explainable reasoning for every
+                      decision in natural language
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
-                    <span>Enable human override and approval workflows for high-stakes decisions</span>
+                    <span>
+                      Enable human override and approval workflows for
+                      high-stakes decisions
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -104,42 +141,75 @@ export default function About() {
               <div className="space-y-4 pt-4 border-t border-border/30">
                 <h3 className="font-semibold text-foreground">Problem Scope</h3>
                 <p className="text-foreground/80 leading-relaxed">
-                  This system focuses on the tactical optimization layer for SAIL's outbound logistics:
+                  This system focuses on the tactical optimization layer for
+                  SAIL's outbound logistics:
                 </p>
                 <ul className="space-y-2 text-foreground/80">
                   <li className="flex items-start gap-3">
                     <span className="text-primary mt-0.5">—</span>
-                    <span>Input: Order manifest with quantity, destination, deadline, customer priority, and material type</span>
+                    <span>
+                      Input: Order manifest with quantity, destination,
+                      deadline, customer priority, and material type
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-primary mt-0.5">—</span>
-                    <span>Processing: Constraint satisfaction, cost minimization, SLA compliance verification</span>
+                    <span>
+                      Processing: Constraint satisfaction, cost minimization,
+                      SLA compliance verification
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-primary mt-0.5">—</span>
-                    <span>Output: Rake formation plan with wagon assignments, transport mode allocation, cost breakdown, and explanations</span>
+                    <span>
+                      Output: Rake formation plan with wagon assignments,
+                      transport mode allocation, cost breakdown, and
+                      explanations
+                    </span>
                   </li>
                 </ul>
               </div>
 
               <div className="space-y-4 pt-4 border-t border-border/30">
-                <h3 className="font-semibold text-foreground">Key Decisions to Optimize</h3>
+                <h3 className="font-semibold text-foreground">
+                  Key Decisions to Optimize
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-muted/20 p-4 rounded-lg">
-                    <p className="text-sm font-semibold text-primary">Rake Formation</p>
-                    <p className="text-sm text-foreground/70 mt-2">Which orders to consolidate into each rake based on destination proximity and delivery windows</p>
+                    <p className="text-sm font-semibold text-primary">
+                      Rake Formation
+                    </p>
+                    <p className="text-sm text-foreground/70 mt-2">
+                      Which orders to consolidate into each rake based on
+                      destination proximity and delivery windows
+                    </p>
                   </div>
                   <div className="bg-muted/20 p-4 rounded-lg">
-                    <p className="text-sm font-semibold text-primary">Wagon Assignment</p>
-                    <p className="text-sm text-foreground/70 mt-2">Allocation of orders to specific wagons with capacity and crane verification</p>
+                    <p className="text-sm font-semibold text-primary">
+                      Wagon Assignment
+                    </p>
+                    <p className="text-sm text-foreground/70 mt-2">
+                      Allocation of orders to specific wagons with capacity and
+                      crane verification
+                    </p>
                   </div>
                   <div className="bg-muted/20 p-4 rounded-lg">
-                    <p className="text-sm font-semibold text-primary">Transport Mode</p>
-                    <p className="text-sm text-foreground/70 mt-2">Selection of rail (bulk, cost-effective) vs road (flexible, premium) for each rake</p>
+                    <p className="text-sm font-semibold text-primary">
+                      Transport Mode
+                    </p>
+                    <p className="text-sm text-foreground/70 mt-2">
+                      Selection of rail (bulk, cost-effective) vs road
+                      (flexible, premium) for each rake
+                    </p>
                   </div>
                   <div className="bg-muted/20 p-4 rounded-lg">
-                    <p className="text-sm font-semibold text-primary">Loading Priority</p>
-                    <p className="text-sm text-foreground/70 mt-2">Sequence of orders for loading based on deadlines and customer priority</p>
+                    <p className="text-sm font-semibold text-primary">
+                      Loading Priority
+                    </p>
+                    <p className="text-sm text-foreground/70 mt-2">
+                      Sequence of orders for loading based on deadlines and
+                      customer priority
+                    </p>
                   </div>
                 </div>
               </div>
@@ -150,7 +220,9 @@ export default function About() {
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <div className="w-3 h-3 rounded-full bg-primary" />
-              <h2 className="text-2xl font-bold text-foreground">Organization & Team</h2>
+              <h2 className="text-2xl font-bold text-foreground">
+                Organization & Team
+              </h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -159,10 +231,15 @@ export default function About() {
                 <div className="flex items-start gap-3">
                   <Building2 className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                   <div className="space-y-2 flex-1">
-                    <h3 className="font-semibold text-foreground">Ministry of Steel</h3>
-                    <p className="text-sm text-muted-foreground">SAIL (Steel Authority of India Limited)</p>
+                    <h3 className="font-semibold text-foreground">
+                      Ministry of Steel
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      SAIL (Steel Authority of India Limited)
+                    </p>
                     <p className="text-sm text-foreground/70 leading-relaxed">
-                      India's largest integrated steel producer with major plants across the country
+                      India's largest integrated steel producer with major
+                      plants across the country
                     </p>
                   </div>
                 </div>
@@ -173,10 +250,15 @@ export default function About() {
                 <div className="flex items-start gap-3">
                   <Target className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                   <div className="space-y-2 flex-1">
-                    <h3 className="font-semibold text-foreground">Amaravati Quantum Valley Hackathon 2025</h3>
-                    <p className="text-sm text-muted-foreground">Team Infinity</p>
+                    <h3 className="font-semibold text-foreground">
+                      Amaravati Quantum Valley Hackathon 2025
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Team Infinity
+                    </p>
                     <p className="text-sm text-foreground/70 leading-relaxed">
-                      Developing AI solutions for India's critical infrastructure challenges
+                      Developing AI solutions for India's critical
+                      infrastructure challenges
                     </p>
                   </div>
                 </div>
@@ -187,13 +269,19 @@ export default function About() {
             <div className="card-glass p-8 space-y-6 border border-primary/20">
               <div className="flex items-center gap-3">
                 <Users className="w-6 h-6 text-primary" />
-                <h3 className="text-xl font-bold text-foreground">Team Details</h3>
+                <h3 className="text-xl font-bold text-foreground">
+                  Team Details
+                </h3>
               </div>
 
               <div className="space-y-4 border-t border-border/30 pt-6">
                 <div className="space-y-1">
-                  <p className="font-semibold text-foreground">Sai Charan Devisetty</p>
-                  <p className="text-sm text-primary font-medium">Lead Developer & AI Engineer</p>
+                  <p className="font-semibold text-foreground">
+                    Sai Charan Devisetty
+                  </p>
+                  <p className="text-sm text-primary font-medium">
+                    Lead Developer & AI Engineer
+                  </p>
                 </div>
 
                 <div className="space-y-1">
@@ -202,18 +290,26 @@ export default function About() {
                 </div>
 
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Educational Institution</p>
-                  <p className="text-sm text-foreground">Gayatri Vidya Parishad College of Engineering</p>
+                  <p className="text-sm text-muted-foreground">
+                    Educational Institution
+                  </p>
+                  <p className="text-sm text-foreground">
+                    Gayatri Vidya Parishad College of Engineering
+                  </p>
                 </div>
 
                 <div className="pt-4 border-t border-border/30 space-y-3">
-                  <p className="text-sm text-muted-foreground">Contact & Links</p>
+                  <p className="text-sm text-muted-foreground">
+                    Contact & Links
+                  </p>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <Button
                       variant="outline"
                       size="sm"
                       className="border-primary/30 gap-2"
-                      onClick={() => window.open("https://github.com", "_blank")}
+                      onClick={() =>
+                        window.open("https://github.com", "_blank")
+                      }
                     >
                       <Code2 className="w-4 h-4" />
                       GitHub
@@ -223,7 +319,9 @@ export default function About() {
                       variant="outline"
                       size="sm"
                       className="border-primary/30 gap-2"
-                      onClick={() => window.open("https://linkedin.com", "_blank")}
+                      onClick={() =>
+                        window.open("https://linkedin.com", "_blank")
+                      }
                     >
                       <Users className="w-4 h-4" />
                       LinkedIn
@@ -239,7 +337,9 @@ export default function About() {
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <div className="w-3 h-3 rounded-full bg-primary" />
-              <h2 className="text-2xl font-bold text-foreground">Technology Stack</h2>
+              <h2 className="text-2xl font-bold text-foreground">
+                Technology Stack
+              </h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -357,58 +457,90 @@ export default function About() {
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <div className="w-3 h-3 rounded-full bg-primary" />
-              <h2 className="text-2xl font-bold text-foreground">Vision & Impact</h2>
+              <h2 className="text-2xl font-bold text-foreground">
+                Vision & Impact
+              </h2>
             </div>
 
             <div className="card-gradient p-12 space-y-6 rounded-2xl border border-primary/30">
               <p className="text-lg text-foreground leading-relaxed">
-                OptiRake DSS represents a significant step forward in applying AI to SAIL's logistics operations. By automating and optimizing rake formations and transport allocation, the system can:
+                OptiRake DSS represents a significant step forward in applying
+                AI to SAIL's logistics operations. By automating and optimizing
+                rake formations and transport allocation, the system can:
               </p>
 
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
                   <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                   <div>
-                    <p className="font-semibold text-foreground">Reduce Operational Costs</p>
-                    <p className="text-sm text-foreground/80 mt-1">Achieve 60-70% savings through optimal consolidation and mode selection, directly improving the bottom line</p>
+                    <p className="font-semibold text-foreground">
+                      Reduce Operational Costs
+                    </p>
+                    <p className="text-sm text-foreground/80 mt-1">
+                      Achieve 60-70% savings through optimal consolidation and
+                      mode selection, directly improving the bottom line
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
                   <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                   <div>
-                    <p className="font-semibold text-foreground">Improve Customer Satisfaction</p>
-                    <p className="text-sm text-foreground/80 mt-1">Achieve 95%+ SLA compliance and eliminate demurrage penalties through predictive planning</p>
+                    <p className="font-semibold text-foreground">
+                      Improve Customer Satisfaction
+                    </p>
+                    <p className="text-sm text-foreground/80 mt-1">
+                      Achieve 95%+ SLA compliance and eliminate demurrage
+                      penalties through predictive planning
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
                   <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                   <div>
-                    <p className="font-semibold text-foreground">Enhance Operational Visibility</p>
-                    <p className="text-sm text-foreground/80 mt-1">Provide real-time insights into rake formations, transport allocation, and cost impacts with explainable AI</p>
+                    <p className="font-semibold text-foreground">
+                      Enhance Operational Visibility
+                    </p>
+                    <p className="text-sm text-foreground/80 mt-1">
+                      Provide real-time insights into rake formations, transport
+                      allocation, and cost impacts with explainable AI
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
                   <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                   <div>
-                    <p className="font-semibold text-foreground">Enable Scalability</p>
-                    <p className="text-sm text-foreground/80 mt-1">Process thousands of orders in minutes, supporting growth without proportional increase in logistics staff</p>
+                    <p className="font-semibold text-foreground">
+                      Enable Scalability
+                    </p>
+                    <p className="text-sm text-foreground/80 mt-1">
+                      Process thousands of orders in minutes, supporting growth
+                      without proportional increase in logistics staff
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
                   <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                   <div>
-                    <p className="font-semibold text-foreground">Support Decision Making</p>
-                    <p className="text-sm text-foreground/80 mt-1">Provide transparent, explainable recommendations that logistics managers can understand and override when needed</p>
+                    <p className="font-semibold text-foreground">
+                      Support Decision Making
+                    </p>
+                    <p className="text-sm text-foreground/80 mt-1">
+                      Provide transparent, explainable recommendations that
+                      logistics managers can understand and override when needed
+                    </p>
                   </div>
                 </div>
               </div>
 
               <p className="text-sm text-foreground/80 italic">
-                This project demonstrates how AI can address real operational challenges in India's steel industry and serves as a blueprint for similar optimization systems in logistics, manufacturing, and supply chain management across SAIL and beyond.
+                This project demonstrates how AI can address real operational
+                challenges in India's steel industry and serves as a blueprint
+                for similar optimization systems in logistics, manufacturing,
+                and supply chain management across SAIL and beyond.
               </p>
             </div>
           </div>

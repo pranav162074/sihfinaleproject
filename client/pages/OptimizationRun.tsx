@@ -27,7 +27,9 @@ export default function OptimizationRun() {
       await new Promise((resolve) => setTimeout(resolve, 1200));
       setCurrentStep(i);
       setSteps((prev) =>
-        prev.map((step) => (step.id === i ? { ...step, status: "complete" } : step))
+        prev.map((step) =>
+          step.id === i ? { ...step, status: "complete" } : step,
+        ),
       );
     }
 
@@ -56,7 +58,9 @@ export default function OptimizationRun() {
           {/* Validation Pipeline */}
           <div className="space-y-8">
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold text-foreground">Optimization Pipeline</h2>
+              <h2 className="text-2xl font-bold text-foreground">
+                Optimization Pipeline
+              </h2>
               <p className="text-sm text-muted-foreground">
                 {isRunning
                   ? `Running: Step ${currentStep} of ${steps.length}`
@@ -70,7 +74,9 @@ export default function OptimizationRun() {
                 <div
                   key={step.id}
                   className={`card-glow p-6 transition-all ${
-                    step.status === "complete" ? "border-emerald-500/30" : "border-border/30"
+                    step.status === "complete"
+                      ? "border-emerald-500/30"
+                      : "border-border/30"
                   } ${currentStep === step.id ? "scale-105 border-primary/50" : ""}`}
                 >
                   <div className="flex items-start gap-4">
@@ -87,15 +93,17 @@ export default function OptimizationRun() {
                     </div>
 
                     <div className="flex-1">
-                      <p className="font-semibold text-foreground">{step.label}</p>
+                      <p className="font-semibold text-foreground">
+                        {step.label}
+                      </p>
                       <div className="mt-2 h-1 bg-muted/30 rounded-full overflow-hidden">
                         <div
                           className={`h-full transition-all duration-500 ${
                             step.status === "complete"
                               ? "bg-gradient-to-r from-emerald-400 to-emerald-500 w-full"
                               : currentStep === step.id
-                              ? "bg-gradient-to-r from-primary to-secondary w-3/4"
-                              : "w-0"
+                                ? "bg-gradient-to-r from-primary to-secondary w-3/4"
+                                : "w-0"
                           }`}
                         />
                       </div>
@@ -109,7 +117,9 @@ export default function OptimizationRun() {
           {/* Configuration Section */}
           {!isRunning && (
             <div className="card-glow p-8 space-y-6 border-primary/20">
-              <h2 className="text-2xl font-bold text-foreground">Optimization Parameters</h2>
+              <h2 className="text-2xl font-bold text-foreground">
+                Optimization Parameters
+              </h2>
 
               <div className="space-y-6">
                 {/* Cost vs SLA Slider */}
@@ -119,10 +129,17 @@ export default function OptimizationRun() {
                       Cost vs SLA Priority (50/50 default)
                     </label>
                     <p className="text-xs text-muted-foreground mb-3">
-                      Balance between minimizing costs and meeting delivery deadlines
+                      Balance between minimizing costs and meeting delivery
+                      deadlines
                     </p>
                   </div>
-                  <input type="range" min="0" max="100" defaultValue="50" className="w-full" />
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    defaultValue="50"
+                    className="w-full"
+                  />
                 </div>
 
                 {/* Min Utilization */}
@@ -135,13 +152,21 @@ export default function OptimizationRun() {
                       Minimum wagon fill percentage (65-95%)
                     </p>
                   </div>
-                  <input type="range" min="65" max="95" defaultValue="75" className="w-full" />
+                  <input
+                    type="range"
+                    min="65"
+                    max="95"
+                    defaultValue="75"
+                    className="w-full"
+                  />
                 </div>
 
                 {/* Multi-destination Toggle */}
                 <div className="flex items-center justify-between p-4 bg-muted/20 rounded-lg border border-border/30">
                   <div>
-                    <p className="font-semibold text-foreground">Allow Multi-Destination Rakes</p>
+                    <p className="font-semibold text-foreground">
+                      Allow Multi-Destination Rakes
+                    </p>
                     <p className="text-xs text-muted-foreground mt-1">
                       Mix orders from different destinations in single rake
                     </p>
@@ -160,10 +185,13 @@ export default function OptimizationRun() {
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-8 h-8 text-emerald-400 flex-shrink-0 mt-1" />
                 <div className="space-y-2">
-                  <h3 className="text-xl font-bold text-foreground">Optimization Complete!</h3>
+                  <h3 className="text-xl font-bold text-foreground">
+                    Optimization Complete!
+                  </h3>
                   <p className="text-sm text-muted-foreground">
-                    Your rake formations have been optimized. Review the allocation plan to see AI-generated
-                    explanations for each order.
+                    Your rake formations have been optimized. Review the
+                    allocation plan to see AI-generated explanations for each
+                    order.
                   </p>
                 </div>
               </div>
@@ -183,7 +211,10 @@ export default function OptimizationRun() {
             )}
 
             {isRunning && (
-              <Button disabled className="btn-gradient flex-1 h-12 text-base font-semibold">
+              <Button
+                disabled
+                className="btn-gradient flex-1 h-12 text-base font-semibold"
+              >
                 <Loader className="w-4 h-4 mr-2 animate-spin" />
                 Running Optimization...
               </Button>
@@ -200,7 +231,11 @@ export default function OptimizationRun() {
               </>
             )}
 
-            <Button variant="outline" className="h-12 px-8 border-primary/30" onClick={() => navigate("/upload")}>
+            <Button
+              variant="outline"
+              className="h-12 px-8 border-primary/30"
+              onClick={() => navigate("/upload")}
+            >
               Upload Different Data
             </Button>
           </div>

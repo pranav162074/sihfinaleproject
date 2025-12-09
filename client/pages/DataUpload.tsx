@@ -1,6 +1,14 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Upload, CheckCircle2, AlertCircle, Loader, FileText, Eye, X } from "lucide-react";
+import {
+  Upload,
+  CheckCircle2,
+  AlertCircle,
+  Loader,
+  FileText,
+  Eye,
+  X,
+} from "lucide-react";
 import { useState, useRef } from "react";
 import { parseCSV, validateCSVData } from "@/lib/csv-parser";
 import { useToast } from "@/components/ui/use-toast";
@@ -32,11 +40,16 @@ interface PreviewState {
 export default function DataUpload() {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [uploadedFile, setUploadedFile] = useState<FileUploadState | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<FileUploadState | null>(
+    null,
+  );
   const [isDragActive, setIsDragActive] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [isLoadingSample, setIsLoadingSample] = useState(false);
-  const [previewState, setPreviewState] = useState<PreviewState>({ currentPage: 0, rowsPerPage: 10 });
+  const [previewState, setPreviewState] = useState<PreviewState>({
+    currentPage: 0,
+    rowsPerPage: 10,
+  });
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -86,8 +99,12 @@ export default function DataUpload() {
 
         if (!validation.isValid) {
           const errorDetails = [
-            ...validation.missingColumns.map((col) => `Missing required column: ${col}`),
-            ...validation.errorRows.slice(0, 3).map((row) => `Row ${row.rowIndex}: ${row.errors.join(", ")}`),
+            ...validation.missingColumns.map(
+              (col) => `Missing required column: ${col}`,
+            ),
+            ...validation.errorRows
+              .slice(0, 3)
+              .map((row) => `Row ${row.rowIndex}: ${row.errors.join(", ")}`),
           ];
 
           setUploadedFile({
@@ -120,7 +137,8 @@ export default function DataUpload() {
           description: `${parsedData.rowCount} orders loaded`,
         });
       } catch (error) {
-        const errorMsg = error instanceof Error ? error.message : "Failed to parse file";
+        const errorMsg =
+          error instanceof Error ? error.message : "Failed to parse file";
         setUploadedFile({
           name: file.name,
           status: "error",
@@ -203,7 +221,7 @@ export default function DataUpload() {
             {/* Upload Area - 2 Columns */}
             <div className="lg:col-span-2 space-y-6">
               {/* Drag-Drop Zone - Premium */}
-            <div
+              <div
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
@@ -213,8 +231,8 @@ export default function DataUpload() {
                   isDragActive
                     ? "border-primary/80 bg-primary/10 scale-105"
                     : uploadedFile
-                    ? "border-primary/40"
-                    : "border-primary/20 hover:border-primary/40"
+                      ? "border-primary/40"
+                      : "border-primary/20 hover:border-primary/40"
                 }`}
               >
                 <div className="space-y-6">
@@ -223,8 +241,8 @@ export default function DataUpload() {
                       uploadedFile && uploadedFile.status === "success"
                         ? "bg-emerald-500/20"
                         : uploadedFile && uploadedFile.status === "error"
-                        ? "bg-rose-500/20"
-                        : "bg-primary/20 group-hover:scale-110 transition-transform"
+                          ? "bg-rose-500/20"
+                          : "bg-primary/20 group-hover:scale-110 transition-transform"
                     }`}
                   >
                     {uploadedFile && uploadedFile.status === "success" ? (
@@ -238,7 +256,9 @@ export default function DataUpload() {
 
                   {uploadedFile ? (
                     <div className="space-y-2">
-                      <p className="text-xl font-semibold text-foreground">{uploadedFile.name}</p>
+                      <p className="text-xl font-semibold text-foreground">
+                        {uploadedFile.name}
+                      </p>
                       <p className="text-sm text-muted-foreground">
                         {uploadedFile.status === "success"
                           ? `${uploadedFile.validRows} orders loaded`
@@ -247,8 +267,12 @@ export default function DataUpload() {
                     </div>
                   ) : (
                     <div className="space-y-2">
-                      <p className="text-xl font-semibold text-foreground">Drop your CSV here</p>
-                      <p className="text-sm text-muted-foreground">or click to select file</p>
+                      <p className="text-xl font-semibold text-foreground">
+                        Drop your CSV here
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        or click to select file
+                      </p>
                     </div>
                   )}
                 </div>
@@ -272,12 +296,14 @@ export default function DataUpload() {
                 className="hidden"
               />
 
-            {/* Validation Stats */}
-            {uploadedFile && (
-              <div className="grid grid-cols-3 gap-4 animate-fade-in">
+              {/* Validation Stats */}
+              {uploadedFile && (
+                <div className="grid grid-cols-3 gap-4 animate-fade-in">
                   <div className="card-glow p-6 space-y-2 border-emerald-500/20">
                     <p className="kpi-label">Valid Orders</p>
-                    <p className="text-3xl font-bold text-emerald-400">{uploadedFile.validRows}</p>
+                    <p className="text-3xl font-bold text-emerald-400">
+                      {uploadedFile.validRows}
+                    </p>
                   </div>
 
                   <div
@@ -290,7 +316,9 @@ export default function DataUpload() {
                     <p className="kpi-label">Invalid Orders</p>
                     <p
                       className={`text-3xl font-bold ${
-                        uploadedFile.invalidRows > 0 ? "text-amber-400" : "text-emerald-400"
+                        uploadedFile.invalidRows > 0
+                          ? "text-amber-400"
+                          : "text-emerald-400"
                       }`}
                     >
                       {uploadedFile.invalidRows}
@@ -306,9 +334,9 @@ export default function DataUpload() {
                 </div>
               )}
 
-            {/* Action Buttons */}
-            {uploadedFile && uploadedFile.status === "success" && (
-              <div className="flex flex-col sm:flex-row gap-4 animate-fade-in">
+              {/* Action Buttons */}
+              {uploadedFile && uploadedFile.status === "success" && (
+                <div className="flex flex-col sm:flex-row gap-4 animate-fade-in">
                   <Button
                     onClick={handleProceed}
                     className="btn-gradient flex-1 h-12 text-base font-semibold"
@@ -344,7 +372,9 @@ export default function DataUpload() {
               {showPreview && uploadedFile?.data && (
                 <div className="card-glow p-6 space-y-4 border-primary/20 max-h-full overflow-y-auto animate-fade-in">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-foreground">Data Preview</h3>
+                    <h3 className="text-lg font-semibold text-foreground">
+                      Data Preview
+                    </h3>
                     <button
                       onClick={() => setShowPreview(false)}
                       className="p-1 hover:bg-muted/30 rounded transition-colors"
@@ -371,15 +401,23 @@ export default function DataUpload() {
                         {uploadedFile.data
                           .slice(
                             previewState.currentPage * previewState.rowsPerPage,
-                            (previewState.currentPage + 1) * previewState.rowsPerPage
+                            (previewState.currentPage + 1) *
+                              previewState.rowsPerPage,
                           )
                           .map((row, idx) => (
                             <tr
-                              key={previewState.currentPage * previewState.rowsPerPage + idx}
+                              key={
+                                previewState.currentPage *
+                                  previewState.rowsPerPage +
+                                idx
+                              }
                               className="border-b border-border/20 hover:bg-muted/10"
                             >
                               {REQUIRED_COLUMNS.map((col) => (
-                                <td key={col} className="p-2 text-foreground/80 text-xs">
+                                <td
+                                  key={col}
+                                  className="p-2 text-foreground/80 text-xs"
+                                >
                                   {String(row[col] || "—")}
                                 </td>
                               ))}
@@ -392,9 +430,15 @@ export default function DataUpload() {
                   {/* Pagination Controls */}
                   <div className="flex items-center justify-between pt-4 border-t border-border/30">
                     <p className="text-xs text-muted-foreground">
-                      Showing {previewState.currentPage * previewState.rowsPerPage + 1} to{" "}
-                      {Math.min((previewState.currentPage + 1) * previewState.rowsPerPage, uploadedFile.data.length)} of{" "}
-                      {uploadedFile.data.length} rows
+                      Showing{" "}
+                      {previewState.currentPage * previewState.rowsPerPage + 1}{" "}
+                      to{" "}
+                      {Math.min(
+                        (previewState.currentPage + 1) *
+                          previewState.rowsPerPage,
+                        uploadedFile.data.length,
+                      )}{" "}
+                      of {uploadedFile.data.length} rows
                     </p>
                     <div className="flex items-center gap-2">
                       <Button
@@ -413,7 +457,9 @@ export default function DataUpload() {
                       </Button>
                       <span className="text-xs text-muted-foreground">
                         Page {previewState.currentPage + 1} of{" "}
-                        {Math.ceil(uploadedFile.data.length / previewState.rowsPerPage)}
+                        {Math.ceil(
+                          uploadedFile.data.length / previewState.rowsPerPage,
+                        )}
                       </span>
                       <Button
                         variant="outline"
@@ -422,13 +468,16 @@ export default function DataUpload() {
                           setPreviewState((prev) => ({
                             ...prev,
                             currentPage: Math.min(
-                              Math.ceil(uploadedFile.data!.length / prev.rowsPerPage) - 1,
-                              prev.currentPage + 1
+                              Math.ceil(
+                                uploadedFile.data!.length / prev.rowsPerPage,
+                              ) - 1,
+                              prev.currentPage + 1,
                             ),
                           }))
                         }
                         disabled={
-                          (previewState.currentPage + 1) * previewState.rowsPerPage >=
+                          (previewState.currentPage + 1) *
+                            previewState.rowsPerPage >=
                           uploadedFile.data.length
                         }
                         className="border-primary/30 h-8"
@@ -445,16 +494,21 @@ export default function DataUpload() {
             <div className="space-y-4">
               {/* Sample Dataset Button */}
               <div className="card-glow p-8 space-y-4 border-secondary/30 bg-gradient-to-br from-secondary/10 to-secondary/5">
-                <h3 className="text-lg font-semibold text-foreground">Quick Start</h3>
+                <h3 className="text-lg font-semibold text-foreground">
+                  Quick Start
+                </h3>
                 <p className="text-sm text-muted-foreground">
-                  Don't have data yet? Load our sample SAIL Bokaro dataset to explore the system.
+                  Don't have data yet? Load our sample SAIL Bokaro dataset to
+                  explore the system.
                 </p>
                 <Button
                   onClick={handleUseSampleDataset}
                   disabled={isLoadingSample}
                   className="w-full h-11 bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold"
                 >
-                  {isLoadingSample && <Loader className="w-4 h-4 mr-2 animate-spin" />}
+                  {isLoadingSample && (
+                    <Loader className="w-4 h-4 mr-2 animate-spin" />
+                  )}
                   Load Sample Dataset
                 </Button>
               </div>
@@ -478,11 +532,14 @@ export default function DataUpload() {
                         </code>
                         <p className="text-xs text-muted-foreground">
                           {col === "order_id" && "Unique order identifier"}
-                          {col === "customer_name" && "Customer organization name"}
-                          {col === "customer_location" && "Customer city/location"}
+                          {col === "customer_name" &&
+                            "Customer organization name"}
+                          {col === "customer_location" &&
+                            "Customer city/location"}
                           {col === "product_type" && "Steel product type"}
                           {col === "material_grade" && "Material quality grade"}
-                          {col === "quantity_tonnes" && "Order quantity in metric tonnes"}
+                          {col === "quantity_tonnes" &&
+                            "Order quantity in metric tonnes"}
                           {col === "destination" && "Delivery destination city"}
                         </p>
                       </div>
@@ -491,13 +548,16 @@ export default function DataUpload() {
                 </div>
 
                 <p className="text-xs text-muted-foreground border-t border-border/30 pt-4">
-                  Optional columns: priority, due_date, preferred_mode, distance_km, penalty_rate_per_day
+                  Optional columns: priority, due_date, preferred_mode,
+                  distance_km, penalty_rate_per_day
                 </p>
               </div>
 
               {/* Example Data */}
               <div className="card-glow p-6 space-y-3 border-primary/20">
-                <p className="font-semibold text-foreground text-sm">Example Row</p>
+                <p className="font-semibold text-foreground text-sm">
+                  Example Row
+                </p>
                 <div className="text-xs bg-muted/30 p-3 rounded font-mono text-foreground/70 overflow-x-auto whitespace-nowrap">
                   ORD-001,ABC Corp,Delhi,Coils,HG,45,Bokaro
                 </div>
@@ -515,7 +575,15 @@ function generateSampleOrders() {
   const grades = ["High Grade", "Medium Grade", "Low Grade"];
   // Use fewer, well-consolidated destinations for better rake packing
   const destinations = ["Delhi", "Mumbai", "Bangalore"];
-  const customers = ["ABC Corp", "XYZ Ltd", "Steel Solutions", "logistics Hub", "National Distributors", "Prime Steel", "Mega Traders"];
+  const customers = [
+    "ABC Corp",
+    "XYZ Ltd",
+    "Steel Solutions",
+    "logistics Hub",
+    "National Distributors",
+    "Prime Steel",
+    "Mega Traders",
+  ];
 
   const orders = [];
   // Generate 19 sample orders with CONSOLIDATED destinations (better packing)

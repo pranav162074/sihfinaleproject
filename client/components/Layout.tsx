@@ -10,7 +10,11 @@ interface LayoutProps {
   planData?: any;
 }
 
-export function Layout({ children, showAIAssistant = true, planData }: LayoutProps) {
+export function Layout({
+  children,
+  showAIAssistant = true,
+  planData,
+}: LayoutProps) {
   const isMobile = useIsMobile();
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
 
@@ -20,11 +24,7 @@ export function Layout({ children, showAIAssistant = true, planData }: LayoutPro
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
-        <div
-          className={`${
-            isMobile ? "px-4 py-4 pb-20" : "px-8 py-8"
-          }`}
-        >
+        <div className={`${isMobile ? "px-4 py-4 pb-20" : "px-8 py-8"}`}>
           {children}
         </div>
       </div>
@@ -42,7 +42,13 @@ export function Layout({ children, showAIAssistant = true, planData }: LayoutPro
       </div>
 
       {/* AI Assistant Drawer */}
-      {showAIAssistant && <AIAssistantDrawer isOpen={isAssistantOpen} onClose={() => setIsAssistantOpen(false)} planData={planData} />}
+      {showAIAssistant && (
+        <AIAssistantDrawer
+          isOpen={isAssistantOpen}
+          onClose={() => setIsAssistantOpen(false)}
+          planData={planData}
+        />
+      )}
 
       {/* Floating AI Assistant Button */}
       {showAIAssistant && !isAssistantOpen && (

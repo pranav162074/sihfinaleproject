@@ -53,7 +53,14 @@ const DEFAULT_DISTANCES: Record<string, number> = {
  * Normalize customer ID from customer name
  */
 function normalizeCustomerId(name: string): string {
-  return "CUST_" + name.replace(/\s+/g, "_").replace(/[^A-Z0-9_]/gi, "").toUpperCase().slice(0, 20);
+  return (
+    "CUST_" +
+    name
+      .replace(/\s+/g, "_")
+      .replace(/[^A-Z0-9_]/gi, "")
+      .toUpperCase()
+      .slice(0, 20)
+  );
 }
 
 /**
@@ -70,22 +77,35 @@ function normalizeMaterialId(productType: string, grade: string): string {
  */
 function buildOrder(csvOrder: CSVOrder, index: number): Order | null {
   // Validate mandatory fields
-  if (!csvOrder.order_id || !csvOrder.customer_name || !csvOrder.destination || !csvOrder.quantity_tonnes) {
+  if (
+    !csvOrder.order_id ||
+    !csvOrder.customer_name ||
+    !csvOrder.destination ||
+    !csvOrder.quantity_tonnes
+  ) {
     console.warn(`Row ${index}: Missing mandatory field. Skipping.`);
     return null;
   }
 
   const priority = csvOrder.priority || "Medium";
-  const dueDate = csvOrder.due_date || new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+  const dueDate =
+    csvOrder.due_date ||
+    new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
   const preferredMode = csvOrder.preferred_mode || "rail";
-  const distanceKm = csvOrder.distance_km || DEFAULT_DISTANCES[csvOrder.destination.toUpperCase()] || 1000;
+  const distanceKm =
+    csvOrder.distance_km ||
+    DEFAULT_DISTANCES[csvOrder.destination.toUpperCase()] ||
+    1000;
   const penaltyRate = csvOrder.penalty_rate_per_day || 600;
 
   return {
     order_id: csvOrder.order_id,
     customer_id: normalizeCustomerId(csvOrder.customer_name),
     customer_name: csvOrder.customer_name,
-    material_id: normalizeMaterialId(csvOrder.product_type, csvOrder.material_grade),
+    material_id: normalizeMaterialId(
+      csvOrder.product_type,
+      csvOrder.material_grade,
+    ),
     material_name: `${csvOrder.product_type} (${csvOrder.material_grade})`,
     product_type: csvOrder.product_type,
     destination: csvOrder.destination.toUpperCase(),
@@ -199,7 +219,10 @@ export function buildInternalModel(csvOrders: CSVOrder[]): InternalModel {
 /**
  * Validate internal model
  */
-export function validateInternalModel(model: InternalModel): { valid: boolean; errors: string[] } {
+export function validateInternalModel(model: InternalModel): {
+  valid: boolean;
+  errors: string[];
+} {
   const errors: string[] = [];
 
   if (!model.orders || model.orders.length === 0) {
@@ -219,9 +242,9 @@ export function validateInternalModel(model: InternalModel): { valid: boolean; e
   }
 
   // Check for missing customer_id references
-  const uniqueCustomerIds = new Set(model.orders.map(o => o.customer_id));
+  const uniqueCustomerIds = new Set(model.orders.map((o) => o.customer_id));
   for (const customerId of uniqueCustomerIds) {
-    if (!model.orders.find(o => o.customer_id === customerId)) {
+    if (!model.orders.find((o) => o.customer_id === customerId)) {
       errors.push(`Invalid customer reference: ${customerId}`);
     }
   }
@@ -246,7 +269,9 @@ export function generateSyntheticData(): CSVOrder[] {
       quantity_tonnes: 28.5,
       destination: "DELHI",
       priority: "High",
-      due_date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+      due_date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0],
       preferred_mode: "rail",
     },
     {
@@ -258,7 +283,9 @@ export function generateSyntheticData(): CSVOrder[] {
       quantity_tonnes: 35.2,
       destination: "KOLKATA",
       priority: "Medium",
-      due_date: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+      due_date: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0],
       preferred_mode: "rail",
     },
     {
@@ -270,7 +297,9 @@ export function generateSyntheticData(): CSVOrder[] {
       quantity_tonnes: 42.0,
       destination: "PATNA",
       priority: "High",
-      due_date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+      due_date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0],
       preferred_mode: "rail",
     },
     {
@@ -282,7 +311,9 @@ export function generateSyntheticData(): CSVOrder[] {
       quantity_tonnes: 50.0,
       destination: "RAIPUR",
       priority: "Medium",
-      due_date: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+      due_date: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0],
       preferred_mode: "rail",
     },
     {
@@ -294,7 +325,9 @@ export function generateSyntheticData(): CSVOrder[] {
       quantity_tonnes: 25.0,
       destination: "DELHI",
       priority: "Medium",
-      due_date: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+      due_date: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0],
       preferred_mode: "rail",
     },
     {
@@ -306,7 +339,9 @@ export function generateSyntheticData(): CSVOrder[] {
       quantity_tonnes: 30.5,
       destination: "HYDERABAD",
       priority: "Low",
-      due_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+      due_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0],
       preferred_mode: "either",
     },
   ];

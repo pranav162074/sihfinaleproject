@@ -12,7 +12,9 @@ export default function Settings() {
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
           {/* Header */}
           <div className="space-y-4 animate-fade-in">
-            <h1 className="text-5xl md:text-6xl font-bold text-foreground">Settings</h1>
+            <h1 className="text-5xl md:text-6xl font-bold text-foreground">
+              Settings
+            </h1>
             <p className="text-lg text-muted-foreground">
               Configure optimization constraints and system preferences
             </p>
@@ -20,7 +22,9 @@ export default function Settings() {
 
           {/* Optimization Settings */}
           <div className="card-glow p-8 space-y-8 border-primary/20">
-            <h2 className="text-2xl font-bold text-foreground">Optimization Constraints</h2>
+            <h2 className="text-2xl font-bold text-foreground">
+              Optimization Constraints
+            </h2>
 
             {/* Min Utilization */}
             <div className="space-y-4">
@@ -73,7 +77,9 @@ export default function Settings() {
             {/* Multi-destination Toggle */}
             <div className="pt-6 border-t border-border/30 flex items-center justify-between">
               <div>
-                <p className="font-semibold text-foreground">Allow Multi-Destination Rakes</p>
+                <p className="font-semibold text-foreground">
+                  Allow Multi-Destination Rakes
+                </p>
                 <p className="text-xs text-muted-foreground mt-1">
                   Mix orders from different destinations in single rake
                 </p>
@@ -90,7 +96,9 @@ export default function Settings() {
 
           {/* Region & Units */}
           <div className="card-glow p-8 space-y-6 border-secondary/20">
-            <h2 className="text-2xl font-bold text-foreground">Region & Units</h2>
+            <h2 className="text-2xl font-bold text-foreground">
+              Region & Units
+            </h2>
 
             <div className="space-y-4">
               <div>
@@ -109,8 +117,16 @@ export default function Settings() {
                 </label>
                 <div className="flex gap-4">
                   {["Metric Tonnes", "Short Tons"].map((unit) => (
-                    <label key={unit} className="flex items-center gap-2 cursor-pointer">
-                      <input type="radio" name="weight" defaultChecked={unit === "Metric Tonnes"} className="w-4 h-4" />
+                    <label
+                      key={unit}
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      <input
+                        type="radio"
+                        name="weight"
+                        defaultChecked={unit === "Metric Tonnes"}
+                        className="w-4 h-4"
+                      />
                       <span className="text-sm text-foreground">{unit}</span>
                     </label>
                   ))}
@@ -135,22 +151,30 @@ export default function Settings() {
 
           {/* Advanced Options */}
           <div className="card-glass p-8 space-y-6 border-amber-500/20">
-            <h2 className="text-2xl font-bold text-foreground">Advanced Options</h2>
+            <h2 className="text-2xl font-bold text-foreground">
+              Advanced Options
+            </h2>
 
             <div className="space-y-3">
               <label className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/20 cursor-pointer transition-colors">
                 <input type="checkbox" defaultChecked className="w-4 h-4" />
-                <span className="text-sm text-foreground">Enable real-time notifications</span>
+                <span className="text-sm text-foreground">
+                  Enable real-time notifications
+                </span>
               </label>
 
               <label className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/20 cursor-pointer transition-colors">
                 <input type="checkbox" defaultChecked className="w-4 h-4" />
-                <span className="text-sm text-foreground">Send optimization reports via email</span>
+                <span className="text-sm text-foreground">
+                  Send optimization reports via email
+                </span>
               </label>
 
               <label className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/20 cursor-pointer transition-colors">
                 <input type="checkbox" className="w-4 h-4" />
-                <span className="text-sm text-foreground">Enable dark mode (default: on)</span>
+                <span className="text-sm text-foreground">
+                  Enable dark mode (default: on)
+                </span>
               </label>
             </div>
           </div>

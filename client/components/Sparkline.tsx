@@ -40,7 +40,8 @@ export function Sparkline({
   const points = normalizedData
     .map((value, index) => {
       const x = padding + (index / (data.length - 1)) * (width - padding * 2);
-      const y = viewHeight - padding - (value / 100) * (viewHeight - padding * 2);
+      const y =
+        viewHeight - padding - (value / 100) * (viewHeight - padding * 2);
       return `${x},${y}`;
     })
     .join(" ");
@@ -73,7 +74,12 @@ export function Sparkline({
 
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
-      <svg viewBox={`0 0 ${width} ${viewHeight}`} width={width} height={height} className="w-full">
+      <svg
+        viewBox={`0 0 ${width} ${viewHeight}`}
+        width={width}
+        height={height}
+        className="w-full"
+      >
         {/* Fill area under line */}
         <polygon
           points={`${padding},${viewHeight - padding} ${points} ${width - padding},${viewHeight - padding}`}
@@ -82,12 +88,24 @@ export function Sparkline({
         />
 
         {/* Line chart */}
-        <polyline points={points} fill="none" stroke={colors.line} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <polyline
+          points={points}
+          fill="none"
+          stroke={colors.line}
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
 
         {/* Last point indicator */}
         <circle
           cx={width - padding - 2}
-          cy={viewHeight - padding - (normalizedData[normalizedData.length - 1] / 100) * (viewHeight - padding * 2)}
+          cy={
+            viewHeight -
+            padding -
+            (normalizedData[normalizedData.length - 1] / 100) *
+              (viewHeight - padding * 2)
+          }
           r="2"
           fill={colors.line}
         />
@@ -96,8 +114,12 @@ export function Sparkline({
       {showTrend && (
         <div className="flex items-center justify-between text-xs">
           <span className="text-muted-foreground">7-day trend</span>
-          <span className={`font-semibold ${trend === "up" ? "text-emerald-400" : "text-rose-400"}`}>
-            {trend === "up" ? "↑" : "↓"} {Math.abs(((lastValue - firstValue) / firstValue) * 100).toFixed(1)}%
+          <span
+            className={`font-semibold ${trend === "up" ? "text-emerald-400" : "text-rose-400"}`}
+          >
+            {trend === "up" ? "↑" : "↓"}{" "}
+            {Math.abs(((lastValue - firstValue) / firstValue) * 100).toFixed(1)}
+            %
           </span>
         </div>
       )}
@@ -143,10 +165,16 @@ export function KPICard({
           <p className="kpi-label">{label}</p>
           <div className="flex items-baseline gap-2 mt-2">
             <span className="kpi-value">{value}</span>
-            {unit && <span className="text-sm text-muted-foreground">{unit}</span>}
+            {unit && (
+              <span className="text-sm text-muted-foreground">{unit}</span>
+            )}
           </div>
         </div>
-        {icon && <div className="text-2xl opacity-60 group-hover:opacity-100 transition-opacity">{icon}</div>}
+        {icon && (
+          <div className="text-2xl opacity-60 group-hover:opacity-100 transition-opacity">
+            {icon}
+          </div>
+        )}
       </div>
 
       {/* Sparkline */}
@@ -162,14 +190,19 @@ export function KPICard({
           <span className={`kpi-trend ${trend >= 0 ? "up" : "down"}`}>
             {trend >= 0 ? "↑" : "↓"} {Math.abs(trend)}%
           </span>
-          {trendLabel && <span className="text-xs text-muted-foreground">{trendLabel}</span>}
+          {trendLabel && (
+            <span className="text-xs text-muted-foreground">{trendLabel}</span>
+          )}
         </div>
       )}
 
       {/* Glow effect on hover */}
-      <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style={{
-        boxShadow: "0 0 20px rgba(0, 252, 232, 0.15)",
-      }} />
+      <div
+        className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+        style={{
+          boxShadow: "0 0 20px rgba(0, 252, 232, 0.15)",
+        }}
+      />
     </button>
   );
 }

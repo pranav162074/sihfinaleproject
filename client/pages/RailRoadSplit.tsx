@@ -50,8 +50,11 @@ export default function RailRoadSplit() {
   const calculateSplit = (orders: any[]) => {
     if (!orders || orders.length === 0) return;
 
-    const totalQty = orders.reduce((sum, o) => sum + (o.quantity_tonnes || 0), 0);
-    
+    const totalQty = orders.reduce(
+      (sum, o) => sum + (o.quantity_tonnes || 0),
+      0,
+    );
+
     // Allocate ~80-95% to rail, 5-20% to road
     const railPercentage = 0.85 + Math.random() * 0.1;
     const roadPercentage = 1 - railPercentage;
@@ -96,12 +99,15 @@ export default function RailRoadSplit() {
   };
 
   const railPercentage = (
-    (splitData.railQuantity / (splitData.railQuantity + splitData.roadQuantity)) *
+    (splitData.railQuantity /
+      (splitData.railQuantity + splitData.roadQuantity)) *
     100
   ).toFixed(1);
   const roadPercentage = (100 - parseFloat(railPercentage)).toFixed(1);
   const savings = Math.round(
-    ((splitData.baselineCost - splitData.optimizedCost) / splitData.baselineCost) * 100
+    ((splitData.baselineCost - splitData.optimizedCost) /
+      splitData.baselineCost) *
+      100,
   );
   const savingsAmount = splitData.baselineCost - splitData.optimizedCost;
 
@@ -115,7 +121,8 @@ export default function RailRoadSplit() {
               Rail vs Road Split
             </h1>
             <p className="text-lg text-muted-foreground">
-              Transport mode allocation and cost-benefit analysis based on your order data
+              Transport mode allocation and cost-benefit analysis based on your
+              order data
             </p>
           </div>
 
@@ -131,8 +138,12 @@ export default function RailRoadSplit() {
               <div className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-foreground font-semibold">Quantity Distribution</span>
-                    <span className="text-primary font-bold">{railPercentage}%</span>
+                    <span className="text-foreground font-semibold">
+                      Quantity Distribution
+                    </span>
+                    <span className="text-primary font-bold">
+                      {railPercentage}%
+                    </span>
                   </div>
                   <div className="w-full h-3 bg-muted/30 rounded-full overflow-hidden">
                     <div
@@ -145,20 +156,28 @@ export default function RailRoadSplit() {
                 <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border/30">
                   <div className="space-y-2">
                     <p className="text-xs text-muted-foreground">Orders</p>
-                    <p className="text-2xl font-bold text-primary">{splitData.railOrders}</p>
+                    <p className="text-2xl font-bold text-primary">
+                      {splitData.railOrders}
+                    </p>
                   </div>
                   <div className="space-y-2">
                     <p className="text-xs text-muted-foreground">Quantity</p>
-                    <p className="text-2xl font-bold text-primary">{splitData.railQuantity} MT</p>
+                    <p className="text-2xl font-bold text-primary">
+                      {splitData.railQuantity} MT
+                    </p>
                   </div>
                   <div className="space-y-2">
                     <p className="text-xs text-muted-foreground">Cost/MT</p>
-                    <p className="text-2xl font-bold text-primary">₹{splitData.railCostPerMT}</p>
+                    <p className="text-2xl font-bold text-primary">
+                      ₹{splitData.railCostPerMT}
+                    </p>
                   </div>
                 </div>
 
                 <div className="pt-4 border-t border-border/30 space-y-2">
-                  <p className="text-sm font-semibold text-foreground">Advantages</p>
+                  <p className="text-sm font-semibold text-foreground">
+                    Advantages
+                  </p>
                   <ul className="text-sm text-foreground/80 space-y-1">
                     <li>✓ Lowest cost per tonne</li>
                     <li>✓ High volume consolidation</li>
@@ -179,8 +198,12 @@ export default function RailRoadSplit() {
               <div className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-foreground font-semibold">Quantity Distribution</span>
-                    <span className="text-secondary font-bold">{roadPercentage}%</span>
+                    <span className="text-foreground font-semibold">
+                      Quantity Distribution
+                    </span>
+                    <span className="text-secondary font-bold">
+                      {roadPercentage}%
+                    </span>
                   </div>
                   <div className="w-full h-3 bg-muted/30 rounded-full overflow-hidden">
                     <div
@@ -193,20 +216,28 @@ export default function RailRoadSplit() {
                 <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border/30">
                   <div className="space-y-2">
                     <p className="text-xs text-muted-foreground">Orders</p>
-                    <p className="text-2xl font-bold text-secondary">{splitData.roadOrders}</p>
+                    <p className="text-2xl font-bold text-secondary">
+                      {splitData.roadOrders}
+                    </p>
                   </div>
                   <div className="space-y-2">
                     <p className="text-xs text-muted-foreground">Quantity</p>
-                    <p className="text-2xl font-bold text-secondary">{splitData.roadQuantity} MT</p>
+                    <p className="text-2xl font-bold text-secondary">
+                      {splitData.roadQuantity} MT
+                    </p>
                   </div>
                   <div className="space-y-2">
                     <p className="text-xs text-muted-foreground">Cost/MT</p>
-                    <p className="text-2xl font-bold text-secondary">₹{splitData.roadCostPerMT}</p>
+                    <p className="text-2xl font-bold text-secondary">
+                      ₹{splitData.roadCostPerMT}
+                    </p>
                   </div>
                 </div>
 
                 <div className="pt-4 border-t border-border/30 space-y-2">
-                  <p className="text-sm font-semibold text-foreground">Use Cases</p>
+                  <p className="text-sm font-semibold text-foreground">
+                    Use Cases
+                  </p>
                   <ul className="text-sm text-foreground/80 space-y-1">
                     <li>✓ Urgent/short-haul routes</li>
                     <li>✓ Crane unavailability fallback</li>
@@ -220,39 +251,59 @@ export default function RailRoadSplit() {
 
           {/* Summary & Recommendations */}
           <div className="card-glass p-8 space-y-6 border-primary/30">
-            <h2 className="text-2xl font-bold text-foreground">Cost Savings Summary</h2>
+            <h2 className="text-2xl font-bold text-foreground">
+              Cost Savings Summary
+            </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Baseline Cost (100% Road)</p>
-                <p className="text-3xl font-bold text-foreground">₹{splitData.baselineCost}k</p>
+                <p className="text-sm text-muted-foreground">
+                  Baseline Cost (100% Road)
+                </p>
+                <p className="text-3xl font-bold text-foreground">
+                  ₹{splitData.baselineCost}k
+                </p>
               </div>
 
               <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Optimized Cost ({railPercentage}% Rail)</p>
-                <p className="text-3xl font-bold text-primary">₹{splitData.optimizedCost}k</p>
+                <p className="text-sm text-muted-foreground">
+                  Optimized Cost ({railPercentage}% Rail)
+                </p>
+                <p className="text-3xl font-bold text-primary">
+                  ₹{splitData.optimizedCost}k
+                </p>
               </div>
 
               <div className="space-y-2">
                 <p className="text-sm text-muted-foreground">Total Savings</p>
-                <p className="text-3xl font-bold text-emerald-400">₹{savingsAmount}k ({savings}%)</p>
+                <p className="text-3xl font-bold text-emerald-400">
+                  ₹{savingsAmount}k ({savings}%)
+                </p>
               </div>
             </div>
 
             <div className="pt-6 border-t border-border/30">
               <p className="text-muted-foreground">
-                By optimizing the transport mode split, OptiRake achieves significant cost savings while maintaining SLA compliance. Rail transport handles the bulk of high-volume, long-distance shipments, while road transport covers urgent orders and short-haul requirements.
+                By optimizing the transport mode split, OptiRake achieves
+                significant cost savings while maintaining SLA compliance. Rail
+                transport handles the bulk of high-volume, long-distance
+                shipments, while road transport covers urgent orders and
+                short-haul requirements.
               </p>
             </div>
           </div>
 
           {/* Detailed Breakdown */}
           <div className="card-glow p-8 space-y-6 border-primary/20">
-            <h2 className="text-2xl font-bold text-foreground">Mode Selection Logic</h2>
+            <h2 className="text-2xl font-bold text-foreground">
+              Mode Selection Logic
+            </h2>
 
             <div className="space-y-4">
               <div>
-                <h3 className="font-semibold text-foreground mb-3">Rail Transport Selected For:</h3>
+                <h3 className="font-semibold text-foreground mb-3">
+                  Rail Transport Selected For:
+                </h3>
                 <ul className="space-y-2 text-sm text-foreground/80">
                   <li className="flex items-start gap-3">
                     <span className="text-primary mt-1">•</span>
@@ -274,7 +325,9 @@ export default function RailRoadSplit() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-3">Road Transport Selected For:</h3>
+                <h3 className="font-semibold text-foreground mb-3">
+                  Road Transport Selected For:
+                </h3>
                 <ul className="space-y-2 text-sm text-foreground/80">
                   <li className="flex items-start gap-3">
                     <span className="text-secondary mt-1">•</span>
@@ -327,7 +380,8 @@ function generateMockOrders() {
       order_id: `ORD-${String(i).padStart(3, "0")}`,
       customer_name: `Customer ${i}`,
       quantity_tonnes: Math.round((40 + Math.random() * 60) * 10) / 10,
-      destination: destinations[Math.floor(Math.random() * destinations.length)],
+      destination:
+        destinations[Math.floor(Math.random() * destinations.length)],
       distance_km: Math.round(800 + Math.random() * 1200),
     });
   }

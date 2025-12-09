@@ -1,9 +1,18 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Download, Share2, CheckCircle2, AlertCircle, Database } from "lucide-react";
+import {
+  Download,
+  Share2,
+  CheckCircle2,
+  AlertCircle,
+  Database,
+} from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { optimizeRakeAllocation, calculateKPISummary } from "@/lib/rake-optimizer";
+import {
+  optimizeRakeAllocation,
+  calculateKPISummary,
+} from "@/lib/rake-optimizer";
 
 interface RakePlanItem {
   order_id: string;
@@ -75,8 +84,8 @@ export default function RakePlanDispatch() {
   const handleApprove = (orderId: string) => {
     setPlan((prev) =>
       prev.map((item) =>
-        item.order_id === orderId ? { ...item, status: "approved" } : item
-      )
+        item.order_id === orderId ? { ...item, status: "approved" } : item,
+      ),
     );
     toast({
       title: "Approved",
@@ -87,8 +96,8 @@ export default function RakePlanDispatch() {
   const handleOverride = (orderId: string) => {
     setPlan((prev) =>
       prev.map((item) =>
-        item.order_id === orderId ? { ...item, status: "overridden" } : item
-      )
+        item.order_id === orderId ? { ...item, status: "overridden" } : item,
+      ),
     );
     toast({
       title: "Override Recorded",
@@ -112,12 +121,17 @@ export default function RakePlanDispatch() {
         rakePlan: plan,
         kpis: kpis,
         totalOrders: plan.length,
-        totalQuantity: plan.reduce((sum, item) => sum + item.quantity_tonnes, 0),
+        totalQuantity: plan.reduce(
+          (sum, item) => sum + item.quantity_tonnes,
+          0,
+        ),
         totalCost: plan.reduce((sum, item) => sum + item.estimated_cost, 0),
       };
 
       // Save to localStorage as database persistence
-      const existingPlans = JSON.parse(localStorage.getItem("savedRakePlans") || "[]");
+      const existingPlans = JSON.parse(
+        localStorage.getItem("savedRakePlans") || "[]",
+      );
       existingPlans.push(planData);
       localStorage.setItem("savedRakePlans", JSON.stringify(existingPlans));
 
@@ -168,7 +182,9 @@ export default function RakePlanDispatch() {
       item.status || "pending",
     ]);
 
-    const csv = [headers, ...rows].map((row) => row.map((cell) => `"${cell}"`).join(",")).join("\n");
+    const csv = [headers, ...rows]
+      .map((row) => row.map((cell) => `"${cell}"`).join(","))
+      .join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -192,7 +208,8 @@ export default function RakePlanDispatch() {
               Rake Plan & Dispatch
             </h1>
             <p className="text-lg text-muted-foreground">
-              AI-optimized rake formations with detailed allocation explanations and approval workflow
+              AI-optimized rake formations with detailed allocation explanations
+              and approval workflow
             </p>
           </div>
 
@@ -219,14 +236,18 @@ export default function RakePlanDispatch() {
 
               <div className="card-glow p-6 space-y-2 border-emerald-500/30 stagger-item">
                 <p className="kpi-label">Est. Total Cost</p>
-                <p className="kpi-value">₹{(kpis.totalCost / 1000).toFixed(1)}k</p>
+                <p className="kpi-value">
+                  ₹{(kpis.totalCost / 1000).toFixed(1)}k
+                </p>
                 <p className="text-xs text-emerald-400">Optimized rate</p>
               </div>
 
               <div className="card-glow p-6 space-y-2 border-emerald-500/30 stagger-item">
                 <p className="kpi-label">Cost Savings</p>
                 <p className="kpi-value">{kpis.costSavingsPercent}%</p>
-                <p className="text-xs text-emerald-400">₹{(kpis.costSavings / 1000).toFixed(1)}k saved</p>
+                <p className="text-xs text-emerald-400">
+                  ₹{(kpis.costSavings / 1000).toFixed(1)}k saved
+                </p>
               </div>
             </div>
           )}
@@ -234,11 +255,16 @@ export default function RakePlanDispatch() {
           {/* Rake Selection Tabs */}
           {plan.length > 0 && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-foreground">Formed Rakes ({uniqueRakes.length})</h2>
+              <h2 className="text-2xl font-bold text-foreground">
+                Formed Rakes ({uniqueRakes.length})
+              </h2>
               <div className="flex flex-wrap gap-2">
                 {uniqueRakes.map((rakeId, idx) => {
                   const rakeOrders = plan.filter((p) => p.rake_id === rakeId);
-                  const rakeQuantity = rakeOrders.reduce((sum, p) => sum + p.quantity_tonnes, 0);
+                  const rakeQuantity = rakeOrders.reduce(
+                    (sum, p) => sum + p.quantity_tonnes,
+                    0,
+                  );
                   const rakeMode = rakeOrders[0]?.transport_mode || "mixed";
                   return (
                     <button
@@ -254,7 +280,9 @@ export default function RakePlanDispatch() {
                       <div className="flex flex-col items-start gap-1">
                         <span className="font-semibold">{rakeId}</span>
                         <span className="text-xs opacity-75">
-                          {rakeOrders.length} orders • {Math.round(rakeQuantity)} MT • {rakeMode.toUpperCase()}
+                          {rakeOrders.length} orders •{" "}
+                          {Math.round(rakeQuantity)} MT •{" "}
+                          {rakeMode.toUpperCase()}
                         </span>
                       </div>
                     </button>
@@ -272,7 +300,11 @@ export default function RakePlanDispatch() {
                   {selectedRake} • {selectedItems.length} Orders
                 </h2>
                 <div className="flex gap-2">
-                  <Button onClick={handleExportCSV} variant="outline" className="gap-2 border-primary/30">
+                  <Button
+                    onClick={handleExportCSV}
+                    variant="outline"
+                    className="gap-2 border-primary/30"
+                  >
                     <Download className="w-4 h-4" />
                     Export CSV
                   </Button>
@@ -329,9 +361,15 @@ export default function RakePlanDispatch() {
                           onMouseLeave={() => setHoveredRow(null)}
                           className="border-b border-border/20 hover:bg-muted/10 transition-colors group stagger-item"
                         >
-                          <td className="p-4 font-medium text-primary">{item.order_id}</td>
-                          <td className="p-4 text-foreground/80">{item.customer_name}</td>
-                          <td className="p-4 text-foreground/80">{item.product_type}</td>
+                          <td className="p-4 font-medium text-primary">
+                            {item.order_id}
+                          </td>
+                          <td className="p-4 text-foreground/80">
+                            {item.customer_name}
+                          </td>
+                          <td className="p-4 text-foreground/80">
+                            {item.product_type}
+                          </td>
                           <td className="p-4 text-foreground/80 text-xs">
                             {item.origin} → {item.destination}
                           </td>
@@ -339,22 +377,26 @@ export default function RakePlanDispatch() {
                             {item.quantity_tonnes} MT
                           </td>
                           <td className="p-4 text-center">
-                            <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                              item.transport_mode === "rail"
-                                ? "bg-primary/20 text-primary"
-                                : "bg-secondary/20 text-secondary"
-                            }`}>
+                            <span
+                              className={`px-2 py-1 rounded text-xs font-semibold ${
+                                item.transport_mode === "rail"
+                                  ? "bg-primary/20 text-primary"
+                                  : "bg-secondary/20 text-secondary"
+                              }`}
+                            >
                               {item.transport_mode.toUpperCase()}
                             </span>
                           </td>
                           <td className="p-4 text-center">
-                            <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                              item.utilization_percent >= 85
-                                ? "bg-emerald-500/20 text-emerald-400"
-                                : item.utilization_percent >= 70
-                                ? "bg-amber-500/20 text-amber-400"
-                                : "bg-rose-500/20 text-rose-400"
-                            }`}>
+                            <span
+                              className={`px-2 py-1 rounded text-xs font-semibold ${
+                                item.utilization_percent >= 85
+                                  ? "bg-emerald-500/20 text-emerald-400"
+                                  : item.utilization_percent >= 70
+                                    ? "bg-amber-500/20 text-amber-400"
+                                    : "bg-rose-500/20 text-rose-400"
+                              }`}
+                            >
                               {item.utilization_percent}%
                             </span>
                           </td>
@@ -373,7 +415,9 @@ export default function RakePlanDispatch() {
                                 Override
                               </span>
                             ) : (
-                              <span className="text-muted-foreground text-xs">Pending</span>
+                              <span className="text-muted-foreground text-xs">
+                                Pending
+                              </span>
                             )}
                           </td>
                           <td className="p-4 text-center">
@@ -411,44 +455,67 @@ export default function RakePlanDispatch() {
           {/* Natural Language Explanations */}
           {selectedItems.length > 0 && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-foreground">AI Allocation Reasoning</h2>
+              <h2 className="text-2xl font-bold text-foreground">
+                AI Allocation Reasoning
+              </h2>
 
               <div className="space-y-4">
                 {selectedItems.map((item, idx) => (
-                  <div key={item.order_id} className="card-glow p-6 space-y-4 border border-border/30 stagger-item"
-                    style={{ animationDelay: `${idx * 0.05}s` }}>
+                  <div
+                    key={item.order_id}
+                    className="card-glow p-6 space-y-4 border border-border/30 stagger-item"
+                    style={{ animationDelay: `${idx * 0.05}s` }}
+                  >
                     {/* Main Explanation */}
                     <div className="space-y-2">
                       <p className="font-semibold text-primary flex items-start gap-2">
                         <span className="text-sm mt-1">→</span>
-                        <span className="text-foreground">{item.explanation}</span>
+                        <span className="text-foreground">
+                          {item.explanation}
+                        </span>
                       </p>
                     </div>
 
                     {/* Reasoning Section */}
                     <div className="pt-4 border-t border-border/30 space-y-2">
-                      <p className="text-sm font-medium text-muted-foreground">Why this allocation?</p>
-                      <p className="text-sm text-foreground/80 leading-relaxed">{item.reason}</p>
+                      <p className="text-sm font-medium text-muted-foreground">
+                        Why this allocation?
+                      </p>
+                      <p className="text-sm text-foreground/80 leading-relaxed">
+                        {item.reason}
+                      </p>
                     </div>
 
                     {/* Quick Stats */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-4 border-t border-border/30">
                       <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground">Wagon/Platform</p>
+                        <p className="text-xs text-muted-foreground">
+                          Wagon/Platform
+                        </p>
                         <p className="text-sm font-semibold text-primary">
                           {item.wagon_id} / {item.platform_id}
                         </p>
                       </div>
                       <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground">Crane Capacity</p>
-                        <p className="text-sm font-semibold text-foreground">{item.crane_capacity_tonnes} MT</p>
+                        <p className="text-xs text-muted-foreground">
+                          Crane Capacity
+                        </p>
+                        <p className="text-sm font-semibold text-foreground">
+                          {item.crane_capacity_tonnes} MT
+                        </p>
                       </div>
                       <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground">Utilization</p>
-                        <p className="text-sm font-semibold text-emerald-400">{item.utilization_percent}%</p>
+                        <p className="text-xs text-muted-foreground">
+                          Utilization
+                        </p>
+                        <p className="text-sm font-semibold text-emerald-400">
+                          {item.utilization_percent}%
+                        </p>
                       </div>
                       <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground">Est. Cost</p>
+                        <p className="text-xs text-muted-foreground">
+                          Est. Cost
+                        </p>
                         <p className="text-sm font-semibold text-foreground">
                           ₹{(item.estimated_cost / 1000).toFixed(1)}k
                         </p>
@@ -463,9 +530,12 @@ export default function RakePlanDispatch() {
           {/* Premium CTA */}
           {plan.length > 0 && (
             <div className="card-glass p-12 space-y-6 border-primary/30 text-center animate-fade-in">
-              <h2 className="text-3xl font-bold text-foreground">Ready to dispatch?</h2>
+              <h2 className="text-3xl font-bold text-foreground">
+                Ready to dispatch?
+              </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Review the allocation reasoning above and approve the rake formations. Use the Approve and Override buttons for each order.
+                Review the allocation reasoning above and approve the rake
+                formations. Use the Approve and Override buttons for each order.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button className="btn-gradient h-12 px-8 text-base font-semibold">
@@ -479,7 +549,10 @@ export default function RakePlanDispatch() {
                   <Database className="w-4 h-4" />
                   Add Plan to Database
                 </Button>
-                <Button variant="outline" className="h-12 px-8 border-primary/30">
+                <Button
+                  variant="outline"
+                  className="h-12 px-8 border-primary/30"
+                >
                   Back to Optimization
                 </Button>
               </div>
@@ -489,8 +562,14 @@ export default function RakePlanDispatch() {
           {/* Empty State */}
           {plan.length === 0 && (
             <div className="card-glass p-12 text-center space-y-4 border-border/30">
-              <p className="text-muted-foreground">No rake plan available. Please upload data and run optimization first.</p>
-              <Button className="btn-gradient" onClick={() => window.location.href = "/upload"}>
+              <p className="text-muted-foreground">
+                No rake plan available. Please upload data and run optimization
+                first.
+              </p>
+              <Button
+                className="btn-gradient"
+                onClick={() => (window.location.href = "/upload")}
+              >
                 Go to Data Upload
               </Button>
             </div>

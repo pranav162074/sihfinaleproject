@@ -1,14 +1,11 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import {
-  BarChart3,
-  TrendingUp,
-  Zap,
-  Truck,
-  Calendar,
-} from "lucide-react";
+import { BarChart3, TrendingUp, Zap, Truck, Calendar } from "lucide-react";
 import { useNavigate, useEffect, useState } from "react-router-dom";
-import { optimizeRakeAllocation, calculateKPISummary } from "@/lib/rake-optimizer";
+import {
+  optimizeRakeAllocation,
+  calculateKPISummary,
+} from "@/lib/rake-optimizer";
 
 interface KPIData {
   utilization: number;
@@ -72,7 +69,9 @@ export default function Dashboard() {
                 <p className="text-sm text-muted-foreground">System Status</p>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <p className="text-sm font-semibold text-emerald-400">Operational</p>
+                  <p className="text-sm font-semibold text-emerald-400">
+                    Operational
+                  </p>
                 </div>
               </div>
             </div>
@@ -80,12 +79,14 @@ export default function Dashboard() {
             {/* Date & Time */}
             <div className="flex items-center gap-2 text-muted-foreground">
               <Calendar className="w-4 h-4" />
-              <p className="text-sm">{new Date().toLocaleDateString("en-US", { 
-                weekday: "long", 
-                year: "numeric", 
-                month: "long", 
-                day: "numeric" 
-              })}</p>
+              <p className="text-sm">
+                {new Date().toLocaleDateString("en-US", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
             </div>
           </div>
 
@@ -105,7 +106,9 @@ export default function Dashboard() {
             <div className="card-glow p-6 space-y-2 border-secondary/30 stagger-item hover-lift">
               <p className="kpi-label">Active Rakes</p>
               <p className="kpi-value">{kpiData.rakes}</p>
-              <p className="text-xs text-muted-foreground">Loading in progress</p>
+              <p className="text-xs text-muted-foreground">
+                Loading in progress
+              </p>
             </div>
 
             {/* Total Orders */}
@@ -118,7 +121,9 @@ export default function Dashboard() {
             {/* Total Cost */}
             <div className="card-glow p-6 space-y-2 border-emerald-500/30 stagger-item hover-lift">
               <p className="kpi-label">Est. Total Cost</p>
-              <p className="kpi-value">₹{(kpiData.cost / 1000000).toFixed(1)}M</p>
+              <p className="kpi-value">
+                ₹{(kpiData.cost / 1000000).toFixed(1)}M
+              </p>
               <div className="flex items-center gap-1">
                 <TrendingUp className="w-4 h-4 text-emerald-400" />
                 <p className="text-xs text-emerald-400">optimized</p>
@@ -138,7 +143,9 @@ export default function Dashboard() {
             {/* Performance Overview */}
             <div className="card-glow p-8 space-y-6 border-primary/20 animate-fade-in">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-foreground">Performance Overview</h2>
+                <h2 className="text-2xl font-bold text-foreground">
+                  Performance Overview
+                </h2>
                 <BarChart3 className="w-6 h-6 text-muted-foreground" />
               </div>
 
@@ -146,11 +153,15 @@ export default function Dashboard() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-foreground">Rake Utilization</span>
-                    <span className="font-bold text-primary">{kpiData.utilization}%</span>
+                    <span className="font-bold text-primary">
+                      {kpiData.utilization}%
+                    </span>
                   </div>
                   <div className="w-full h-2 bg-muted/30 rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500" 
-                      style={{ width: `${kpiData.utilization}%` }} />
+                    <div
+                      className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500"
+                      style={{ width: `${kpiData.utilization}%` }}
+                    />
                   </div>
                 </div>
 
@@ -175,7 +186,7 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <Button 
+              <Button
                 onClick={() => navigate("/reports")}
                 className="w-full bg-primary/20 hover:bg-primary/30 text-primary h-10 gap-2 transition-all duration-300"
               >
@@ -187,12 +198,14 @@ export default function Dashboard() {
             {/* Quick Actions */}
             <div className="card-glow p-8 space-y-6 border-primary/20 animate-fade-in">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-foreground">Quick Actions</h2>
+                <h2 className="text-2xl font-bold text-foreground">
+                  Quick Actions
+                </h2>
                 <Zap className="w-6 h-6 text-muted-foreground" />
               </div>
 
               <div className="space-y-3">
-                <Button 
+                <Button
                   onClick={() => navigate("/upload")}
                   className="w-full justify-start text-left h-auto py-4 px-4 bg-muted/20 hover:bg-muted/40 text-foreground transition-all duration-300"
                   variant="ghost"
@@ -202,13 +215,17 @@ export default function Dashboard() {
                       <Zap className="w-5 h-5 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-foreground">Upload New Data</p>
-                      <p className="text-xs text-muted-foreground">Import order CSV</p>
+                      <p className="font-semibold text-foreground">
+                        Upload New Data
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Import order CSV
+                      </p>
                     </div>
                   </div>
                 </Button>
 
-                <Button 
+                <Button
                   onClick={() => navigate("/optimize")}
                   className="w-full justify-start text-left h-auto py-4 px-4 bg-muted/20 hover:bg-muted/40 text-foreground transition-all duration-300"
                   variant="ghost"
@@ -218,13 +235,17 @@ export default function Dashboard() {
                       <Zap className="w-5 h-5 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-foreground">Run Optimization</p>
-                      <p className="text-xs text-muted-foreground">Calculate rake formations</p>
+                      <p className="font-semibold text-foreground">
+                        Run Optimization
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Calculate rake formations
+                      </p>
                     </div>
                   </div>
                 </Button>
 
-                <Button 
+                <Button
                   onClick={() => navigate("/rake-plan")}
                   className="w-full justify-start text-left h-auto py-4 px-4 bg-muted/20 hover:bg-muted/40 text-foreground transition-all duration-300"
                   variant="ghost"
@@ -234,13 +255,17 @@ export default function Dashboard() {
                       <Truck className="w-5 h-5 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-foreground">View Rake Plan</p>
-                      <p className="text-xs text-muted-foreground">Review allocations</p>
+                      <p className="font-semibold text-foreground">
+                        View Rake Plan
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Review allocations
+                      </p>
                     </div>
                   </div>
                 </Button>
 
-                <Button 
+                <Button
                   onClick={() => navigate("/reports")}
                   className="w-full justify-start text-left h-auto py-4 px-4 bg-muted/20 hover:bg-muted/40 text-foreground transition-all duration-300"
                   variant="ghost"
@@ -250,8 +275,12 @@ export default function Dashboard() {
                       <BarChart3 className="w-5 h-5 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-foreground">Export Reports</p>
-                      <p className="text-xs text-muted-foreground">CSV, PDF formats</p>
+                      <p className="font-semibold text-foreground">
+                        Export Reports
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        CSV, PDF formats
+                      </p>
                     </div>
                   </div>
                 </Button>
@@ -261,15 +290,21 @@ export default function Dashboard() {
 
           {/* System Information */}
           <div className="card-glass p-8 space-y-4 border-primary/20 text-sm">
-            <h3 className="font-semibold text-foreground">System Information</h3>
+            <h3 className="font-semibold text-foreground">
+              System Information
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <p className="text-muted-foreground">Optimization Engine</p>
-                <p className="text-foreground font-medium mt-1">AI-Powered Rake Allocation v2.1</p>
+                <p className="text-foreground font-medium mt-1">
+                  AI-Powered Rake Allocation v2.1
+                </p>
               </div>
               <div>
                 <p className="text-muted-foreground">Last Optimization</p>
-                <p className="text-foreground font-medium mt-1">{new Date().toLocaleTimeString()}</p>
+                <p className="text-foreground font-medium mt-1">
+                  {new Date().toLocaleTimeString()}
+                </p>
               </div>
               <div>
                 <p className="text-muted-foreground">Status</p>
