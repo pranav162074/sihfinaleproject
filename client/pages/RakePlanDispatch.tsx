@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Download, Share2, CheckCircle2, AlertCircle } from "lucide-react";
+import { Download, Share2, CheckCircle2, AlertCircle, Database } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { optimizeRakeAllocation, calculateKPISummary } from "@/lib/rake-optimizer";
