@@ -322,8 +322,8 @@ export default function RakePlanner() {
                 <div className="frosted-glass p-4 space-y-2">
                   <p className="font-semibold text-foreground">In Plain English</p>
                   <p className="text-sm text-foreground/80 leading-relaxed">
-                    This rake serves {selectedRake.destination || "multiple destinations"} and is{" "}
-                    {selectedRake.utilization_percent}% full. It leaves before the customer deadline, avoiding
+                    This rake serves {selectedRake.primary_destination || "multiple destinations"} and is{" "}
+                    {selectedRake.utilization_percent.toFixed(0)}% full. It leaves before the customer deadline, avoiding
                     late-delivery penalties.
                   </p>
                 </div>
@@ -335,14 +335,14 @@ export default function RakePlanner() {
                   <div className="explanation-item">
                     <span className="explanation-item icon">💰</span>
                     <div className="explanation-item text">
-                      Saves ₹{(selectedRake.total_cost / 1000).toFixed(1)}k compared to separate shipments
+                      Saves ₹{(selectedRake.cost_breakdown.total_cost / 1000).toFixed(1)}k compared to separate shipments
                     </div>
                   </div>
 
                   <div className="explanation-item">
                     <span className="explanation-item icon">📊</span>
                     <div className="explanation-item text">
-                      {selectedRake.utilization_percent}% full — combines multiple orders efficiently
+                      {selectedRake.utilization_percent.toFixed(0)}% full — combines multiple orders efficiently
                     </div>
                   </div>
 
@@ -353,22 +353,22 @@ export default function RakePlanner() {
                     </div>
                   </div>
 
-                  {selectedRake.sla_risk !== "HIGH" && (
+                  {selectedRake.sla_status === "At-Risk" && (
                     <div className="explanation-item">
                       <span className="explanation-item icon">🚨</span>
                       <div className="explanation-item text">
-                        Low risk of delays — {selectedRake.rail_percent}% rail reduces road uncertainties
+                        At-risk delivery — consider alternative rakes if SLA compliance is critical
                       </div>
                     </div>
                   )}
                 </div>
 
                 {/* Orders in This Rake */}
-                {selectedRake.orders_count && selectedRake.orders_count > 0 && (
+                {selectedRake.orders_allocated && selectedRake.orders_allocated.length > 0 && (
                   <div className="space-y-3 pt-4 border-t border-primary/20">
                     <p className="font-semibold text-foreground">Orders Included:</p>
                     <p className="text-sm text-muted-foreground">
-                      {selectedRake.orders_count} orders grouped together (see Orders tab for details)
+                      {selectedRake.orders_allocated.length} orders grouped together (see Orders tab for details)
                     </p>
                   </div>
                 )}
@@ -378,12 +378,12 @@ export default function RakePlanner() {
                   className="btn-gradient w-full h-10 mt-6"
                   onClick={() => {
                     if (selectedRake) {
-                      handleApproveRake(selectedRake.rake_id);
+                      handleApproveRake(selectedRake.planned_rake_id || selectedRake.rake_id);
                     }
                   }}
-                  disabled={approvedRakes.has(selectedRake?.rake_id || "")}
+                  disabled={approvedRakes.has(selectedRake?.planned_rake_id || selectedRake?.rake_id || "")}
                 >
-                  {approvedRakes.has(selectedRake?.rake_id || "")
+                  {approvedRakes.has(selectedRake?.planned_rake_id || selectedRake?.rake_id || "")
                     ? "✅ Already Approved"
                     : "👍 Approve This Rake"}
                 </Button>
