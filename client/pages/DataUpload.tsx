@@ -201,7 +201,7 @@ export default function DataUpload() {
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Upload Area - 2 Columns */}
-            <div className="lg:col-span-2 space-y-8">
+            <div className="lg:col-span-2 space-y-6">
               {/* Drag-Drop Zone - Premium */}
             <div
                 onDragEnter={handleDrag}
