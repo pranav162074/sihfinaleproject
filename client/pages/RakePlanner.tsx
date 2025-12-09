@@ -386,8 +386,8 @@ export default function RakePlanner() {
                   disabled={approvedRakes.has(selectedRake?.planned_rake_id || selectedRake?.rake_id || "")}
                 >
                   {approvedRakes.has(selectedRake?.planned_rake_id || selectedRake?.rake_id || "")
-                    ? "✅ Already Approved"
-                    : "👍 Approve This Rake"}
+                    ? "Approved"
+                    : "Approve Rake"}
                 </Button>
               </div>
             </div>
