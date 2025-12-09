@@ -211,14 +211,14 @@ export default function RakePlanner() {
 
                         {/* Status Badges */}
                         <div className="flex flex-wrap gap-2">
-                          <div className="badge-rail-only">🚆 Rail</div>
+                          <div className="badge-rail-only">Rail Transport</div>
 
                           {rake.sla_status === "At-Risk" && (
-                            <div className="badge-sla-risk">🔴 At Risk</div>
+                            <div className="badge-sla-risk">At Risk</div>
                           )}
 
                           {utilization < 70 && (
-                            <div className="badge-low-util">🟡 Low Utilization</div>
+                            <div className="badge-low-util">Low Utilization</div>
                           )}
                         </div>
                       </div>
