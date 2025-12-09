@@ -258,7 +258,7 @@ export default function Reports() {
                   <p className="font-semibold">Cost Efficiency</p>
                 </div>
                 <p className="text-sm text-foreground/80">
-                  Today's optimization saves approximately ₹{(summary.demurrage_avoided / 1000).toFixed(1)}k by consolidating orders and reducing demurrage penalties.
+                  Today's optimization saves approximately ₹{(kpi.demurrage_savings / 1000).toFixed(1)}k by consolidating orders and reducing demurrage penalties.
                 </p>
               </div>
 
@@ -268,9 +268,9 @@ export default function Reports() {
                   <p className="font-semibold">Wagon Utilization</p>
                 </div>
                 <p className="text-sm text-foreground/80">
-                  {summary.avg_utilization >= 80
+                  {kpi.average_rake_utilization_percent >= 80
                     ? "Excellent wagon usage—minimal empty capacity."
-                    : summary.avg_utilization >= 70
+                    : kpi.average_rake_utilization_percent >= 70
                       ? "Good utilization—room for slight improvement."
                       : "Moderate usage—consider consolidation strategies."}
                 </p>
@@ -282,7 +282,7 @@ export default function Reports() {
                   <p className="font-semibold">On-Time Performance</p>
                 </div>
                 <p className="text-sm text-foreground/80">
-                  {summary.on_time_percent === 100
+                  {kpi.on_time_delivery_percent === 100
                     ? "All deliveries meet SLA deadlines—perfect compliance."
                     : "Most deliveries on time with minimal delays."}
                 </p>
@@ -307,14 +307,14 @@ export default function Reports() {
               <div className="frosted-glass p-4 text-center">
                 <p className="text-xs text-muted-foreground mb-2">Total Rakes</p>
                 <p className="text-2xl font-bold text-primary">
-                  {optimizationResult.planned_rakes.length}
+                  {kpi.number_of_rakes_planned}
                 </p>
               </div>
               <div className="frosted-glass p-4 text-center">
                 <p className="text-xs text-muted-foreground mb-2">Orders Shipped</p>
                 <p className="text-2xl font-bold text-primary">
                   {optimizationResult.planned_rakes.reduce(
-                    (sum, r) => sum + (r.orders_count || 0),
+                    (sum, r) => sum + r.orders_allocated.length,
                     0
                   )}
                 </p>
@@ -322,7 +322,7 @@ export default function Reports() {
               <div className="frosted-glass p-4 text-center">
                 <p className="text-xs text-muted-foreground mb-2">Total Tonnage</p>
                 <p className="text-2xl font-bold text-primary">
-                  {optimizationResult.planned_rakes.reduce((sum, r) => sum + r.total_tonnage, 0).toFixed(0)}t
+                  {optimizationResult.planned_rakes.reduce((sum, r) => sum + r.total_tonnage_assigned, 0).toFixed(0)}t
                 </p>
               </div>
             </div>
