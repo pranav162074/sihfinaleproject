@@ -41,7 +41,7 @@ export function Navigation() {
             <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
               <BarChart3 className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="font-bold text-foreground text-sm">RakeOpt</span>
+            <span className="font-bold text-foreground text-sm">OptiRake DSS</span>
           </div>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -114,7 +114,7 @@ export function Navigation() {
           <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
             <BarChart3 className="w-5 h-5 text-primary-foreground" />
           </div>
-          <span className="font-bold text-foreground">SAIL RakeOpt</span>
+          <span className="font-bold text-foreground">OptiRake DSS</span>
         </div>
 
         {/* Desktop Nav Items */}
