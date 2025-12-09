@@ -422,6 +422,18 @@ export default function About() {
               Back to Home
             </Button>
           </div>
+
+          {/* Credit Footer */}
+          <div className="pt-12 border-t border-border/20 mt-16">
+            <div className="text-center space-y-3">
+              <p className="text-xs text-muted-foreground font-medium tracking-wide">
+                BUILT FOR SMART INDIA HACKATHON 2025
+              </p>
+              <p className="text-xs text-primary/80 font-semibold">
+                BY TEAM OG1 – GAYATRI VIDYA PARISHAD COLLEGE OF ENGINEERING (A)
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>
