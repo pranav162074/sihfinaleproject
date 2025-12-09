@@ -108,7 +108,7 @@ export default function RailRoadSplit() {
   return (
     <Layout>
       <div className="flex-1 overflow-auto bg-gradient-to-b from-background via-background to-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
           {/* Header */}
           <div className="space-y-4 animate-fade-in">
             <h1 className="text-5xl md:text-6xl font-bold text-foreground">
