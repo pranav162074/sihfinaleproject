@@ -180,12 +180,12 @@
   }
 
   .btn-gradient:hover {
-    @apply scale-105;
+    @apply scale-105 transition-all duration-200;
     box-shadow: 0 0 20px rgba(0, 252, 232, 0.16);
   }
 
   .btn-gradient:active {
-    @apply scale-95;
+    @apply scale-95 transition-all duration-100;
   }
 
   /* Teal Accent Button */
