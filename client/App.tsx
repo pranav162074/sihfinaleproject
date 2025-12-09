@@ -25,15 +25,20 @@ export default function App() {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/data-upload" element={<DataUpload />} />
-            <Route path="/optimization-run" element={<OptimizationRun />} />
-            <Route path="/rake-plan-dispatch" element={<RakePlanDispatch />} />
-            <Route path="/rail-road-split" element={<RailRoadSplit />} />
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Navigate to="/" replace />} />
+            <Route path="/upload" element={<DataUpload />} />
+            <Route path="/data-upload" element={<Navigate to="/upload" replace />} />
+            <Route path="/optimize" element={<OptimizationRun />} />
+            <Route path="/optimization-run" element={<Navigate to="/optimize" replace />} />
+            <Route path="/rake-plan" element={<RakePlanDispatch />} />
+            <Route path="/rake-plan-dispatch" element={<Navigate to="/rake-plan" replace />} />
+            <Route path="/rail-road" element={<RailRoadSplit />} />
+            <Route path="/rail-road-split" element={<Navigate to="/rail-road" replace />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/help" element={<Help />} />
+            <Route path="/assistant" element={<Help />} />
+            <Route path="/help" element={<Navigate to="/assistant" replace />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
