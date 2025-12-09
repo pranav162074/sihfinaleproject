@@ -299,10 +299,17 @@ export default function RailRoadSplit() {
 
           {/* Next Steps */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="btn-gradient h-12 px-8">
+            <Button
+              onClick={() => navigate("/rake-plan")}
+              className="btn-gradient h-12 px-8 font-semibold text-base"
+            >
               Approve Split & Proceed
             </Button>
-            <Button variant="outline" className="h-12 px-8 border-primary/30">
+            <Button
+              onClick={() => navigate("/reports")}
+              variant="outline"
+              className="h-12 px-8 border-primary/30"
+            >
               View Reports
             </Button>
           </div>
