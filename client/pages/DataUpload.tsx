@@ -513,21 +513,32 @@ export default function DataUpload() {
 function generateSampleOrders() {
   const products = ["Coils", "Plates", "Sheets", "Bars"];
   const grades = ["High Grade", "Medium Grade", "Low Grade"];
-  const destinations = ["Delhi", "Mumbai", "Bangalore", "Hyderabad", "Kolkata", "Chennai", "Pune", "Ahmedabad"];
+  // Use fewer, well-consolidated destinations for better rake packing
+  const destinations = ["Delhi", "Mumbai", "Bangalore"];
   const customers = ["ABC Corp", "XYZ Ltd", "Steel Solutions", "logistics Hub", "National Distributors", "Prime Steel", "Mega Traders"];
 
   const orders = [];
-  // Generate 100 orders to properly test multi-rake distribution
-  for (let i = 1; i <= 100; i++) {
+  // Generate 19 sample orders with CONSOLIDATED destinations (better packing)
+  for (let i = 1; i <= 19; i++) {
+    // Distribute 19 orders: ~6 to Delhi, ~6 to Mumbai, ~7 to Bangalore
+    let dest: string;
+    if (i <= 6) {
+      dest = "Delhi";
+    } else if (i <= 12) {
+      dest = "Mumbai";
+    } else {
+      dest = "Bangalore";
+    }
+
     orders.push({
       order_id: `ORD-${String(i).padStart(3, "0")}`,
       customer_name: customers[Math.floor(Math.random() * customers.length)],
-      customer_location: destinations[Math.floor(Math.random() * destinations.length)],
+      customer_location: dest,
       product_type: products[Math.floor(Math.random() * products.length)],
       material_grade: grades[Math.floor(Math.random() * grades.length)],
       quantity_tonnes: Math.round((30 + Math.random() * 50) * 10) / 10,
-      destination: destinations[Math.floor(Math.random() * destinations.length)],
-      priority: i <= 20 ? 1 : i <= 60 ? 2 : 3,
+      destination: dest,
+      priority: i <= 5 ? 1 : i <= 12 ? 2 : 3,
       due_date: "2025-12-25",
       preferred_mode: Math.random() > 0.3 ? "rail" : "road",
       distance_km: Math.round(800 + Math.random() * 1200),
