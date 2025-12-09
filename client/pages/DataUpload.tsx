@@ -513,13 +513,14 @@ export default function DataUpload() {
 function generateSampleOrders() {
   const products = ["Coils", "Plates", "Sheets", "Bars"];
   const grades = ["High Grade", "Medium Grade", "Low Grade"];
-  const destinations = ["Delhi", "Mumbai", "Bangalore", "Hyderabad", "Kolkata", "Chennai"];
+  const destinations = ["Delhi", "Mumbai", "Bangalore", "Hyderabad", "Kolkata", "Chennai", "Pune", "Ahmedabad"];
+  const customers = ["ABC Corp", "XYZ Ltd", "Steel Solutions", "logistics Hub", "National Distributors", "Prime Steel", "Mega Traders"];
 
   const orders = [];
-  for (let i = 1; i <= 20; i++) {
+  for (let i = 1; i <= 19; i++) {
     orders.push({
       order_id: `ORD-${String(i).padStart(3, "0")}`,
-      customer_name: `Customer ${String(Math.floor((i - 1) / 3) + 1).padStart(2, "0")}`,
+      customer_name: customers[Math.floor(Math.random() * customers.length)],
       customer_location: destinations[Math.floor(Math.random() * destinations.length)],
       product_type: products[Math.floor(Math.random() * products.length)],
       material_grade: grades[Math.floor(Math.random() * grades.length)],
