@@ -331,6 +331,38 @@
     box-shadow: 0 0 12px rgba(0, 252, 232, 0.1);
   }
 
+  /* Smooth transitions for interactive elements */
+  .transition-smooth {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 hover:translate-y-[-4px] hover:shadow-lg;
+  }
+
+  /* Stagger animations for lists */
+  @keyframes stagger {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .stagger-item {
+    animation: stagger 0.3s ease-out backwards;
+  }
+
+  .stagger-item:nth-child(1) { animation-delay: 0.05s; }
+  .stagger-item:nth-child(2) { animation-delay: 0.1s; }
+  .stagger-item:nth-child(3) { animation-delay: 0.15s; }
+  .stagger-item:nth-child(4) { animation-delay: 0.2s; }
+  .stagger-item:nth-child(5) { animation-delay: 0.25s; }
+  .stagger-item:nth-child(n+6) { animation-delay: 0.3s; }
+
   /* Responsive Typography */
   @media (max-width: 768px) {
     h1 {
