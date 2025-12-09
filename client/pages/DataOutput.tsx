@@ -73,25 +73,25 @@ export default function DataOutput() {
           {/* Key Metrics */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-scale-in">
             <div className="kpi-card">
-              <p className="text-xs text-muted-foreground font-medium mb-1">📊 Total Cost</p>
+              <p className="text-xs text-muted-foreground font-medium mb-1">Total Cost</p>
               <p className="text-3xl font-bold text-primary">₹{(kpi.total_cost_optimized / 1000).toFixed(1)}k</p>
               <p className="text-xs text-green-400 mt-2">Optimized</p>
             </div>
 
             <div className="kpi-card">
-              <p className="text-xs text-muted-foreground font-medium mb-1">📈 Avg Utilization</p>
+              <p className="text-xs text-muted-foreground font-medium mb-1">Avg Utilization</p>
               <p className="text-3xl font-bold text-primary">{Math.round(kpi.average_rake_utilization_percent)}%</p>
               <p className="text-xs text-green-400 mt-2">Efficient packing</p>
             </div>
 
             <div className="kpi-card">
-              <p className="text-xs text-muted-foreground font-medium mb-1">⏱️ On-Time %</p>
+              <p className="text-xs text-muted-foreground font-medium mb-1">On-Time %</p>
               <p className="text-3xl font-bold text-green-400">{Math.round(kpi.on_time_delivery_percent)}%</p>
               <p className="text-xs text-green-400 mt-2">All deadlines met</p>
             </div>
 
             <div className="kpi-card">
-              <p className="text-xs text-muted-foreground font-medium mb-1">💰 Savings</p>
+              <p className="text-xs text-muted-foreground font-medium mb-1">Savings</p>
               <p className="text-3xl font-bold text-primary">₹{(kpi.demurrage_savings / 1000).toFixed(1)}k</p>
               <p className="text-xs text-green-400 mt-2">Penalties avoided</p>
             </div>
@@ -99,9 +99,7 @@ export default function DataOutput() {
 
           {/* Section A: Daily Rake Plan */}
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
-              <span className="text-3xl">🚆</span> Section A: Daily Rake Plan
-            </h2>
+            <h2 className="text-2xl font-bold text-foreground">Section A: Daily Rake Plan</h2>
             <p className="text-muted-foreground">
               Exactly which orders are assigned to which trains, with full reasoning.
             </p>
@@ -112,7 +110,7 @@ export default function DataOutput() {
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
                       <h3 className="text-lg font-bold text-foreground">
-                        🚆 Rake #{idx + 1} ({rake.rake_id})
+                        Rake #{idx + 1} ({rake.rake_id})
                       </h3>
                       <p className="text-sm text-muted-foreground mt-1">
                         → {rake.primary_destination || "Multiple destinations"}
@@ -161,9 +159,7 @@ export default function DataOutput() {
 
           {/* Section B: Rail vs Road */}
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
-              <span className="text-3xl">🚚</span> Section B: Rail vs Road Decisions
-            </h2>
+            <h2 className="text-2xl font-bold text-foreground">Section B: Rail vs Road Decisions</h2>
             <p className="text-muted-foreground">
               For each order, the system decided whether rail or road is better (faster, cheaper, or more reliable).
             </p>
@@ -212,9 +208,7 @@ export default function DataOutput() {
 
           {/* Section C: Summary & Next Steps */}
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
-              <span className="text-3xl">📊</span> Section C: Summary & Next Steps
-            </h2>
+            <h2 className="text-2xl font-bold text-foreground">Section C: Summary & Next Steps</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* What was achieved */}
