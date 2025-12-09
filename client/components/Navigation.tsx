@@ -20,13 +20,11 @@ export function Navigation() {
   const isMobile = useIsMobile();
 
   const navItems = [
-    { path: "/home", label: "Home", icon: BarChart3 },
-    { path: "/data-input", label: "Data Input", icon: Upload },
-    { path: "/orders", label: "Orders", icon: Package },
-    { path: "/rake-planner", label: "Rake Planner", icon: Truck },
-    { path: "/stockyards", label: "Stockyards", icon: Warehouse },
-    { path: "/data-output", label: "Data Output", icon: FileText },
-    { path: "/about", label: "About", icon: BarChart3 },
+    { path: "/dashboard", label: "Dashboard", icon: BarChart3 },
+    { path: "/data-input", label: "Import Data", icon: Upload },
+    { path: "/rake-formation", label: "Rake Formation", icon: Truck },
+    { path: "/settings", label: "Settings", icon: SettingsIcon },
+    { path: "/admin-console", label: "Admin Console", icon: FileText },
   ];
 
   const isActive = (path: string) =>
