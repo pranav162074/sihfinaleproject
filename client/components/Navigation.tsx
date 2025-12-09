@@ -21,12 +21,12 @@ export function Navigation() {
 
   const navItems = [
     { path: "/home", label: "Home", icon: BarChart3 },
-    { path: "/about", label: "About", icon: Truck },
     { path: "/data-input", label: "Data Input", icon: Upload },
     { path: "/orders", label: "Orders", icon: Package },
-    { path: "/rake-planner", label: "Rake Planner", icon: BarChart3 },
+    { path: "/rake-planner", label: "Rake Planner", icon: Truck },
     { path: "/stockyards", label: "Stockyards", icon: Warehouse },
     { path: "/data-output", label: "Data Output", icon: FileText },
+    { path: "/about", label: "About", icon: BarChart3 },
   ];
 
   const isActive = (path: string) =>
