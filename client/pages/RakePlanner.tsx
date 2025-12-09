@@ -330,34 +330,36 @@ export default function RakePlanner() {
 
                 {/* Key Benefits */}
                 <div className="space-y-3">
-                  <p className="font-semibold text-foreground">Why This Works:</p>
+                  <p className="font-semibold text-foreground">Why This Rake:</p>
 
                   <div className="explanation-item">
-                    <span className="explanation-item icon">💰</span>
                     <div className="explanation-item text">
-                      Saves ₹{(selectedRake.cost_breakdown.total_cost / 1000).toFixed(1)}k compared to separate shipments
+                      <strong>Consolidation:</strong> Combines {selectedRake.orders_allocated.length} orders for {selectedRake.primary_destination}
                     </div>
                   </div>
 
                   <div className="explanation-item">
-                    <span className="explanation-item icon">📊</span>
                     <div className="explanation-item text">
-                      {selectedRake.utilization_percent.toFixed(0)}% full — combines multiple orders efficiently
+                      <strong>Utilization:</strong> {selectedRake.utilization_percent.toFixed(0)}% full — efficient wagon packing
                     </div>
                   </div>
 
                   <div className="explanation-item">
-                    <span className="explanation-item icon">⏱️</span>
                     <div className="explanation-item text">
-                      Arrives before all customer deadlines — no late penalties
+                      <strong>Delivery:</strong> Arrives before customer SLA deadlines
+                    </div>
+                  </div>
+
+                  <div className="explanation-item">
+                    <div className="explanation-item text">
+                      <strong>Cost:</strong> Total cost ₹{(selectedRake.cost_breakdown.total_cost / 1000).toFixed(1)}k for {selectedRake.total_tonnage_assigned.toFixed(0)}t
                     </div>
                   </div>
 
                   {selectedRake.sla_status === "At-Risk" && (
                     <div className="explanation-item">
-                      <span className="explanation-item icon">🚨</span>
-                      <div className="explanation-item text">
-                        At-risk delivery — consider alternative rakes if SLA compliance is critical
+                      <div className="explanation-item text" style={{ color: "rgb(253 224 71)" }}>
+                        <strong>Note:</strong> Delivery is at-risk — verify SLA compliance before dispatch
                       </div>
                     </div>
                   )}
