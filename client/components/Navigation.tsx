@@ -106,10 +106,10 @@ export function Navigation() {
   }
 
   return (
-    <nav className="h-16 bg-card/30 backdrop-blur-xl border-b border-border/30 flex items-center px-8 sticky top-0 z-40">
-      <div className="flex items-center gap-8 w-full">
+    <nav className="h-16 bg-card/30 backdrop-blur-xl border-b border-border/30 flex items-center px-6 sticky top-0 z-40">
+      <div className="flex items-center justify-between w-full gap-8">
         {/* Logo - Premium Branding */}
-        <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+        <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity flex-shrink-0">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary via-secondary to-primary flex items-center justify-center shadow-lg" style={{
             boxShadow: "0 0 12px rgba(0, 252, 232, 0.3)"
           }}>
@@ -121,8 +121,8 @@ export function Navigation() {
           </div>
         </Link>
 
-        {/* Desktop Nav Items */}
-        <div className="flex items-center gap-1 ml-auto">
+        {/* Desktop Nav Items - Centered with Even Spacing */}
+        <div className="flex items-center justify-center gap-0.5 flex-1">
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.path);
@@ -131,7 +131,7 @@ export function Navigation() {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 text-sm font-medium whitespace-nowrap",
+                  "flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 text-sm font-medium whitespace-nowrap",
                   active
                     ? "bg-gradient-to-r from-primary/20 to-secondary/20 text-primary border border-primary/40"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/20 border border-transparent"
