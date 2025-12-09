@@ -98,9 +98,7 @@ export default function RakePlanner() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
           {/* Page Header */}
           <div className="space-y-2 animate-fade-in">
-            <h1 className="text-title-lg flex items-center gap-2">
-              <span className="text-2xl">✅</span> Today's Rake Plan
-            </h1>
+            <h1 className="text-title-lg">Today's Rake Plan</h1>
             <p className="text-subtitle">
               {rakes.length} rakes ready · {Math.round(kpi.on_time_delivery_percent)}% on-time delivery
             </p>
@@ -112,19 +110,19 @@ export default function RakePlanner() {
             <div className="kpi-card group">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-xs text-muted-foreground font-medium mb-1">💰 Total Cost</p>
+                  <p className="text-xs text-muted-foreground font-medium mb-1">Total Cost</p>
                   <p className="text-2xl font-bold text-primary">₹{(kpi.total_cost_optimized / 1000).toFixed(1)}k</p>
                 </div>
                 <DollarSign className="w-5 h-5 text-primary/50 group-hover:text-primary transition-colors" />
               </div>
-              <p className="text-xs text-green-400 mt-2">✨ Optimized for cost</p>
+              <p className="text-xs text-green-400 mt-2">Optimized for cost</p>
             </div>
 
             {/* Avg Utilization */}
             <div className="kpi-card group">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-xs text-muted-foreground font-medium mb-1">📊 Avg Utilization</p>
+                  <p className="text-xs text-muted-foreground font-medium mb-1">Avg Utilization</p>
                   <p className={`text-2xl font-bold ${getUtilizationColor(kpi.average_rake_utilization_percent)}`}>
                     {Math.round(kpi.average_rake_utilization_percent)}%
                   </p>
@@ -138,7 +136,7 @@ export default function RakePlanner() {
             <div className="kpi-card group">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-xs text-muted-foreground font-medium mb-1">⏱️ On-Time %</p>
+                  <p className="text-xs text-muted-foreground font-medium mb-1">On-Time %</p>
                   <p className="text-2xl font-bold text-green-400">{Math.round(kpi.on_time_delivery_percent)}%</p>
                 </div>
                 <CheckCircle className="w-5 h-5 text-green-400/50 group-hover:text-green-400 transition-colors" />
@@ -150,7 +148,7 @@ export default function RakePlanner() {
             <div className="kpi-card group">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-xs text-muted-foreground font-medium mb-1">🚨 Demurrage Avoided</p>
+                  <p className="text-xs text-muted-foreground font-medium mb-1">Demurrage Avoided</p>
                   <p className="text-2xl font-bold text-primary">₹{(kpi.demurrage_savings / 1000).toFixed(1)}k</p>
                 </div>
                 <Zap className="w-5 h-5 text-primary/50 group-hover:text-primary transition-colors" />
