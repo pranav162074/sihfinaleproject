@@ -42,8 +42,8 @@ export const handleOptimizeRakes: RequestHandler = (req, res) => {
       return res.status(400).json({ error: "Missing required data arrays" });
     }
 
-    // Run optimization
-    const result = optimizeRakes(
+    // Run optimization using simplified optimizer
+    const result = optimizeRakesSimple(
       request.stockyards,
       request.orders,
       request.rakes,
