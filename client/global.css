@@ -83,10 +83,10 @@
     --destructive-foreground: 217 22% 6%;
     --border: 217 16% 18%;
     --input: 217 16% 14%;
-    --ring: 175 100% 42%;
+    --ring: 173 74% 37%;
     --success: 142 72% 50%;
     --warning: 38 92% 50%;
-    --info: 175 100% 42%;
+    --info: 173 74% 37%;
     --error: 0 84% 60%;
   }
 }
