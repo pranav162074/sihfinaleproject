@@ -88,6 +88,47 @@ export default function DataInput() {
     if (input) input.click();
   };
 
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, fileType: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragOverFile(fileType);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragOverFile(null);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, fileType: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragOverFile(null);
+
+    const file = e.dataTransfer.files?.[0];
+    if (!file) return;
+
+    if (!file.name.endsWith('.csv')) {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload a CSV file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Simulate file input change
+    const input = fileInputRefs.current[fileType];
+    if (input) {
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+      input.files = dataTransfer.files;
+
+      const event = new Event('change', { bubbles: true });
+      input.dispatchEvent(event);
+    }
+  };
+
   const handleFileChange = (fileType: string, event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
