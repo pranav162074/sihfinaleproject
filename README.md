@@ -346,7 +346,7 @@ OptiRake DSS/
 
 ## 📄 License
 
-MIT License — Feel free to use, modify, and distribute.
+Feel free to use, modify, and distribute.
 
 ---
 
@@ -356,6 +356,7 @@ MIT License — Feel free to use, modify, and distribute.
 **Purpose:** Smart India Hackathon  
 **Technology:** React, TypeScript, Express.js  
 **Status:** Production Ready  
+**Built By Team:** Sai Pranav, Sai Charan, Pavani Keerthi, Purna Chandra, Manohar, Rohit 
 
 ---
 
@@ -374,5 +375,5 @@ Happy optimizing! 🚀
 ---
 
 **Version:** 1.0  
-**Last Updated:** December 2024  
+**Last Updated:** December 2025 
 **Status:** ✅ Complete & Tested
