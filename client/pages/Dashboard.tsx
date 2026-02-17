@@ -1,7 +1,8 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { BarChart3, TrendingUp, Zap, Truck, Calendar } from "lucide-react";
-import { useNavigate, useEffect, useState } from "react-router-dom";
+import { useState, useEffect } from "react"; // Standard React Hooks
+import { useNavigate } from "react-router-dom"; // Router specific Hook
 import {
   optimizeRakeAllocation,
   calculateKPISummary,
