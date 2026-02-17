@@ -41,15 +41,12 @@ export default function About() {
             <div className="flex items-center gap-3">
               <div className="w-3 h-3 rounded-full bg-primary" />
               <h2 className="text-2xl font-bold text-foreground">
-                Problem Statement
+                Problem & Objectives
               </h2>
             </div>
 
             <div className="card-glass p-8 space-y-6 border border-primary/20">
               <div className="space-y-2">
-                <p className="text-sm text-primary font-semibold uppercase tracking-wide">
-                  ID 25208
-                </p>
                 <p className="text-lg text-foreground leading-relaxed">
                   SAIL (Steel Authority of India Limited) processes thousands of
                   orders daily for steel distribution across India. The current
@@ -251,14 +248,14 @@ export default function About() {
                   <Target className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                   <div className="space-y-2 flex-1">
                     <h3 className="font-semibold text-foreground">
-                      Amaravati Quantum Valley Hackathon 2025
+                      Smart India Hackathon 2025
                     </h3>
                     <p className="text-sm text-muted-foreground">
-                      Team Infinity
+                      Team OG1
                     </p>
                     <p className="text-sm text-foreground/70 leading-relaxed">
                       Developing AI solutions for India's critical
-                      infrastructure challenges
+                      rake planning challenges
                     </p>
                   </div>
                 </div>
@@ -276,17 +273,27 @@ export default function About() {
 
               <div className="space-y-4 border-t border-border/30 pt-6">
                 <div className="space-y-1">
+                  <p className="text-sm text-primary font-medium">
+                    Lead Developers
+                  </p>
                   <p className="font-semibold text-foreground">
                     Sai Charan Devisetty
                   </p>
-                  <p className="text-sm text-primary font-medium">
-                    Lead Developer & AI Engineer
+                  <p className="font-semibold text-foreground">
+                    Sai Pranav Reddy
                   </p>
-                </div>
-
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Roll Number</p>
-                  <p className="text-sm text-foreground">324103311013</p>
+                  <p className="font-semibold text-foreground">
+                    Purna Chandra
+                  </p>
+                  <p className="font-semibold text-foreground">
+                    Pavani Keerthi
+                  </p>
+                  <p className="font-semibold text-foreground">
+                    Manohar
+                  </p>
+                  <p className="font-semibold text-foreground">
+                    Bonda Rohit
+                  </p>
                 </div>
 
                 <div className="space-y-1">
@@ -300,7 +307,7 @@ export default function About() {
 
                 <div className="pt-4 border-t border-border/30 space-y-3">
                   <p className="text-sm text-muted-foreground">
-                    Contact & Links
+                    Link to source code and project repository
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <Button
@@ -308,23 +315,11 @@ export default function About() {
                       size="sm"
                       className="border-primary/30 gap-2"
                       onClick={() =>
-                        window.open("https://github.com", "_blank")
+                        window.open("https://github.com/heyyyysaiiii-commits/sihfinaleproject", "_blank")
                       }
                     >
                       <Code2 className="w-4 h-4" />
                       GitHub
-                      <ExternalLink className="w-3 h-3" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-primary/30 gap-2"
-                      onClick={() =>
-                        window.open("https://linkedin.com", "_blank")
-                      }
-                    >
-                      <Users className="w-4 h-4" />
-                      LinkedIn
                       <ExternalLink className="w-3 h-3" />
                     </Button>
                   </div>

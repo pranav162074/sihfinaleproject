@@ -57,12 +57,6 @@ export default function Home() {
           {/* Problem Section */}
           <div className="space-y-6">
             <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary" />
-                <h2 className="text-sm font-semibold text-primary uppercase tracking-wide">
-                  The Challenge
-                </h2>
-              </div>
               <h3 className="text-4xl md:text-5xl font-bold text-foreground">
                 Manual rake formation leads to inefficiency
               </h3>
@@ -117,12 +111,6 @@ export default function Home() {
           {/* Solution Section */}
           <div className="space-y-6">
             <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary" />
-                <h2 className="text-sm font-semibold text-primary uppercase tracking-wide">
-                  Our Solution
-                </h2>
-              </div>
               <h3 className="text-4xl md:text-5xl font-bold text-foreground">
                 AI-powered optimization for every order
               </h3>
@@ -179,12 +167,6 @@ export default function Home() {
           {/* What OptiRake Offers Section */}
           <div className="space-y-6">
             <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary" />
-                <h2 className="text-sm font-semibold text-primary uppercase tracking-wide">
-                  Capabilities
-                </h2>
-              </div>
               <h3 className="text-4xl md:text-5xl font-bold text-foreground">
                 What OptiRake DSS delivers
               </h3>

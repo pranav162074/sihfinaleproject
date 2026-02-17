@@ -29,18 +29,6 @@ export function Layout({
         </div>
       </div>
 
-      {/* Premium Footer Watermark */}
-      <div className="fixed bottom-0 right-0 pointer-events-none">
-        <div className="px-6 py-3 text-right space-y-1">
-          <p className="text-xs text-primary/60 font-medium tracking-widest">
-            SMART INDIA HACKATHON 2025
-          </p>
-          <p className="text-[0.65rem] text-primary/50 font-light tracking-wide">
-            Team OG1 • GVPCE(A)
-          </p>
-        </div>
-      </div>
-
       {/* AI Assistant Drawer */}
       {showAIAssistant && (
         <AIAssistantDrawer

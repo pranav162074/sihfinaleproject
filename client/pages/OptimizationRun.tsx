@@ -5,40 +5,45 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const VALIDATION_STEPS = [
-  { id: 1, label: "Parse CSV Data", status: "complete" },
-  { id: 2, label: "Validate Schema", status: "complete" },
-  { id: 3, label: "Check Business Rules", status: "complete" },
+  { id: 1, label: "Parse CSV Data", status: "pending" },
+  { id: 2, label: "Validate Schema", status: "pending" },
+  { id: 3, label: "Check Business Rules", status: "pending" },
   { id: 4, label: "Allocate Orders to Rakes", status: "pending" },
   { id: 5, label: "Optimize Wagon Utilization", status: "pending" },
   { id: 6, label: "Generate Explanations", status: "pending" },
 ];
 
 export default function OptimizationRun() {
-  const navigate = useNavigate();
+  // 1. Start everything as 'pending' and currentStep at 0
+  const navigate = useNavigate(); 
+  
+  // 2. STATE
   const [isRunning, setIsRunning] = useState(false);
-  const [currentStep, setCurrentStep] = useState(3);
+  const [currentStep, setCurrentStep] = useState(0); 
   const [steps, setSteps] = useState(VALIDATION_STEPS);
 
+  // 3. THE FUNCTION
   const handleRunOptimization = async () => {
     setIsRunning(true);
+    setSteps(VALIDATION_STEPS);
 
-    // Simulate optimization pipeline
-    for (let i = 4; i <= 6; i++) {
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+    for (let i = 1; i <= VALIDATION_STEPS.length; i++) {
       setCurrentStep(i);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      
       setSteps((prev) =>
         prev.map((step) =>
-          step.id === i ? { ...step, status: "complete" } : step,
-        ),
+          step.id === i ? { ...step, status: "complete" } : step
+        )
       );
     }
 
     setIsRunning(false);
 
-    // After optimization, redirect to results
+    // This will now work because navigate is in the top-level scope
     setTimeout(() => {
       navigate("/rake-plan");
-    }, 800);
+    }, 1000);
   };
 
   return (
