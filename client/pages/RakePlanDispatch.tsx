@@ -549,12 +549,6 @@ export default function RakePlanDispatch() {
                   <Database className="w-4 h-4" />
                   Add Plan to Database
                 </Button>
-                <Button
-                  variant="outline"
-                  className="h-12 px-8 border-primary/30"
-                >
-                  Back to Optimization
-                </Button>
               </div>
             </div>
           )}
